@@ -1,30 +1,41 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Lenis from "lenis";
+import { BackToTop } from "@/components/common/back-to-top";
+import { LenisProvider } from "@/context/lenis-context";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
+function nativeProgress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  if (max <= 0) return 0;
+  return Math.min(1, Math.max(0, window.scrollY / max));
+}
+
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const reducedMotion = usePrefersReducedMotion();
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion) {
+      lenisRef.current = null;
+      return;
+    }
 
     const { gsap, ScrollTrigger } = getGsap();
-    const lenis = new Lenis({
+    const instance = new Lenis({
       duration: 1.1,
       smoothWheel: true,
       touchMultiplier: 1.4,
-      // Let real overflow containers keep native nested scrolling;
-      // marketing previews without overflow continue page smooth-scroll.
       allowNestedScroll: true,
     });
 
-    lenis.on("scroll", ScrollTrigger.update);
+    lenisRef.current = instance;
+    instance.on("scroll", ScrollTrigger.update);
 
     const ticker = (time: number) => {
-      lenis.raf(time * 1000);
+      instance.raf(time * 1000);
     };
 
     gsap.ticker.add(ticker);
@@ -39,7 +50,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       const el = document.querySelector(hash);
       if (!el) return;
       event.preventDefault();
-      lenis.scrollTo(el as HTMLElement, { offset: -80 });
+      instance.scrollTo(el as HTMLElement, { offset: -80 });
     };
 
     document.addEventListener("click", onAnchorClick);
@@ -47,10 +58,37 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     return () => {
       document.removeEventListener("click", onAnchorClick);
       gsap.ticker.remove(ticker);
-      lenis.destroy();
+      instance.destroy();
+      lenisRef.current = null;
       ScrollTrigger.refresh();
     };
   }, [reducedMotion]);
 
-  return children;
+  const value = useMemo(
+    () => ({
+      scrollToTop: () => {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(0, { duration: 1.15 });
+          return;
+        }
+        window.scrollTo({
+          top: 0,
+          behavior: reducedMotion ? "auto" : "smooth",
+        });
+      },
+      getScrollProgress: () => {
+        const lenis = lenisRef.current;
+        if (lenis) return lenis.progress;
+        return nativeProgress();
+      },
+    }),
+    [reducedMotion],
+  );
+
+  return (
+    <LenisProvider value={value}>
+      {children}
+      <BackToTop />
+    </LenisProvider>
+  );
 }
