@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/common/logo";
 import { Container } from "@/components/ui/container";
-import { footerColumns } from "@/config/navigation";
+import { footerColumns, footerLegalLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 
 export function SiteFooter() {
@@ -41,9 +41,22 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>{siteConfig.copyright}</p>
-          <p>Built as a local UI concept—not an operational service.</p>
+          <nav
+            aria-label="Legal"
+            className="flex flex-wrap items-center gap-x-4 gap-y-2"
+          >
+            {footerLegalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </Container>
     </footer>

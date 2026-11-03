@@ -92,8 +92,15 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
       { label: routes.blog.label, href: routes.blog.href },
       { label: routes.caseStudies.label, href: routes.caseStudies.href },
       { label: routes.about.label, href: routes.about.href },
-      { label: routes.contact.label, href: routes.contact.href },
       { label: routes.faq.label, href: routes.faq.href },
     ],
   },
+];
+
+/** Bottom bar legal / utility links (right of copyright). */
+export const footerLegalLinks: NavLink[] = [
+  { label: "Privacy", href: routes.privacy.href },
+  { label: "Terms", href: routes.terms.href },
+  { label: "Security", href: routes.security.href },
+  { label: "Contact", href: routes.contact.href },
 ];
