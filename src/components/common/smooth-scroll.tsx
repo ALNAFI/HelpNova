@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import Lenis from "lenis";
 import { BackToTop } from "@/components/common/back-to-top";
+import { TextCursor } from "@/components/ui/text-cursor";
 import { LenisProvider } from "@/context/lenis-context";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
@@ -87,7 +88,27 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
   return (
     <LenisProvider value={value}>
-      {children}
+      <TextCursor
+        text="!!"
+        mode="stamp"
+        fontSize={28}
+        spacing={72}
+        maxPoints={7}
+        shrink={0.5}
+        fade={0.55}
+        smoothing={0.3}
+        exitDuration={0.5}
+        removalInterval={30}
+        followMouseDirection
+        keepUpright
+        randomFloat
+        popIn
+        color="var(--accent)"
+        fontFamily="var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif"
+        className="flex h-auto min-h-full w-full flex-1 flex-col"
+      >
+        {children}
+      </TextCursor>
       <BackToTop />
     </LenisProvider>
   );

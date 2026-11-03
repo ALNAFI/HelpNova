@@ -107,7 +107,11 @@ export function HeroSection() {
           <p className="mt-5 text-sm text-muted">{heroContent.trustLine}</p>
         </div>
 
-        <div id="workspace" data-hero="workspace" className="mt-12 scroll-mt-28 lg:mt-16">
+        <div
+          id="workspace"
+          data-hero="workspace"
+          className="mt-12 scroll-mt-28 lg:mt-16"
+        >
           <HeroWorkspace />
         </div>
       </Container>
