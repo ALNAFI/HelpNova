@@ -7,58 +7,59 @@ export type AppRoute = {
 };
 
 export const routes = {
-  home: { label: "Home", href: "/", available: true },
+  home: { label: "AI Customer Support", href: "/", available: true },
   homeAutomation: {
-    label: "Automation Home",
+    label: "Automation",
     href: "/home-automation",
-    available: false,
+    available: true,
   },
   homeInbox: {
-    label: "Shared Inbox Home",
+    label: "Shared Inbox",
     href: "/home-inbox",
-    available: false,
+    available: true,
   },
-  features: { label: "Features", href: "/features", available: false },
+  features: { label: "Features", href: "/features", available: true },
   chatbot: {
     label: "Chatbot",
     href: "/features/chatbot",
-    available: false,
+    available: true,
   },
   automation: {
     label: "Automation",
     href: "/features/automation",
-    available: false,
+    available: true,
   },
-  inbox: { label: "Shared Inbox", href: "/features/inbox", available: false },
+  inbox: { label: "Shared Inbox", href: "/features/inbox", available: true },
   integrations: {
     label: "Integrations",
     href: "/integrations",
-    available: false,
+    available: true,
   },
-  solutions: { label: "Solutions", href: "/solutions", available: false },
+  solutions: { label: "All Solutions", href: "/solutions", available: true },
   ecommerce: {
     label: "Ecommerce",
     href: "/solutions/ecommerce",
-    available: false,
+    available: true,
   },
-  pricing: { label: "Pricing", href: "/pricing", available: false },
-  about: { label: "About", href: "/about", available: false },
-  contact: { label: "Contact", href: "/contact", available: false },
-  blog: { label: "Blog", href: "/blog", available: false },
+  pricing: { label: "Pricing", href: "/pricing", available: true },
+  about: { label: "About Us", href: "/about", available: true },
+  contact: { label: "Contact Us", href: "/contact", available: true },
+  blog: { label: "Blog", href: "/blog", available: true },
   caseStudies: {
     label: "Case Studies",
     href: "/case-studies",
-    available: false,
+    available: true,
   },
-  faq: { label: "FAQ", href: "/faq", available: false },
+  faq: { label: "FAQ", href: "/faq", available: true },
+  notFound: { label: "404", href: "/404", available: true },
   privacy: { label: "Privacy", href: "/privacy", available: false },
   terms: { label: "Terms", href: "/terms", available: false },
-  demo: { label: "Explore Demo", href: "/demo", available: false },
-  login: { label: "Login", href: "/login", available: false },
-  signup: { label: "Sign Up", href: "/signup", available: false },
+  demo: { label: "Explore Demo", href: "/demo", available: true },
+  login: { label: "Login", href: "/login", available: true },
+  signup: { label: "Sign Up", href: "/signup", available: true },
 } as const satisfies Record<string, AppRoute>;
 
-/** Homepage section anchors used while later routes are inactive. */
+/** Homepage section anchors for in-page navigation. */
 export const homeAnchors = {
   top: "#top",
   workspace: "#workspace",

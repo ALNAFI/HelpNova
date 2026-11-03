@@ -76,28 +76,21 @@ export function SiteHeader() {
                 </button>
                 <div
                   className={cn(
-                    "absolute left-0 top-full z-50 min-w-[280px] pt-2 transition-all",
+                    "absolute left-0 top-full z-50 pt-1.5 transition-all",
                     isOpen
                       ? "visible translate-y-0 opacity-100"
-                      : "invisible -translate-y-1 opacity-0",
+                      : "invisible -translate-y-1 opacity-0 pointer-events-none",
                   )}
                 >
-                  <div className="rounded-[var(--radius-card)] border border-border bg-surface p-2 shadow-[var(--shadow-soft)]">
+                  <div className="w-max min-w-[10.5rem] rounded-xl border border-border bg-surface p-1 shadow-[var(--shadow-soft)]">
                     {group.items.map((item) => (
                       <Link
-                        key={item.label}
+                        key={item.href}
                         href={item.href}
-                        className="block rounded-[var(--radius-control)] px-3 py-2.5 transition-colors hover:bg-surface-muted"
+                        className="block whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-muted"
                         onClick={() => setOpenMenu(null)}
                       >
-                        <span className="block text-sm font-medium text-foreground">
-                          {item.label}
-                        </span>
-                        {item.description ? (
-                          <span className="mt-0.5 block text-xs text-muted">
-                            {item.description}
-                          </span>
-                        ) : null}
+                        {item.label}
                       </Link>
                     ))}
                   </div>
@@ -156,18 +149,18 @@ export function SiteHeader() {
           className="max-h-[calc(100dvh-var(--header-height))] overflow-y-auto"
           data-lenis-prevent
         >
-        <Container className="space-y-6 py-5">
+        <Container className="space-y-4 py-4">
           {headerNav.map((group) => (
             <div key={group.label}>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+              <p className="mb-1 px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
                 {group.label}
               </p>
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 {group.items.map((item) => (
                   <Link
-                    key={item.label}
+                    key={item.href}
                     href={item.href}
-                    className="block rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium text-foreground hover:bg-surface-muted"
+                    className="block rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-surface-muted"
                     onClick={() => setMobileOpen(false)}
                   >
                     {item.label}
@@ -176,12 +169,12 @@ export function SiteHeader() {
               </div>
             </div>
           ))}
-          <div className="flex flex-col gap-2 border-t border-border pt-4">
+          <div className="flex flex-col gap-1.5 border-t border-border pt-3">
             {headerPrimaryLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="rounded-[var(--radius-control)] px-3 py-2.5 text-sm font-medium hover:bg-surface-muted"
+                className="rounded-lg px-2.5 py-1.5 text-sm font-medium hover:bg-surface-muted"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
