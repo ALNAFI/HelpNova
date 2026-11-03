@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { DesktopNav } from "@/components/common/desktop-nav";
 import { Logo } from "@/components/common/logo";
 import { ThemeSwitcher } from "@/components/common/theme-switcher";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,6 @@ import { cn } from "@/utils/cn";
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const menuId = useId();
 
   useEffect(() => {
@@ -46,68 +46,7 @@ export function SiteHeader() {
       <Container className="flex h-[var(--header-height)] items-center justify-between gap-4">
         <Logo />
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-          {headerNav.map((group) => {
-            const isOpen = openMenu === group.label;
-            return (
-              <div
-                key={group.label}
-                className="relative"
-                onMouseEnter={() => setOpenMenu(group.label)}
-                onMouseLeave={() => setOpenMenu(null)}
-              >
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 rounded-[var(--radius-control)] px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
-                  aria-expanded={isOpen}
-                  aria-haspopup="true"
-                  onClick={() =>
-                    setOpenMenu(isOpen ? null : group.label)
-                  }
-                >
-                  {group.label}
-                  <ChevronDown
-                    className={cn(
-                      "size-3.5 transition-transform",
-                      isOpen && "rotate-180",
-                    )}
-                    aria-hidden
-                  />
-                </button>
-                <div
-                  className={cn(
-                    "absolute left-0 top-full z-50 pt-1.5 transition-all",
-                    isOpen
-                      ? "visible translate-y-0 opacity-100"
-                      : "invisible -translate-y-1 opacity-0 pointer-events-none",
-                  )}
-                >
-                  <div className="w-max min-w-[10.5rem] rounded-xl border border-border bg-surface p-1 shadow-[var(--shadow-soft)]">
-                    {group.items.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="block whitespace-nowrap rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-surface-muted"
-                        onClick={() => setOpenMenu(null)}
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-          {headerPrimaryLinks.map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="rounded-[var(--radius-control)] px-3 py-2 text-sm font-medium text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+        <DesktopNav />
 
         <div className="hidden items-center gap-2 lg:flex">
           <ThemeSwitcher />
@@ -149,52 +88,52 @@ export function SiteHeader() {
           className="max-h-[calc(100dvh-var(--header-height))] overflow-y-auto"
           data-lenis-prevent
         >
-        <Container className="space-y-4 py-4">
-          {headerNav.map((group) => (
-            <div key={group.label}>
-              <p className="mb-1 px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-                {group.label}
-              </p>
-              <div className="space-y-0.5">
-                {group.items.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-surface-muted"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+          <Container className="space-y-4 py-4">
+            {headerNav.map((group) => (
+              <div key={group.label}>
+                <p className="mb-1 px-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                  {group.label}
+                </p>
+                <div className="space-y-0.5">
+                  {group.items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block rounded-lg px-2.5 py-1.5 text-sm font-medium text-foreground hover:bg-surface-muted"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-          <div className="flex flex-col gap-1.5 border-t border-border pt-3">
-            {headerPrimaryLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="rounded-lg px-2.5 py-1.5 text-sm font-medium hover:bg-surface-muted"
+            ))}
+            <div className="flex flex-col gap-1.5 border-t border-border pt-3">
+              {headerPrimaryLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="rounded-lg px-2.5 py-1.5 text-sm font-medium hover:bg-surface-muted"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Button
+                href={headerActions.login.href}
+                variant="secondary"
                 onClick={() => setMobileOpen(false)}
               >
-                {link.label}
-              </Link>
-            ))}
-            <Button
-              href={headerActions.login.href}
-              variant="secondary"
-              onClick={() => setMobileOpen(false)}
-            >
-              {headerActions.login.label}
-            </Button>
-            <Button
-              href={headerActions.demo.href}
-              onClick={() => setMobileOpen(false)}
-            >
-              {headerActions.demo.label}
-            </Button>
-          </div>
-        </Container>
+                {headerActions.login.label}
+              </Button>
+              <Button
+                href={headerActions.demo.href}
+                onClick={() => setMobileOpen(false)}
+              >
+                {headerActions.demo.label}
+              </Button>
+            </div>
+          </Container>
         </div>
       </div>
     </header>
