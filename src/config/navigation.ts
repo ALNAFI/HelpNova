@@ -69,9 +69,9 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
   {
     title: "Home",
     links: [
-      { label: routes.home.label, href: routes.home.href },
-      { label: routes.homeAutomation.label, href: routes.homeAutomation.href },
-      { label: routes.homeInbox.label, href: routes.homeInbox.href },
+      { label: "AI Customer Support", href: routes.home.href },
+      { label: "Automation Home", href: routes.homeAutomation.href },
+      { label: "Shared Inbox Home", href: routes.homeInbox.href },
     ],
   },
   {
@@ -86,21 +86,35 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
     ],
   },
   {
-    title: "Resources",
+    title: "Solutions",
     links: [
       { label: routes.solutions.label, href: routes.solutions.href },
+      { label: routes.ecommerce.label, href: routes.ecommerce.href },
+    ],
+  },
+  {
+    title: "Resources",
+    links: [
       { label: routes.blog.label, href: routes.blog.href },
       { label: routes.caseStudies.label, href: routes.caseStudies.href },
-      { label: routes.about.label, href: routes.about.href },
       { label: routes.faq.label, href: routes.faq.href },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About", href: routes.about.href },
+      { label: "Contact", href: routes.contact.href },
     ],
   },
 ];
 
-/** Bottom bar legal / utility links (right of copyright). */
+/** Bottom bar legal links. */
 export const footerLegalLinks: NavLink[] = [
   { label: "Privacy", href: routes.privacy.href },
   { label: "Terms", href: routes.terms.href },
   { label: "Security", href: routes.security.href },
-  { label: "Contact", href: routes.contact.href },
 ];
+
+export const footerTagline =
+  "Smarter conversations. Seamless workflows. Better support. Bring every customer conversation, team collaboration, and automated workflow into one beautifully connected workspace. Simplify everyday tasks, stay organized, and discover a more intuitive way to manage customer support.";

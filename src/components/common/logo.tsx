@@ -4,15 +4,18 @@ import { cn } from "@/utils/cn";
 export function Logo({
   href = "/",
   className,
+  tone = "default",
 }: {
   href?: string;
   className?: string;
+  tone?: "default" | "inverse";
 }) {
   return (
     <Link
       href={href}
       className={cn(
         "group inline-flex items-center gap-2.5 rounded-[var(--radius-control)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        tone === "inverse" && "focus-visible:ring-offset-0 focus-visible:ring-[#A78BFA]",
         className,
       )}
       aria-label="HelpNova home"
@@ -39,7 +42,12 @@ export function Logo({
           <circle cx="16.5" cy="8" r="1.2" fill="currentColor" />
         </svg>
       </span>
-      <span className="font-heading text-[1.05rem] font-semibold tracking-tight text-foreground">
+      <span
+        className={cn(
+          "font-heading text-[1.05rem] font-semibold tracking-tight",
+          tone === "inverse" ? "text-[#F6F3FC]" : "text-foreground",
+        )}
+      >
         Help<span className="text-accent">Nova</span>
       </span>
     </Link>

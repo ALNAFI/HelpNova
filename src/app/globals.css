@@ -146,6 +146,12 @@ h4,
   opacity: 0.06;
 }
 
+.footer-wordmark {
+  font-size: clamp(4.5rem, 22vw, 17rem);
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
