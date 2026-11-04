@@ -1,12 +1,20 @@
+"use client";
+
 import Link from "next/link";
-import type { PrivacySection } from "@/data/marketing/privacy";
+import type { ReactNode } from "react";
+import type { LegalDocumentSection } from "@/types/legal";
 import { cn } from "@/utils/cn";
 
 type LegalSectionProps = {
-  section: PrivacySection;
+  section: LegalDocumentSection;
   index: number;
   className?: string;
 };
+
+const INLINE_LINKS: Array<{ label: string; href: string }> = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Contact page", href: "/contact" },
+];
 
 export function LegalSection({ section, index, className }: LegalSectionProps) {
   return (
@@ -70,19 +78,44 @@ export function LegalSection({ section, index, className }: LegalSectionProps) {
   );
 }
 
-function renderInlineLinks(text: string) {
-  if (!text.includes("Contact page")) return text;
-  const parts = text.split("Contact page");
-  return (
-    <>
-      {parts[0]}
+function renderInlineLinks(text: string): ReactNode {
+  const nodes: ReactNode[] = [];
+  let remaining = text;
+  let key = 0;
+
+  while (remaining.length > 0) {
+    let nextIndex = -1;
+    let nextLink: (typeof INLINE_LINKS)[number] | null = null;
+
+    for (const link of INLINE_LINKS) {
+      const index = remaining.indexOf(link.label);
+      if (index !== -1 && (nextIndex === -1 || index < nextIndex)) {
+        nextIndex = index;
+        nextLink = link;
+      }
+    }
+
+    if (!nextLink || nextIndex === -1) {
+      nodes.push(remaining);
+      break;
+    }
+
+    if (nextIndex > 0) {
+      nodes.push(remaining.slice(0, nextIndex));
+    }
+
+    nodes.push(
       <Link
-        href="/contact"
+        key={`legal-link-${key++}`}
+        href={nextLink.href}
         className="font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        Contact page
-      </Link>
-      {parts[1]}
-    </>
-  );
+        {nextLink.label}
+      </Link>,
+    );
+
+    remaining = remaining.slice(nextIndex + nextLink.label.length);
+  }
+
+  return nodes.length === 1 ? nodes[0] : <>{nodes}</>;
 }

@@ -1,3 +1,5 @@
+import type { LegalDocumentSection } from "@/types/legal";
+
 export const privacyPageCopy = {
   eyebrow: "Privacy & Transparency",
   title: "Privacy, explained clearly.",
@@ -52,15 +54,7 @@ export const privacySummaryCards = [
   },
 ] as const;
 
-export type PrivacySection = {
-  id: string;
-  title: string;
-  blocks: Array<
-    | { type: "paragraph"; text: string }
-    | { type: "list"; items: string[] }
-    | { type: "callout"; title: string; text: string }
-  >;
-};
+export type PrivacySection = LegalDocumentSection;
 
 export const privacySections: PrivacySection[] = [
   {

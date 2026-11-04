@@ -2,7 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { LegalInformationCard } from "@/components/modules/other-pages/legal-information-card";
+import {
+  LegalInformationCard,
+  type LegalInformationIcon,
+} from "@/components/modules/other-pages/legal-information-card";
 import { Container } from "@/components/ui/container";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
@@ -12,7 +15,7 @@ type RelatedLink = {
   title: string;
   description: string;
   href: string;
-  icon: "scroll" | "help" | "mail";
+  icon: LegalInformationIcon;
 };
 
 type LegalPageNavigationProps = {

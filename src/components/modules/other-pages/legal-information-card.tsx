@@ -1,11 +1,15 @@
 import Link from "next/link";
 import {
+  CreditCard,
   FileText,
+  GitBranch,
   HelpCircle,
+  LayoutTemplate,
   Link2,
   Mail,
   Palette,
   ScrollText,
+  ShieldCheck,
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
@@ -19,7 +23,13 @@ const iconMap = {
   scroll: ScrollText,
   help: HelpCircle,
   mail: Mail,
+  layout: LayoutTemplate,
+  workflow: GitBranch,
+  "credit-card": CreditCard,
+  shield: ShieldCheck,
 } satisfies Record<string, LucideIcon>;
+
+export type LegalInformationIcon = keyof typeof iconMap;
 
 type LegalInformationCardProps = {
   title: string;
@@ -36,7 +46,7 @@ export function LegalInformationCard({
   className,
   href,
 }: LegalInformationCardProps) {
-  const Icon = iconMap[icon];
+  const Icon = iconMap[icon] ?? FileText;
   const content = (
     <>
       <span className="inline-flex size-10 items-center justify-center rounded-xl border border-accent/25 bg-accent-soft text-accent">
