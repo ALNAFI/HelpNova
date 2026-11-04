@@ -1,10 +1,10 @@
 ﻿import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/modules/other-pages/placeholder-page";
+import { NotFoundView } from "@/components/modules/other-pages/not-found-view";
 
 export const metadata: Metadata = {
   title: "404",
 };
 
 export default function Page() {
-  return <PlaceholderPage title="404" />;
+  return <NotFoundView />;
 }
