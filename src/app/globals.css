@@ -686,3 +686,40 @@ h4,
     animation: none !important;
   }
 }
+
+/* Automation Universe — page-scoped tokens for /home-automation only */
+.automation-universe {
+  --au-cyan: #22d3ee;
+  --au-indigo: #4338ca;
+  --au-lavender: #c4b5fd;
+  --au-nav: #fafafc;
+  --au-grid: rgb(109 40 217 / 0.08);
+}
+
+.dark .automation-universe {
+  --au-cyan: #67e8f9;
+  --au-indigo: #818cf8;
+  --au-lavender: #ddd6fe;
+  --au-nav: #14111c;
+  --au-grid: rgb(167 139 250 / 0.1);
+}
+
+.automation-universe .au-section {
+  position: relative;
+  scroll-margin-top: 6.5rem;
+}
+
+.automation-universe .au-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.automation-universe .au-panel {
+  border: 1px solid color-mix(in oklab, var(--accent) 22%, var(--border));
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(16px);
+}
