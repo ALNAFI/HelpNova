@@ -1,10 +1,12 @@
 ﻿import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/modules/other-pages/placeholder-page";
+import { SolutionsPage } from "@/components/modules/solutions/solutions-page";
 
 export const metadata: Metadata = {
-  title: "All Solutions",
+  title: "Solutions Overview",
+  description:
+    "Explore ecommerce, SaaS, and services support journeys—from a customer question to the team that owns it and where it appears in sample workload.",
 };
 
 export default function Page() {
-  return <PlaceholderPage title="All Solutions" />;
+  return <SolutionsPage />;
 }
