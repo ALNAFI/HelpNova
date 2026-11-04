@@ -159,6 +159,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Hide floating sample chatbot while the common mobile nav is open. */
+html[data-mobile-nav-open] [data-chatbot-launcher] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 h1,
 h2,
 h3,

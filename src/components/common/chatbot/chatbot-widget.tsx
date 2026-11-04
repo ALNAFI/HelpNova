@@ -88,6 +88,7 @@ export function ChatbotWidget() {
       <button
         ref={launcherRef}
         type="button"
+        data-chatbot-launcher
         aria-label={isOpen ? "Close sample chatbot" : "Open sample chatbot"}
         aria-expanded={isOpen}
         aria-controls={panelId}

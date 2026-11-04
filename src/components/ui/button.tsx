@@ -27,6 +27,7 @@ type ButtonProps = {
   onClick?: React.MouseEventHandler<HTMLElement>;
   "aria-label"?: string;
   "aria-pressed"?: boolean;
+  tabIndex?: number;
   disabled?: boolean;
 };
 
@@ -41,6 +42,7 @@ export function Button({
   disabled,
   "aria-label": ariaLabel,
   "aria-pressed": ariaPressed,
+  tabIndex,
   ...rest
 }: ButtonProps) {
   const classes = cn(
@@ -57,6 +59,7 @@ export function Button({
         className={classes}
         onClick={onClick}
         aria-label={ariaLabel}
+        tabIndex={tabIndex}
         {...rest}
       >
         {children}
@@ -72,6 +75,7 @@ export function Button({
       disabled={disabled}
       aria-label={ariaLabel}
       aria-pressed={ariaPressed}
+      tabIndex={tabIndex}
       {...rest}
     >
       {children}
