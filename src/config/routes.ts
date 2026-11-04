@@ -29,7 +29,7 @@ export const routes = {
     href: "/features/automation",
     available: true,
   },
-  inbox: { label: "Shared Inbox", href: "/features/inbox", available: true },
+  inbox: { label: "Inbox Feature", href: "/features/inbox", available: true },
   integrations: {
     label: "Integrations",
     href: "/integrations",

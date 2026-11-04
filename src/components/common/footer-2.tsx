@@ -26,7 +26,7 @@ const columns = [
     links: [
       { label: "AI Chatbot", href: routes.chatbot.href },
       { label: "Automation", href: routes.automation.href },
-      { label: "Shared Inbox", href: routes.inbox.href },
+      { label: "Inbox Feature", href: routes.inbox.href },
       { label: "Pricing", href: routes.pricing.href },
       { label: "Guided Demo", href: routes.demo.href },
     ],

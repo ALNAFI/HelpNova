@@ -34,7 +34,7 @@ const navGroups: NavGroup[] = [
       { label: "All Features", href: routes.features.href },
       { label: "AI Chatbot", href: routes.chatbot.href },
       { label: "Automation", href: routes.automation.href },
-      { label: "Shared Inbox", href: routes.inbox.href },
+      { label: "Inbox Feature", href: routes.inbox.href },
       { label: "Integrations", href: routes.integrations.href },
     ],
   },
