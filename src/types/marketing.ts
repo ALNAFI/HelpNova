@@ -83,6 +83,8 @@ export type SupportScenario = {
   outcome: string;
 };
 
+export type BillingPeriod = "monthly" | "yearly";
+
 export type PricingPlan = {
   id: string;
   name: string;
@@ -91,6 +93,17 @@ export type PricingPlan = {
   description: string;
   features: string[];
   highlighted?: boolean;
+  cta: { label: string; href: string };
+};
+
+export type PricingComparisonValue = boolean | string;
+
+export type PricingComparisonRow = {
+  id: string;
+  label: string;
+  essential: PricingComparisonValue;
+  team: PricingComparisonValue;
+  scale: PricingComparisonValue;
 };
 
 export type FaqCategoryId =

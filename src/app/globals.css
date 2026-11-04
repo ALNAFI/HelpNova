@@ -182,6 +182,382 @@ h4,
   transition-delay: 0.06s;
 }
 
+/* Pricing — Liquid Glass surfaces */
+.pricing-glass-toggle {
+  border: 1px solid color-mix(in oklab, var(--border-strong) 80%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface) 82%, transparent),
+      color-mix(in oklab, var(--surface-muted) 70%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+    0 10px 30px color-mix(in oklab, var(--foreground) 6%, transparent);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+}
+
+.dark .pricing-glass-toggle {
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 10%, transparent),
+    0 12px 34px rgb(0 0 0 / 0.28);
+}
+
+.pricing-glass-toggle-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface) 96%, white),
+      color-mix(in oklab, var(--accent-soft) 55%, var(--surface))
+    );
+  border: 1px solid color-mix(in oklab, var(--accent) 28%, var(--border));
+  box-shadow:
+    0 8px 22px color-mix(in oklab, var(--accent) 18%, transparent),
+    inset 0 1px 0 color-mix(in oklab, white 70%, transparent);
+  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+
+.dark .pricing-glass-toggle-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface) 90%, white),
+      color-mix(in oklab, var(--accent) 22%, var(--surface))
+    );
+  box-shadow:
+    0 10px 26px color-mix(in oklab, var(--accent) 24%, transparent),
+    inset 0 1px 0 color-mix(in oklab, white 14%, transparent);
+}
+
+.pricing-glass-card {
+  --mouse-x: 50%;
+  --mouse-y: 28%;
+  --glow-opacity: 0;
+  --pricing-tilt-x: 0deg;
+  --pricing-tilt-y: 0deg;
+  isolation: isolate;
+  border: 1px solid color-mix(in oklab, var(--border-strong) 85%, transparent);
+  background: color-mix(in oklab, var(--surface) 78%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 58%, transparent),
+    0 18px 48px color-mix(in oklab, var(--foreground) 7%, transparent);
+  backdrop-filter: blur(20px) saturate(1.28);
+  -webkit-backdrop-filter: blur(20px) saturate(1.28);
+  transform: perspective(1000px) rotateX(var(--pricing-tilt-x))
+    rotateY(var(--pricing-tilt-y)) translateY(0);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.dark .pricing-glass-card {
+  background: color-mix(in oklab, var(--surface) 72%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 12%, transparent),
+    0 22px 56px rgb(0 0 0 / 0.38);
+}
+
+.pricing-glass-card-featured {
+  border-color: color-mix(in oklab, var(--accent) 42%, var(--border));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+    0 0 0 1px color-mix(in oklab, var(--accent) 18%, transparent),
+    0 24px 60px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+/* Full-card cursor glow — clipped only by the card radius */
+.pricing-glass-card-glow {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at 50% 18%,
+    color-mix(in oklab, #a78bfa 26%, transparent),
+    color-mix(in oklab, var(--accent) 12%, transparent) 36%,
+    transparent 68%
+  );
+  opacity: 0.42;
+}
+
+.dark .pricing-glass-card-glow {
+  background: radial-gradient(
+    400px circle at 50% 18%,
+    color-mix(in oklab, #c4b5fd 22%, transparent),
+    color-mix(in oklab, var(--accent) 16%, transparent) 38%,
+    transparent 70%
+  );
+  opacity: 0.38;
+}
+
+.pricing-glass-card-featured .pricing-glass-card-glow {
+  opacity: 0.55;
+}
+
+/* Pointer-reactive border highlight using the same coordinates */
+.pricing-glass-card-border {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  opacity: 0;
+  background: radial-gradient(
+    220px circle at var(--mouse-x) var(--mouse-y),
+    color-mix(in oklab, var(--accent) 72%, white),
+    color-mix(in oklab, var(--accent) 28%, transparent) 38%,
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.pricing-glass-card-shine {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, white 22%, transparent),
+    transparent 42%
+  );
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+}
+
+.dark .pricing-glass-card-shine {
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklab, white 10%, transparent),
+    transparent 40%
+  );
+}
+
+/* Interactive tracking — fine pointer only; position has no transition lag */
+@media (hover: hover) and (pointer: fine) {
+  .pricing-glass-card-glow {
+    background: radial-gradient(
+      420px circle at var(--mouse-x) var(--mouse-y),
+      color-mix(in oklab, #a78bfa 34%, transparent),
+      color-mix(in oklab, var(--accent) 16%, transparent) 28%,
+      transparent 62%
+    );
+    opacity: var(--glow-opacity);
+    transition: opacity 0.45s ease;
+  }
+
+  .dark .pricing-glass-card-glow {
+    background: radial-gradient(
+      440px circle at var(--mouse-x) var(--mouse-y),
+      color-mix(in oklab, #c4b5fd 28%, transparent),
+      color-mix(in oklab, var(--accent) 22%, transparent) 30%,
+      transparent 64%
+    );
+  }
+
+  .pricing-glass-card-featured .pricing-glass-card-glow {
+    background: radial-gradient(
+      460px circle at var(--mouse-x) var(--mouse-y),
+      color-mix(in oklab, #a78bfa 42%, transparent),
+      color-mix(in oklab, var(--accent) 22%, transparent) 30%,
+      transparent 66%
+    );
+    /* Soft resting presence; full intensity while pointer is inside */
+    opacity: calc(0.28 + (var(--glow-opacity) * 0.72));
+  }
+
+  .dark .pricing-glass-card-featured .pricing-glass-card-glow {
+    background: radial-gradient(
+      480px circle at var(--mouse-x) var(--mouse-y),
+      color-mix(in oklab, #ddd6fe 30%, transparent),
+      color-mix(in oklab, var(--accent) 26%, transparent) 32%,
+      transparent 68%
+    );
+  }
+
+  .pricing-glass-card-border {
+    opacity: var(--glow-opacity);
+    transition: opacity 0.45s ease;
+  }
+
+  .pricing-glass-card-shine {
+    background:
+      linear-gradient(
+        160deg,
+        color-mix(in oklab, white 22%, transparent),
+        transparent 42%
+      ),
+      radial-gradient(
+        320px circle at var(--mouse-x) var(--mouse-y),
+        color-mix(in oklab, white 18%, transparent),
+        transparent 55%
+      );
+  }
+
+  .dark .pricing-glass-card-shine {
+    background:
+      linear-gradient(
+        160deg,
+        color-mix(in oklab, white 10%, transparent),
+        transparent 40%
+      ),
+      radial-gradient(
+        320px circle at var(--mouse-x) var(--mouse-y),
+        color-mix(in oklab, var(--accent) 16%, transparent),
+        transparent 55%
+      );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-glass-card-glow {
+    opacity: 0.38 !important;
+    background: radial-gradient(
+      380px circle at 50% 18%,
+      color-mix(in oklab, #a78bfa 24%, transparent),
+      transparent 68%
+    ) !important;
+    transition: none !important;
+  }
+
+  .dark .pricing-glass-card-glow {
+    opacity: 0.34 !important;
+    background: radial-gradient(
+      400px circle at 50% 18%,
+      color-mix(in oklab, #c4b5fd 20%, transparent),
+      transparent 70%
+    ) !important;
+  }
+
+  .pricing-glass-card-border {
+    opacity: 0 !important;
+    transition: none !important;
+  }
+
+  .pricing-glass-card-shine {
+    transition: none !important;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pricing-glass-card:hover {
+    border-color: color-mix(in oklab, var(--accent) 36%, var(--border));
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 65%, transparent),
+      0 28px 64px color-mix(in oklab, var(--accent) 16%, transparent);
+    transform: perspective(1000px) rotateX(var(--pricing-tilt-x))
+      rotateY(var(--pricing-tilt-y)) translateY(-6px);
+  }
+
+  .pricing-glass-card-featured:hover {
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+      0 0 0 1px color-mix(in oklab, var(--accent) 28%, transparent),
+      0 32px 72px color-mix(in oklab, var(--accent) 24%, transparent);
+  }
+}
+
+.pricing-glass-panel {
+  border: 1px solid color-mix(in oklab, var(--border-strong) 80%, transparent);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--surface) 90%, transparent),
+      color-mix(in oklab, var(--surface-muted) 45%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 50%, transparent),
+    var(--shadow-soft);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+}
+
+.pricing-compare-row {
+  transition: background-color 0.2s ease;
+}
+
+.pricing-compare-row:hover {
+  background: color-mix(in oklab, var(--accent-soft) 45%, transparent);
+}
+
+.pricing-glass-faq {
+  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 45%, transparent),
+    var(--shadow-soft);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.pricing-glass-faq-open {
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  background: color-mix(in oklab, var(--accent-soft) 28%, var(--surface));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
+    0 14px 36px color-mix(in oklab, var(--accent) 10%, transparent);
+}
+
+.pricing-glass-cta {
+  border: 1px solid color-mix(in oklab, var(--accent) 28%, var(--border));
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--accent-soft) 55%, var(--surface)),
+      color-mix(in oklab, var(--surface) 92%, transparent) 45%,
+      color-mix(in oklab, var(--surface-muted) 70%, transparent)
+    );
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 55%, transparent),
+    0 24px 60px color-mix(in oklab, var(--accent) 12%, transparent);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+
+.pricing-price-exit {
+  animation: pricing-price-out 0.14s ease forwards;
+}
+
+.pricing-price-enter {
+  animation: pricing-price-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pricing-price-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pricing-price-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -190,5 +566,14 @@ h4,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .pricing-glass-card,
+  .pricing-glass-card:hover {
+    transform: none !important;
+  }
+
+  .pricing-glass-toggle-thumb {
+    transition: none !important;
   }
 }
