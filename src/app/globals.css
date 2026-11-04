@@ -1,5 +1,56 @@
 @import "tailwindcss";
 
+/*
+  Module 01 scroll ribbon — fixed decorative tape behind homepage sections.
+  Scoped to `.home-scroll-ribbon`; opacity is driven in JS from scroll progress.
+*/
+.home-scroll-ribbon {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  -webkit-mask-image: radial-gradient(
+    115% 85% at 50% 46%,
+    #000 52%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    115% 85% at 50% 46%,
+    #000 52%,
+    transparent 100%
+  );
+}
+
+.home-scroll-ribbon[data-renderer="unsupported"] {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .home-scroll-ribbon {
+    -webkit-mask-image: radial-gradient(
+      160% 110% at 50% 46%,
+      #000 62%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      160% 110% at 50% 46%,
+      #000 62%,
+      transparent 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-scroll-ribbon {
+    transition: none;
+  }
+}
+
 :root {
   --background: #fafafc;
   --foreground: #171321;

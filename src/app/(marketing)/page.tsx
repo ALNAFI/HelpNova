@@ -4,6 +4,7 @@ import { AutomationShowcase } from "@/components/modules/home/automation-showcas
 import { FeatureBento } from "@/components/modules/home/feature-bento";
 import { FinalCta } from "@/components/modules/home/final-cta";
 import { HeroSection } from "@/components/modules/home/hero-section";
+import { HomeScrollRibbon } from "@/components/modules/home/home-scroll-ribbon";
 import { InboxShowcase } from "@/components/modules/home/inbox-showcase";
 import { InsightsSection } from "@/components/modules/home/insights-section";
 import { IntegrationsPreview } from "@/components/modules/home/integrations-preview";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <>
+    <HomeScrollRibbon>
       <HeroSection />
       <AudienceSection />
       <InboxShowcase />
@@ -29,6 +30,6 @@ export default function HomePage() {
       <ScenariosSection />
       <PricingFaqSection />
       <FinalCta />
-    </>
+    </HomeScrollRibbon>
   );
 }
