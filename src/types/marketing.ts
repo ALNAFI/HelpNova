@@ -93,8 +93,23 @@ export type PricingPlan = {
   highlighted?: boolean;
 };
 
+export type FaqCategoryId =
+  | "all"
+  | "getting-started"
+  | "features"
+  | "demo"
+  | "pricing"
+  | "integrations"
+  | "privacy";
+
+export type FaqCategory = {
+  id: FaqCategoryId;
+  label: string;
+};
+
 export type FaqItem = {
   id: string;
   question: string;
   answer: string;
+  category?: Exclude<FaqCategoryId, "all">;
 };

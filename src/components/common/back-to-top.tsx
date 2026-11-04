@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/context/theme-provider";
 import { ArrowUp } from "lucide-react";
 import { useLenis } from "@/context/lenis-context";
 import { cn } from "@/utils/cn";

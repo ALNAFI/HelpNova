@@ -1,10 +1,12 @@
 ﻿import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/modules/other-pages/placeholder-page";
+import { FaqPage } from "@/components/modules/faq/faq-page";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "FAQ",
+  description: `Answers about ${siteConfig.name}, the interactive demo, pricing samples, and how this concept experience works.`,
 };
 
 export default function Page() {
-  return <PlaceholderPage title="FAQ" />;
+  return <FaqPage />;
 }

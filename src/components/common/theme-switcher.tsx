@@ -1,8 +1,8 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/context/theme-provider";
 import { cn } from "@/utils/cn";
 
 const options = [

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { ThemeScript } from "@/components/common/theme-script";
 import { ThemeProvider } from "@/context/theme-provider";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
@@ -39,6 +40,7 @@ export default function RootLayout({
         className="flex min-h-full flex-col font-sans"
         suppressHydrationWarning
       >
+        <ThemeScript />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

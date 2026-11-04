@@ -152,6 +152,36 @@ h4,
   line-height: 0.82;
 }
 
+/* Smooth FAQ accordion height — grid 0fr → 1fr avoids hardcoded heights */
+.faq-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+
+.faq-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.faq-panel-content {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.faq-panel[data-open="true"] .faq-panel-content {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.06s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
