@@ -38,3 +38,32 @@ export type BlogPost = {
   layout: BlogCardLayout;
   contentPreview: string[];
 };
+
+export type BlogDiagramKind =
+  | "handoff"
+  | "inbox"
+  | "routing"
+  | "metrics"
+  | "notes"
+  | "explore";
+
+export type BlogContentBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "list"; ordered?: boolean; items: string[] }
+  | { type: "quote"; text: string }
+  | { type: "callout"; title: string; text: string }
+  | { type: "diagram"; kind: BlogDiagramKind; caption: string };
+
+export type BlogArticleSection = {
+  id: string;
+  title: string;
+  blocks: BlogContentBlock[];
+};
+
+export type BlogArticleBody = {
+  slug: string;
+  introduction: string[];
+  sections: BlogArticleSection[];
+  conclusion: string[];
+  relatedSlugs: string[];
+};

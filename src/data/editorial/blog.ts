@@ -1,3 +1,4 @@
+import { getBlogArticleBody } from "@/data/editorial/blog-content";
 import type { BlogCategory, BlogPost } from "@/types/editorial";
 
 export const blogPageCopy = {
@@ -22,6 +23,19 @@ export const blogPageCopy = {
   featuredLabel: "Featured Stories",
   readArticle: "Read Article",
   readStory: "Read Story",
+  relatedTitle: "Keep exploring.",
+  relatedDescription:
+    "More ideas and perspectives from the HelpNova Journal.",
+  articleCtaTitle: "Turn ideas into experiences.",
+  articleCtaDescription:
+    "Explore how conversations, automation, and insights come together in HelpNova's guided demo.",
+  backToJournal: "Back to Journal",
+  onThisPage: "On this page",
+  copyLink: "Copy link",
+  linkCopied: "Link copied",
+  shareArticle: "Share",
+  previousArticle: "Previous article",
+  nextArticle: "Next article",
 } as const;
 
 export const blogCategories: BlogCategory[] = [
@@ -156,4 +170,40 @@ export function formatBlogDate(isoDate: string) {
     day: "numeric",
     year: "numeric",
   }).format(date);
+}
+
+export function getBlogPostBySlug(slug: string) {
+  return blogPosts.find((post) => post.slug === slug);
+}
+
+export function getBlogArticle(slug: string) {
+  const post = getBlogPostBySlug(slug);
+  const body = getBlogArticleBody(slug);
+  if (!post || !body) return null;
+  return { post, body };
+}
+
+export function getRelatedBlogPosts(slug: string, limit = 3) {
+  const body = getBlogArticleBody(slug);
+  const related = (body?.relatedSlugs ?? [])
+    .map((relatedSlug) => getBlogPostBySlug(relatedSlug))
+    .filter((post): post is BlogPost => post != null && post.slug !== slug);
+
+  if (related.length >= limit) return related.slice(0, limit);
+
+  const fallback = blogPosts.filter(
+    (post) => post.slug !== slug && !related.some((item) => item.id === post.id),
+  );
+  return [...related, ...fallback].slice(0, limit);
+}
+
+export function getAdjacentBlogPosts(slug: string) {
+  const index = blogPosts.findIndex((post) => post.slug === slug);
+  if (index < 0) {
+    return { previous: null, next: null };
+  }
+  return {
+    previous: index > 0 ? blogPosts[index - 1] : null,
+    next: index < blogPosts.length - 1 ? blogPosts[index + 1] : null,
+  };
 }
