@@ -1,10 +1,12 @@
 ﻿import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/modules/other-pages/placeholder-page";
+import { IntegrationsPage } from "@/components/modules/integrations/integrations-page";
 
 export const metadata: Metadata = {
   title: "Integrations",
+  description:
+    "Explore 12 illustrative integrations across commerce, communication, support, and team knowledge.",
 };
 
 export default function Page() {
-  return <PlaceholderPage title="Integrations" />;
+  return <IntegrationsPage />;
 }

@@ -67,10 +67,25 @@ export type BentoFeature = {
     | "organization";
 };
 
+export type IntegrationCategory =
+  | "Commerce & payments"
+  | "Communication"
+  | "CRM & support"
+  | "Knowledge & files"
+  | "Automation";
+
 export type IntegrationPreview = {
   id: string;
   name: string;
   category: string;
+  description?: string;
+};
+
+export type Integration = {
+  id: string;
+  name: string;
+  category: IntegrationCategory;
+  description: string;
 };
 
 export type SupportScenario = {
