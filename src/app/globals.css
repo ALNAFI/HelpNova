@@ -642,3 +642,30 @@ h4,
     transition: none !important;
   }
 }
+
+@media print {
+  header,
+  footer,
+  [aria-label="Primary"],
+  [aria-label="Footer"],
+  button,
+  .pointer-events-none {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  a {
+    color: inherit !important;
+    text-decoration: underline;
+  }
+
+  #privacy-document {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
