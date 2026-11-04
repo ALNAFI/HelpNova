@@ -26,6 +26,7 @@ type ButtonProps = {
   type?: "button" | "submit";
   onClick?: React.MouseEventHandler<HTMLElement>;
   "aria-label"?: string;
+  "aria-pressed"?: boolean;
   disabled?: boolean;
 };
 
@@ -38,6 +39,8 @@ export function Button({
   type = "button",
   onClick,
   disabled,
+  "aria-label": ariaLabel,
+  "aria-pressed": ariaPressed,
   ...rest
 }: ButtonProps) {
   const classes = cn(
@@ -49,7 +52,13 @@ export function Button({
 
   if (href) {
     return (
-      <Link href={href} className={classes} onClick={onClick} {...rest}>
+      <Link
+        href={href}
+        className={classes}
+        onClick={onClick}
+        aria-label={ariaLabel}
+        {...rest}
+      >
         {children}
       </Link>
     );
@@ -61,6 +70,8 @@ export function Button({
       className={classes}
       onClick={onClick}
       disabled={disabled}
+      aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
       {...rest}
     >
       {children}

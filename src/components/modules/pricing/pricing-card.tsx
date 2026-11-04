@@ -14,6 +14,9 @@ import { cn } from "@/utils/cn";
 type PricingCardProps = {
   plan: PricingPlan;
   period: BillingPeriod;
+  selected: boolean;
+  onSelect: (planId: string) => void;
+  cardRef?: (node: HTMLElement | null) => void;
 };
 
 function canTrackPointer() {
@@ -27,13 +30,24 @@ function canTrackPointer() {
   return true;
 }
 
-export function PricingCard({ plan, period }: PricingCardProps) {
-  const cardRef = useRef<HTMLElement>(null);
+export function PricingCard({
+  plan,
+  period,
+  selected,
+  onSelect,
+  cardRef,
+}: PricingCardProps) {
+  const localRef = useRef<HTMLElement | null>(null);
   const price = getPlanPrice(plan, period);
-  const featured = Boolean(plan.highlighted);
+  const showPopularBadge = Boolean(plan.highlighted);
+
+  const assignRef = (node: HTMLElement | null) => {
+    localRef.current = node;
+    cardRef?.(node);
+  };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLElement>) => {
-    const el = cardRef.current;
+    const el = localRef.current;
     if (!el || event.pointerType !== "mouse" || !canTrackPointer()) return;
 
     const rect = el.getBoundingClientRect();
@@ -51,7 +65,7 @@ export function PricingCard({ plan, period }: PricingCardProps) {
   };
 
   const handlePointerEnter = (event: React.PointerEvent<HTMLElement>) => {
-    const el = cardRef.current;
+    const el = localRef.current;
     if (!el || event.pointerType !== "mouse" || !canTrackPointer()) return;
 
     const rect = el.getBoundingClientRect();
@@ -63,9 +77,8 @@ export function PricingCard({ plan, period }: PricingCardProps) {
   };
 
   const handlePointerLeave = () => {
-    const el = cardRef.current;
+    const el = localRef.current;
     if (!el) return;
-    // Fade only — keep last pointer position so the glow does not jump.
     el.style.setProperty("--glow-opacity", "0");
     el.style.setProperty("--pricing-tilt-x", "0deg");
     el.style.setProperty("--pricing-tilt-y", "0deg");
@@ -73,14 +86,16 @@ export function PricingCard({ plan, period }: PricingCardProps) {
 
   return (
     <article
-      ref={cardRef}
+      ref={assignRef}
       data-pricing-card
+      data-plan-id={plan.id}
+      data-selected={selected ? "true" : "false"}
       onPointerEnter={handlePointerEnter}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       className={cn(
         "pricing-glass-card group relative flex h-full flex-col overflow-hidden rounded-[1.35rem]",
-        featured && "pricing-glass-card-featured",
+        selected && "pricing-glass-card-selected",
       )}
       style={
         {
@@ -98,7 +113,7 @@ export function PricingCard({ plan, period }: PricingCardProps) {
 
       <div className="relative z-10 flex h-full flex-col p-6 sm:p-7">
         <div className="flex min-h-[1.5rem] items-start">
-          {featured ? (
+          {showPopularBadge ? (
             <span className="inline-flex rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold tracking-wide text-accent-foreground shadow-[0_8px_20px_color-mix(in_oklab,var(--accent)_35%,transparent)]">
               {pricingPageCopy.featuredBadge}
             </span>
@@ -150,12 +165,22 @@ export function PricingCard({ plan, period }: PricingCardProps) {
 
         <div className="mt-8">
           <Button
-            href={plan.cta.href}
-            variant={featured ? "primary" : "secondary"}
+            type="button"
+            variant={selected ? "primary" : "secondary"}
             size="lg"
-            className="w-full"
+            className={cn(
+              "w-full",
+              selected && "pricing-purchase-selected",
+            )}
+            aria-pressed={selected}
+            aria-label={
+              selected
+                ? `${plan.name} plan selected`
+                : `Select ${plan.name} plan`
+            }
+            onClick={() => onSelect(plan.id)}
           >
-            {plan.cta.label}
+            Purchase
           </Button>
         </div>
       </div>
