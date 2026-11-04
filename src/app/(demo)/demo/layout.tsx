@@ -1,6 +1,11 @@
-﻿import { SiteFooter } from "@/components/common/site-footer";
-import { SiteHeader } from "@/components/common/site-header";
-import { SmoothScroll } from "@/components/common/smooth-scroll";
+﻿import type { Metadata } from "next";
+import { DemoProvider } from "@/context/demo-context";
+
+export const metadata: Metadata = {
+  title: "Command Center Demo",
+  description:
+    "Explore HelpNova’s interactive local demo connecting Inbox, Automation, and Insights.",
+};
 
 export default function DemoLayout({
   children,
@@ -8,12 +13,8 @@ export default function DemoLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SmoothScroll>
-      <div className="flex min-h-full flex-1 flex-col">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-      </div>
-    </SmoothScroll>
+    <DemoProvider>
+      <div className="min-h-dvh flex-1">{children}</div>
+    </DemoProvider>
   );
 }

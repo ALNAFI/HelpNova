@@ -669,3 +669,20 @@ h4,
     padding: 0 !important;
   }
 }
+
+@keyframes demoFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[demoFadeIn_220ms_ease-out\] {
+    animation: none !important;
+  }
+}

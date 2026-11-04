@@ -1,10 +1,5 @@
-﻿import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/modules/other-pages/placeholder-page";
-
-export const metadata: Metadata = {
-  title: "Explore Demo",
-};
+﻿import { DemoShell } from "@/components/modules/demo/demo-shell";
 
 export default function DemoPage() {
-  return <PlaceholderPage title="Explore Demo" />;
+  return <DemoShell />;
 }
