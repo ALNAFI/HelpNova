@@ -35,6 +35,18 @@ export function getNameError(value: string): string | null {
   return null;
 }
 
+export function getSubjectError(value: string): string | null {
+  if (!value.trim()) return "Choose a subject.";
+  return null;
+}
+
+export function getMessageError(value: string): string | null {
+  const message = value.trim();
+  if (!message) return "Enter a message.";
+  if (message.length < 10) return "Enter at least 10 characters.";
+  return null;
+}
+
 export {
   getPasswordRequirements,
   getSignupPasswordError,
