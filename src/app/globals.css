@@ -158,31 +158,40 @@ h4,
 }
 
 /*
-  Mobile footer nav: two equal columns, stacked sections.
-  HOME and PRODUCT share the same top edge — no empty hole under Home.
+  Mobile footer nav only (< 640px).
+  Must not set display outside this query — it would override sm:hidden
+  and duplicate nav on tablet/desktop.
 */
-.footer-nav-mobile {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 1.25rem;
-  align-items: start;
+@media (max-width: 639.98px) {
+  .footer-nav-mobile {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.25rem;
+    align-items: start;
+  }
+
+  .footer-nav-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    min-width: 0;
+  }
+
+  .footer-nav-mobile [data-footer-col] > p {
+    letter-spacing: 0.12em;
+  }
+
+  .footer-nav-mobile [data-footer-col] a {
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    overflow-wrap: break-word;
+  }
 }
 
-.footer-nav-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  min-width: 0;
-}
-
-.footer-nav-mobile [data-footer-col] > p {
-  letter-spacing: 0.12em;
-}
-
-.footer-nav-mobile [data-footer-col] a {
-  font-size: 0.8125rem;
-  line-height: 1.35;
-  overflow-wrap: break-word;
+@media (min-width: 640px) {
+  .footer-nav-mobile {
+    display: none;
+  }
 }
 
 /* Tablet: 3 equal columns · Desktop: 5 equal columns */
