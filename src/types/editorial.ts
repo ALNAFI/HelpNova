@@ -67,3 +67,53 @@ export type BlogArticleBody = {
   conclusion: string[];
   relatedSlugs: string[];
 };
+
+export type CaseStudyCategory =
+  | "order-tracking"
+  | "billing-support"
+  | "technical-support";
+
+export type CaseStudyVisualId =
+  | "orders"
+  | "billing"
+  | "technical";
+
+export type CaseStudyCardLayout = "feature" | "editorial" | "compact";
+
+export type CaseStudy = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: CaseStudyCategory;
+  categoryLabel: string;
+  readingTime: string;
+  visual: CaseStudyVisualId;
+  layout: CaseStudyCardLayout;
+  accent: "violet-blue" | "violet-teal" | "violet-cyan";
+  storyBeats: string[];
+  spotlight?: boolean;
+};
+
+export type CaseStudyDetail = {
+  slug: string;
+  context: string[];
+  inquiry: {
+    title: string;
+    customer: string;
+    channel: string;
+    message: string;
+  };
+  workflow: {
+    title: string;
+    steps: Array<{ label: string; detail: string }>;
+  };
+  handoff: {
+    title: string;
+    team: string;
+    note: string;
+    summary: string[];
+  };
+  illustrates: string[];
+  relatedSlugs: string[];
+};
