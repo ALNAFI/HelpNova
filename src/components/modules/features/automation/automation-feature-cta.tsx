@@ -1,0 +1,27 @@
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { automationFeatureCta } from "@/data/marketing/automation-feature";
+
+export function AutomationFeatureCta() {
+  return (
+    <section className="border-t border-border py-16 sm:py-20 lg:py-24">
+      <Container>
+        <div className="max-w-2xl rounded-[var(--radius-workspace)] border border-border bg-surface p-6 shadow-[var(--shadow-soft)] sm:p-8 lg:p-10">
+          <h2 className="font-heading text-[1.85rem] font-semibold tracking-tight text-balance sm:text-[2.25rem]">
+            {automationFeatureCta.title}
+          </h2>
+          <p className="mt-4 text-base leading-7 text-muted">
+            {automationFeatureCta.description}
+          </p>
+          <div className="mt-7">
+            <Button href={automationFeatureCta.primaryCta.href} size="lg">
+              {automationFeatureCta.primaryCta.label}
+              <ArrowRight className="size-4" />
+            </Button>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
