@@ -146,6 +146,65 @@ h4,
   opacity: 0.06;
 }
 
+/* Brand description: full content width, justified with a natural last line */
+.footer-brand-copy {
+  width: 100%;
+  max-width: none;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
+  word-spacing: normal;
+  hyphens: none;
+}
+
+/*
+  Mobile footer nav: two equal columns, stacked sections.
+  HOME and PRODUCT share the same top edge — no empty hole under Home.
+*/
+.footer-nav-mobile {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 1.25rem;
+  align-items: start;
+}
+
+.footer-nav-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+}
+
+.footer-nav-mobile [data-footer-col] > p {
+  letter-spacing: 0.12em;
+}
+
+.footer-nav-mobile [data-footer-col] a {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+}
+
+/* Tablet: 3 equal columns · Desktop: 5 equal columns */
+.footer-nav-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 2rem;
+  align-items: start;
+}
+
+.footer-nav-grid > [data-footer-col] {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .footer-nav-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: 1.25rem;
+  }
+}
+
 /* Footer meta: single-row copyright + legal links at every width */
 .footer-meta {
   font-size: clamp(0.6875rem, 2.65vw, 0.875rem);

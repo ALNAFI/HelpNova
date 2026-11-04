@@ -19,7 +19,7 @@ function footerInView(footer: HTMLElement) {
   return footer.getBoundingClientRect().top < window.innerHeight * 0.92;
 }
 
-/** Mobile packs: keep Product from leaving a ragged hole under shorter columns. */
+/** Mobile stacks: equal tops, no empty hole under Home beside Product. */
 const mobileNavLeft = footerColumns.filter((column) =>
   ["Home", "Solutions", "Company"].includes(column.title),
 );
@@ -39,7 +39,7 @@ function FooterNavColumn({
       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#8B819C]">
         {title}
       </p>
-      <ul className="mt-3.5 space-y-2">
+      <ul className="mt-3 space-y-1.5">
         {links.map((link) => (
           <li key={`${title}-${link.href}`} className="min-w-0">
             <Link
@@ -203,20 +203,17 @@ export function SiteFooter() {
       */}
       <Container className="relative px-5 pt-16 pb-8 sm:px-6 sm:pt-20 lg:px-8 lg:pt-24">
         <div className="grid min-w-0 gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.6fr)] lg:gap-16 xl:gap-20">
-          <div data-footer-brand className="min-w-0 max-w-sm">
+          <div data-footer-brand className="min-w-0 w-full">
             <Logo tone="inverse" />
-            <p className="mt-5 text-left text-[15px] leading-7 text-[#B7AEC9]">
+            <p className="footer-brand-copy mt-5 w-full text-[15px] leading-7 text-[#B7AEC9]">
               {footerTagline}
             </p>
           </div>
 
           <nav aria-label="Footer" className="min-w-0">
-            {/* Mobile: equal 1fr columns, packed stacks */}
-            <div
-              className="grid gap-x-5 gap-y-0 sm:hidden"
-              style={{ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" }}
-            >
-              <div className="flex min-w-0 flex-col gap-8">
+            {/* Mobile: two equal stacks — Home/Solutions/Company | Product/Resources */}
+            <div className="footer-nav-mobile min-w-0 sm:hidden">
+              <div className="footer-nav-stack">
                 {mobileNavLeft.map((column) => (
                   <FooterNavColumn
                     key={column.title}
@@ -225,7 +222,7 @@ export function SiteFooter() {
                   />
                 ))}
               </div>
-              <div className="flex min-w-0 flex-col gap-8">
+              <div className="footer-nav-stack">
                 {mobileNavRight.map((column) => (
                   <FooterNavColumn
                     key={column.title}
@@ -236,8 +233,8 @@ export function SiteFooter() {
               </div>
             </div>
 
-            {/* Tablet / desktop: preserve existing multi-column layout */}
-            <div className="hidden min-w-0 gap-x-6 gap-y-8 sm:grid sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-5">
+            {/* Tablet / desktop */}
+            <div className="footer-nav-grid hidden min-w-0 sm:grid">
               {footerColumns.map((column) => (
                 <FooterNavColumn
                   key={column.title}
