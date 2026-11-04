@@ -14,7 +14,9 @@ export default function AutomationUniverseLayout({
       <SmoothScroll>
         <div className="automation-universe flex min-h-full flex-1 flex-col">
           <Nav2 />
-          <main className="relative flex-1 pt-20 sm:pt-24">{children}</main>
+          <main className="relative flex-1 pt-[var(--au-nav-offset,6.5rem)]">
+            {children}
+          </main>
           <Footer2 />
         </div>
         <ChatbotWidget />

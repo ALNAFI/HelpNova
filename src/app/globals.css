@@ -689,11 +689,18 @@ h4,
 
 /* Automation Universe — page-scoped tokens for /home-automation only */
 .automation-universe {
+  --au-nav-offset: 6.75rem;
   --au-cyan: #22d3ee;
   --au-indigo: #4338ca;
   --au-lavender: #c4b5fd;
   --au-nav: #fafafc;
   --au-grid: rgb(109 40 217 / 0.08);
+}
+
+@media (min-width: 640px) {
+  .automation-universe {
+    --au-nav-offset: 7.25rem;
+  }
 }
 
 .dark .automation-universe {
@@ -706,7 +713,7 @@ h4,
 
 .automation-universe .au-section {
   position: relative;
-  scroll-margin-top: 6.5rem;
+  scroll-margin-top: var(--au-nav-offset);
 }
 
 .automation-universe .au-eyebrow {
@@ -722,4 +729,56 @@ h4,
   background: color-mix(in oklab, var(--surface) 88%, transparent);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(16px);
+}
+
+/* Inbox Companion — page-scoped tokens for /home-inbox only */
+.inbox-companion {
+  /* Fixed floating Nav3 clearance over the merged hero */
+  --ih-nav-offset: 7.5rem;
+  --ih-cyan: #06b6d4;
+  --ih-pearl: #f4f1fb;
+  --ih-graphite: #2a2438;
+  --ih-nav: #fbfafe;
+  --ih-glow: rgb(109 40 217 / 0.14);
+  --ih-message: color-mix(in oklab, var(--surface) 92%, transparent);
+}
+
+@media (min-width: 640px) {
+  .inbox-companion {
+    --ih-nav-offset: 12rem;
+  }
+}
+
+.dark .inbox-companion {
+  --ih-cyan: #22d3ee;
+  --ih-pearl: #ebe4f8;
+  --ih-graphite: #1a1624;
+  --ih-nav: #12101a;
+  --ih-glow: rgb(167 139 250 / 0.18);
+  --ih-message: color-mix(in oklab, var(--surface) 88%, transparent);
+}
+
+.inbox-companion .ih-section {
+  position: relative;
+  scroll-margin-top: var(--ih-nav-offset);
+}
+
+.inbox-companion .ih-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.inbox-companion .ih-panel {
+  border: 1px solid color-mix(in oklab, var(--accent) 18%, var(--border));
+  background: var(--ih-message);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(14px);
+}
+
+.inbox-companion .ih-note {
+  border-left: 3px solid color-mix(in oklab, var(--accent) 65%, transparent);
+  background: color-mix(in oklab, var(--accent) 8%, var(--surface));
 }
