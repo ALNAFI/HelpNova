@@ -68,7 +68,7 @@ export function AboutStory() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 sm:py-20"
+      className="relative z-10 py-16 sm:py-20"
       aria-labelledby="about-story-heading"
     >
       <Container>

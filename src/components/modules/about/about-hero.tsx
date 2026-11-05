@@ -1,13 +1,17 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { AboutHeroConstellation } from "@/components/modules/about/about-hero-constellation";
+import { useEffect, useRef, type RefObject } from "react";
+import { AboutHeroIllustration } from "@/components/modules/about/about-hero-illustration";
 import { Container } from "@/components/ui/container";
 import { aboutPageCopy } from "@/data/marketing/about";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
-export function AboutHero() {
+export function AboutHero({
+  surfaceRef,
+}: {
+  surfaceRef: RefObject<HTMLElement | null>;
+}) {
   const ref = useRef<HTMLElement>(null);
   const reducedMotion = usePrefersReducedMotion();
 
@@ -35,7 +39,7 @@ export function AboutHero() {
   return (
     <header
       ref={ref}
-      className="relative overflow-hidden pt-12 pb-10 sm:pt-16 sm:pb-14"
+      className="relative z-30 overflow-visible pt-12 pb-10 sm:pt-16 sm:pb-14"
     >
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] overflow-hidden"
@@ -47,18 +51,16 @@ export function AboutHero() {
 
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12">
-          <div className="max-w-2xl">
-            <div data-about-hero className="flex flex-wrap items-center gap-3">
-              <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
-                {aboutPageCopy.heroEyebrow}
-              </p>
-              <span className="rounded-full border border-border bg-surface/80 px-2.5 py-1 text-[11px] font-medium tracking-wide text-muted uppercase">
-                {aboutPageCopy.heroLabel}
-              </span>
-            </div>
+          <div className="relative z-10 max-w-2xl">
+            <p
+              data-about-hero
+              className="text-xs font-semibold tracking-[0.18em] text-accent uppercase"
+            >
+              {aboutPageCopy.heroEyebrow}
+            </p>
             <h1
               data-about-hero
-              className="mt-5 font-heading text-[2.2rem] leading-[1.08] font-semibold tracking-tight text-balance sm:text-[3rem] lg:text-[3.45rem]"
+              className="mt-5 max-w-[11.5em] font-heading text-[2.2rem] leading-[1.1] font-semibold tracking-tight text-balance sm:max-w-[12em] sm:text-[3rem] sm:leading-[1.08] lg:text-[3.35rem]"
             >
               {aboutPageCopy.heroTitle}
             </h1>
@@ -70,8 +72,11 @@ export function AboutHero() {
             </p>
           </div>
 
-          <div data-about-hero className="mx-auto w-full max-w-md lg:max-w-none">
-            <AboutHeroConstellation className="mx-auto aspect-square w-full max-w-[26rem]" />
+          <div
+            data-about-hero
+            className="relative z-30 mx-auto h-full w-full min-w-0 self-stretch overflow-visible lg:max-w-none"
+          >
+            <AboutHeroIllustration surfaceRef={surfaceRef} />
           </div>
         </div>
       </Container>
