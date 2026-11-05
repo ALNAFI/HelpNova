@@ -10,7 +10,7 @@ export function AboutDragSurface() {
   return (
     <div
       ref={surfaceRef}
-      className="relative cursor-grab overflow-hidden touch-pan-y [&[data-about-dragging]]:cursor-grabbing"
+      className="relative touch-pan-y"
     >
       <AboutHero surfaceRef={surfaceRef} />
       <AboutStory />

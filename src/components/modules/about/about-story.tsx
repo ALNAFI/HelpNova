@@ -2,14 +2,23 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
+import { AboutStoryIllustration } from "@/components/modules/about/about-story-illustration";
 import { aboutPageCopy, aboutStoryChapters } from "@/data/marketing/about";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/utils/cn";
 
+type StoryChapterId = (typeof aboutStoryChapters)[number]["id"];
+
+function isStoryChapterId(value: string | null): value is StoryChapterId {
+  return (
+    value === "challenge" || value === "idea" || value === "approach"
+  );
+}
+
 export function AboutStory() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeId, setActiveId] = useState<(typeof aboutStoryChapters)[number]["id"]>(
+  const [activeId, setActiveId] = useState<StoryChapterId>(
     aboutStoryChapters[0].id,
   );
   const reducedMotion = usePrefersReducedMotion();
@@ -30,13 +39,7 @@ export function AboutStory() {
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
         const id = visible[0]?.target.getAttribute("data-story-chapter");
-        if (
-          id === "challenge" ||
-          id === "idea" ||
-          id === "exploration"
-        ) {
-          setActiveId(id);
-        }
+        if (isStoryChapterId(id)) setActiveId(id);
       },
       { rootMargin: "-35% 0px -45% 0px", threshold: [0.2, 0.5, 0.8] },
     );
@@ -48,20 +51,39 @@ export function AboutStory() {
   useEffect(() => {
     const section = sectionRef.current;
     if (!section || reducedMotion) return;
+
     const { gsap } = getGsap();
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        "[data-story-heading]",
-        { y: 18, autoAlpha: 0 },
+        "[data-story-intro]",
+        { y: 16, autoAlpha: 0 },
         {
           y: 0,
           autoAlpha: 1,
-          duration: 0.65,
+          duration: 0.6,
+          stagger: 0.08,
           ease: "power3.out",
           scrollTrigger: { trigger: section, start: "top 78%" },
         },
       );
+
+      gsap.fromTo(
+        "[data-story-chapter]",
+        { y: 22, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.65,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section.querySelector("[data-story-timeline]"),
+            start: "top 82%",
+          },
+        },
+      );
     }, section);
+
     return () => ctx.revert();
   }, [reducedMotion]);
 
@@ -72,78 +94,97 @@ export function AboutStory() {
       aria-labelledby="about-story-heading"
     >
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
-          <div className="lg:sticky lg:top-[calc(var(--header-height)+1.5rem)] lg:self-start">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-12 xl:gap-16">
+          <div className="min-w-0 lg:self-start">
             <p
-              data-story-heading
+              data-story-intro
               className="text-xs font-semibold tracking-[0.16em] text-accent uppercase"
             >
-              Origin
+              {aboutPageCopy.storyEyebrow}
             </p>
             <h2
               id="about-story-heading"
-              data-story-heading
+              data-story-intro
               className="mt-3 font-heading text-[1.85rem] font-semibold tracking-tight text-balance sm:text-[2.35rem]"
             >
               {aboutPageCopy.storyTitle}
             </h2>
             <p
-              data-story-heading
-              className="mt-4 text-base leading-7 text-muted"
+              data-story-intro
+              className="mt-4 max-w-md text-base leading-7 text-muted"
             >
               {aboutPageCopy.storySupport}
             </p>
 
-            <div className="mt-8 hidden lg:block" aria-hidden>
-              <StoryArtwork index={activeIndex} />
+            <div data-story-intro className="mt-7 sm:mt-8">
+              <AboutStoryIllustration />
             </div>
           </div>
 
-          <div className="relative">
-            <div
-              className="absolute top-2 bottom-2 left-[0.7rem] w-px bg-border sm:left-[0.85rem]"
-              aria-hidden
-            />
-            <ol className="space-y-8 sm:space-y-10">
+          <div data-story-timeline className="min-w-0">
+            <ol className="relative">
               {aboutStoryChapters.map((chapter, index) => {
                 const active = chapter.id === activeId;
+                const passed = index < activeIndex;
+                const isLast = index === aboutStoryChapters.length - 1;
+
                 return (
                   <li
                     key={chapter.id}
                     data-story-chapter={chapter.id}
-                    className="relative scroll-mt-[calc(var(--header-height)+2rem)] pl-10 sm:pl-12"
+                    className={cn(
+                      "relative flex gap-4 sm:gap-5",
+                      !isLast && "pb-8 sm:pb-9",
+                    )}
                   >
-                    <span
-                      className={cn(
-                        "absolute top-1.5 left-0 inline-flex size-6 items-center justify-center rounded-full border text-[10px] font-semibold transition-colors",
-                        active
-                          ? "border-accent bg-accent text-accent-foreground"
-                          : "border-border bg-surface text-muted",
-                      )}
-                      aria-hidden
-                    >
-                      {chapter.number}
-                    </span>
+                    <div className="flex w-7 shrink-0 flex-col items-center sm:w-8">
+                      <span
+                        className={cn(
+                          "relative z-10 inline-flex size-7 items-center justify-center rounded-full border text-[10px] font-semibold transition-colors duration-300 sm:size-8 sm:text-[11px]",
+                          active
+                            ? "border-accent bg-accent text-accent-foreground shadow-[0_0_0_4px_color-mix(in_oklab,var(--accent)_16%,transparent)]"
+                            : passed
+                              ? "border-accent/50 bg-accent-soft text-accent"
+                              : "border-border bg-surface text-muted",
+                        )}
+                        aria-hidden
+                      >
+                        {chapter.number}
+                      </span>
+
+                      {!isLast ? (
+                        <span
+                          className="relative mt-2 w-px flex-1 overflow-hidden bg-border"
+                          aria-hidden
+                        >
+                          <span
+                            className={cn(
+                              "absolute inset-x-0 top-0 bg-accent transition-[height] duration-500 ease-out",
+                              passed
+                                ? "h-full"
+                                : active
+                                  ? "h-1/2"
+                                  : "h-0",
+                            )}
+                          />
+                        </span>
+                      ) : null}
+                    </div>
+
                     <article
                       className={cn(
-                        "rounded-[1.4rem] border p-5 transition-[border-color,background-color,box-shadow] duration-300 sm:p-6",
+                        "min-w-0 flex-1 rounded-[1.25rem] border p-5 transition-[border-color,background-color,box-shadow] duration-300 sm:rounded-[1.35rem] sm:p-6",
                         active
                           ? "border-accent/35 bg-accent-soft/35 shadow-[var(--shadow-soft)]"
-                          : "border-border bg-surface/70",
+                          : "border-border bg-surface/80",
                       )}
                     >
-                      <p className="text-[11px] font-semibold tracking-[0.16em] text-accent uppercase">
-                        Chapter {chapter.number}
-                      </p>
-                      <h3 className="mt-2 font-heading text-xl font-semibold tracking-tight sm:text-2xl">
+                      <h3 className="font-heading text-lg font-semibold tracking-tight text-foreground sm:text-xl">
                         {chapter.title}
                       </h3>
-                      <p className="mt-3 text-[0.98rem] leading-7 text-muted">
+                      <p className="mt-2.5 text-[0.98rem] leading-7 text-muted">
                         {chapter.body}
                       </p>
-                      <div className="mt-5 lg:hidden" aria-hidden>
-                        <StoryArtwork index={index} compact />
-                      </div>
                     </article>
                   </li>
                 );
@@ -153,58 +194,5 @@ export function AboutStory() {
         </div>
       </Container>
     </section>
-  );
-}
-
-function StoryArtwork({
-  index,
-  compact = false,
-}: {
-  index: number;
-  compact?: boolean;
-}) {
-  return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-[1.35rem] border border-border bg-surface",
-        compact ? "h-28" : "h-56",
-      )}
-    >
-      <svg viewBox="0 0 360 220" className="size-full" aria-hidden>
-        <rect width="360" height="220" fill="var(--surface-muted)" fillOpacity="0.35" />
-        <path
-          d="M40 170 C110 120 150 90 180 110 C220 136 250 150 320 70"
-          stroke="var(--accent)"
-          strokeOpacity={index === 0 ? 0.55 : 0.25}
-          strokeWidth="2"
-          fill="none"
-        />
-        <path
-          d="M50 60 H150 V140 H50 Z"
-          stroke="var(--accent)"
-          strokeOpacity={index === 1 ? 0.7 : 0.2}
-          strokeWidth="1.5"
-          fill="var(--accent-soft)"
-          fillOpacity={index === 1 ? 0.55 : 0.15}
-          rx="12"
-        />
-        <circle
-          cx="260"
-          cy="140"
-          r="34"
-          fill="var(--accent)"
-          fillOpacity={index === 2 ? 0.85 : 0.18}
-        />
-        <circle cx="248" cy="132" r="4" fill="white" fillOpacity="0.85" />
-        <circle cx="268" cy="148" r="4" fill="white" fillOpacity="0.85" />
-        <path
-          d="M250 148 L266 132"
-          stroke="white"
-          strokeOpacity="0.7"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-    </div>
   );
 }

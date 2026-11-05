@@ -51,12 +51,14 @@ function PanelShell({
   id,
   offset,
   zIndex,
+  dragging,
   className,
   children,
 }: {
   id: PanelId;
   offset: DragOffset;
   zIndex: number;
+  dragging: boolean;
   className?: string;
   children: ReactNode;
 }) {
@@ -65,7 +67,8 @@ function PanelShell({
       data-about-panel={id}
       data-about-float={id}
       className={cn(
-        "min-w-0 will-change-transform [--float-y:0px]",
+        "min-w-0 cursor-grab touch-none will-change-transform [--float-y:0px] active:cursor-grabbing",
+        dragging && "cursor-grabbing",
         className,
       )}
       style={
@@ -122,47 +125,6 @@ export function AboutHeroIllustration({
     setStack((current) => [...current.filter((item) => item !== id), id]);
   }, []);
 
-  const pickPanelAtPoint = useCallback((clientX: number, clientY: number) => {
-    const root = rootRef.current;
-    const currentStack = stackRef.current;
-    if (!root) return currentStack[currentStack.length - 1] ?? "conversations";
-
-    const ranked = [...currentStack].reverse();
-    for (const id of ranked) {
-      const panel = root.querySelector<HTMLElement>(
-        `[data-about-panel="${id}"]`,
-      );
-      if (!panel) continue;
-      const rect = panel.getBoundingClientRect();
-      if (
-        clientX >= rect.left &&
-        clientX <= rect.right &&
-        clientY >= rect.top &&
-        clientY <= rect.bottom
-      ) {
-        return id;
-      }
-    }
-
-    let nearest: PanelId = ranked[0] ?? "conversations";
-    let best = Number.POSITIVE_INFINITY;
-    for (const id of PANEL_IDS) {
-      const panel = root.querySelector<HTMLElement>(
-        `[data-about-panel="${id}"]`,
-      );
-      if (!panel) continue;
-      const rect = panel.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      const distance = Math.hypot(clientX - cx, clientY - cy);
-      if (distance < best) {
-        best = distance;
-        nearest = id;
-      }
-    }
-    return nearest;
-  }, []);
-
   const constrain = useCallback(
     (panelId: PanelId, x: number, y: number) => {
       const surface = surfaceRef.current;
@@ -189,15 +151,25 @@ export function AboutHeroIllustration({
   );
 
   useEffect(() => {
+    const root = rootRef.current;
     const surface = surfaceRef.current;
-    if (!surface) return;
+    if (!root || !surface) return;
+
+    const isPanelId = (value: string | undefined): value is PanelId =>
+      value === "conversations" ||
+      value === "workflows" ||
+      value === "insights";
 
     const onPointerDown = (event: PointerEvent) => {
       if (event.button > 0) return;
       const target = event.target as HTMLElement | null;
       if (target?.closest("a, button, input, textarea, select, label")) return;
 
-      const panelId = pickPanelAtPoint(event.clientX, event.clientY);
+      // Only start drag when the pointer is directly on one of the three cards.
+      const panelEl = target?.closest<HTMLElement>("[data-about-panel]");
+      const panelId = panelEl?.dataset.aboutPanel;
+      if (!panelEl || !isPanelId(panelId)) return;
+
       const origin = offsetsRef.current[panelId];
       dragRef.current = {
         pointerId: event.pointerId,
@@ -252,33 +224,35 @@ export function AboutHeroIllustration({
       setDraggingId(null);
     };
 
-    surface.addEventListener("pointerdown", onPointerDown);
+    root.addEventListener("pointerdown", onPointerDown);
     surface.addEventListener("pointermove", onPointerMove);
     surface.addEventListener("pointerup", endDrag);
     surface.addEventListener("pointercancel", endDrag);
 
     return () => {
-      surface.removeEventListener("pointerdown", onPointerDown);
+      root.removeEventListener("pointerdown", onPointerDown);
       surface.removeEventListener("pointermove", onPointerMove);
       surface.removeEventListener("pointerup", endDrag);
       surface.removeEventListener("pointercancel", endDrag);
     };
-  }, [bringToFront, constrain, pickPanelAtPoint, surfaceRef]);
+  }, [bringToFront, constrain, surfaceRef]);
 
   useEffect(() => {
     const surface = surfaceRef.current;
     if (!surface) return;
     if (draggingId) {
       surface.dataset.aboutDragging = "true";
-      surface.style.cursor = "grabbing";
-      surface.style.touchAction = "none";
-      surface.style.userSelect = "none";
+      document.body.style.cursor = "grabbing";
+      document.body.style.userSelect = "none";
     } else {
       delete surface.dataset.aboutDragging;
-      surface.style.cursor = "grab";
-      surface.style.touchAction = "";
-      surface.style.userSelect = "";
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
     }
+    return () => {
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
   }, [draggingId, surfaceRef]);
 
   useEffect(() => {
@@ -320,6 +294,7 @@ export function AboutHeroIllustration({
           id="conversations"
           offset={offsets.conversations}
           zIndex={zIndexFor("conversations")}
+          dragging={draggingId === "conversations"}
           className="w-full"
         >
           <div className="rounded-[1.35rem] border border-border bg-surface p-3.5 shadow-[0_18px_40px_-24px_color-mix(in_oklab,var(--accent)_40%,transparent),var(--shadow-soft)] sm:p-4">
@@ -368,6 +343,7 @@ export function AboutHeroIllustration({
             id="workflows"
             offset={offsets.workflows}
             zIndex={zIndexFor("workflows")}
+            dragging={draggingId === "workflows"}
           >
             <div className="h-full rounded-[1.15rem] border border-border bg-surface p-3 shadow-[var(--shadow-soft)] sm:p-3.5">
               <div className="flex items-center gap-1.5 text-accent">
@@ -412,6 +388,7 @@ export function AboutHeroIllustration({
             id="insights"
             offset={offsets.insights}
             zIndex={zIndexFor("insights")}
+            dragging={draggingId === "insights"}
           >
             <div className="h-full rounded-[1.15rem] border border-border bg-surface p-3 shadow-[var(--shadow-soft)] sm:p-3.5">
               <div className="flex items-center gap-1.5 text-accent">

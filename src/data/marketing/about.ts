@@ -3,8 +3,10 @@ export const aboutPageCopy = {
   heroTitle: "Better support starts with clearer conversations.",
   heroDescription:
     "We believe customer support should feel connected, not complicated. HelpNova brings conversations, workflows, and insights together so teams can stay organized and focus on helping people.",
-  storyTitle: "Every great experience starts with a simple question.",
-  storySupport: "What if support tools felt less fragmented—and more connected?",
+  storyEyebrow: "Our starting point",
+  storyTitle: "Support should feel connected.",
+  storySupport:
+    "Why switch between tools to understand one customer conversation?",
   missionEyebrow: "Our mission",
   missionTitle: "Make every interaction feel more intentional.",
   missionStatement:
@@ -36,20 +38,20 @@ export const aboutStoryChapters = [
   {
     id: "challenge",
     number: "01",
-    title: "The Challenge",
-    body: "Conversations, assignments, and context can become scattered across disconnected workflows.",
+    title: "The challenge",
+    body: "Customer messages, team assignments, and important details often live in different places.",
   },
   {
     id: "idea",
     number: "02",
-    title: "The Idea",
-    body: "Imagine a more intentional experience where conversations and workflows share a common language.",
+    title: "The idea",
+    body: "Bring conversations, routing, and insights together so teams can see what needs attention and act with context.",
   },
   {
-    id: "exploration",
+    id: "approach",
     number: "03",
-    title: "The Exploration",
-    body: "HelpNova brings that idea to life through an interactive product concept connecting Inbox, Automation, and Insights.",
+    title: "The approach",
+    body: "HelpNova connects a shared inbox, automated workflows, and support insights in one clear workspace.",
   },
 ] as const;
 
