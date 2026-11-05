@@ -2,14 +2,21 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import Lenis from "lenis";
-import { BackToTop } from "@/components/common/back-to-top";
+import { FloatingActions } from "@/components/common/floating-actions";
 import { TextCursor } from "@/components/ui/text-cursor";
 import { LenisProvider } from "@/context/lenis-context";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
+function nativeScrollLimit() {
+  return Math.max(
+    0,
+    document.documentElement.scrollHeight - window.innerHeight,
+  );
+}
+
 function nativeProgress() {
-  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const max = nativeScrollLimit();
   if (max <= 0) return 0;
   return Math.min(1, Math.max(0, window.scrollY / max));
 }
@@ -82,6 +89,16 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
         if (lenis) return lenis.progress;
         return nativeProgress();
       },
+      getScrollY: () => {
+        const lenis = lenisRef.current;
+        if (lenis) return lenis.scroll;
+        return window.scrollY;
+      },
+      getScrollLimit: () => {
+        const lenis = lenisRef.current;
+        if (lenis) return lenis.limit;
+        return nativeScrollLimit();
+      },
     }),
     [reducedMotion],
   );
@@ -109,7 +126,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       >
         {children}
       </TextCursor>
-      <BackToTop />
+      <FloatingActions />
     </LenisProvider>
   );
 }

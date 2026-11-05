@@ -1,4 +1,3 @@
-import { ChatbotWidget } from "@/components/common/chatbot/chatbot-widget";
 import { Footer3 } from "@/components/common/footer-3";
 import { Nav3 } from "@/components/common/nav-3";
 import { SmoothScroll } from "@/components/common/smooth-scroll";
@@ -17,7 +16,6 @@ export default function InboxHomeLayout({
           <main className="relative flex-1">{children}</main>
           <Footer3 />
         </div>
-        <ChatbotWidget />
       </SmoothScroll>
     </ChatbotProvider>
   );

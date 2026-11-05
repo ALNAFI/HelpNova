@@ -77,6 +77,31 @@
   --radius-card: 16px;
   --radius-workspace: 20px;
   --header-height: 72px;
+
+  /* Shared floating action dock (chatbot + back to top) */
+  --fab-size: 3.25rem; /* 52px control */
+  --fab-slot: 4.3125rem; /* ~69px — button + progress ring outer box */
+  --fab-gap: 0.75rem; /* 12px between stacked controls */
+  --fab-inset-right: max(1rem, env(safe-area-inset-right, 0px));
+  --fab-inset-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+  /* Panel sits above the launcher control inside the dock */
+  --fab-panel-gap: 0.75rem;
+  --fab-panel-max-height: min(
+    36rem,
+    calc(
+      100dvh - var(--fab-inset-bottom) -
+        ((var(--fab-slot) - var(--fab-size)) / 2) - var(--fab-size) -
+        var(--fab-panel-gap) - max(1rem, env(safe-area-inset-top, 0px)) -
+        0.75rem
+    )
+  );
+}
+
+@media (min-width: 640px) {
+  :root {
+    --fab-inset-right: 1.5rem; /* 24px */
+    --fab-inset-bottom: 1.5rem;
+  }
 }
 
 .dark {
@@ -159,10 +184,67 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Hide floating sample chatbot while the common mobile nav is open. */
-html[data-mobile-nav-open] [data-chatbot-launcher] {
+/* Shared floating-action dock — offsets come from --fab-* variables. */
+[data-floating-actions] {
+  position: fixed;
+  right: var(--fab-inset-right);
+  bottom: var(--fab-inset-bottom);
+  z-index: 50;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--fab-gap);
+  pointer-events: none;
+}
+
+[data-floating-actions] > [data-fab-item] {
+  pointer-events: auto;
+}
+
+/* Collapse dock gap when Back to Top is not participating in the stack. */
+[data-floating-actions]:not(:has([data-fab-item="back-to-top"][data-visible="true"])) {
+  gap: 0;
+}
+
+/* Demo mobile: lift the dock above the bottom nav / composer clearance. */
+[data-floating-actions][data-demo-route="true"] {
+  --fab-inset-bottom: calc(
+    var(--demo-mobile-nav-space, 4.75rem + env(safe-area-inset-bottom, 0px)) +
+      0.75rem
+  );
+}
+
+@media (min-width: 1024px) {
+  [data-floating-actions][data-demo-route="true"] {
+    --fab-inset-bottom: 1.5rem;
+  }
+}
+
+[data-chatbot-panel] {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + var(--fab-panel-gap));
+  width: min(calc(100vw - (2 * var(--fab-inset-right))), 23.75rem);
+  max-height: var(--fab-panel-max-height);
+  pointer-events: auto;
+}
+
+/* Hide floating actions while the common mobile nav is open. */
+html[data-mobile-nav-open] [data-floating-actions] {
   visibility: hidden;
   pointer-events: none;
+}
+
+/* Chatbot composer: one focus ring on the outer shell, not the textarea. */
+[data-chatbot-composer] textarea,
+[data-chatbot-composer] textarea:focus,
+[data-chatbot-composer] textarea:focus-visible {
+  border: 0 !important;
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
 }
 
 h1,

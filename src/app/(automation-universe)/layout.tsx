@@ -1,4 +1,3 @@
-import { ChatbotWidget } from "@/components/common/chatbot/chatbot-widget";
 import { Footer2 } from "@/components/common/footer-2";
 import { Nav2 } from "@/components/common/nav-2";
 import { SmoothScroll } from "@/components/common/smooth-scroll";
@@ -19,7 +18,6 @@ export default function AutomationUniverseLayout({
           </main>
           <Footer2 />
         </div>
-        <ChatbotWidget />
       </SmoothScroll>
     </ChatbotProvider>
   );

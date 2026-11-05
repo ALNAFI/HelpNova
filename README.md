@@ -29,6 +29,17 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## HelpNova Assistant (chatbot)
+
+The floating Assistant UI is separate from reply generation.
+
+- UI: `src/components/common/chatbot/`
+- Session state: `src/context/chatbot-provider.tsx`
+- Prepared answers: `src/data/chatbot/presets.ts`
+- Response provider: `src/lib/chatbot/response-provider.ts`
+
+Today’s provider is a local demo that matches prepared answers (and returns a fallback for other questions). To connect a real AI service later, implement `ChatbotResponseProvider`, call your model from a **server-side** Route Handler or server action (API secrets stay in env vars — never `NEXT_PUBLIC_*` or client code), then assign that implementation to `chatbotResponseProvider` in `response-provider.ts`.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

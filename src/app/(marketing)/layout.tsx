@@ -1,4 +1,3 @@
-import { ChatbotWidget } from "@/components/common/chatbot/chatbot-widget";
 import { SiteFooter } from "@/components/common/site-footer";
 import { SiteHeader } from "@/components/common/site-header";
 import { SmoothScroll } from "@/components/common/smooth-scroll";
@@ -17,7 +16,6 @@ export default function MarketingLayout({
           <main className="flex-1">{children}</main>
           <SiteFooter />
         </div>
-        <ChatbotWidget />
       </SmoothScroll>
     </ChatbotProvider>
   );

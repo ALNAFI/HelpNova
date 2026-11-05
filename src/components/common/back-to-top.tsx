@@ -3,15 +3,17 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { ArrowUp } from "lucide-react";
 import { SlingButton } from "@/components/ui/sling-button";
+import { useChatbotOptional } from "@/context/chatbot-provider";
 import { useTheme } from "@/context/theme-provider";
 import { useLenis } from "@/context/lenis-context";
 import { cn } from "@/utils/cn";
 
-const SHOW_AFTER = 0.04;
-const STROKE = 2.75;
-/** Desktop control size — mobile uses a smaller size with the same corner anchor. */
-const SIZE_DESKTOP = 52;
-const SIZE_MOBILE = 40;
+/** Show after roughly this many pixels of page scroll. */
+const SHOW_AFTER_PX = 400;
+/** Require enough scrollable distance that the control is useful. */
+const MIN_SCROLL_LIMIT_PX = 480;
+const STROKE = 2.5;
+const SIZE = 44;
 
 function ringMetrics(size: number) {
   const wellRadius = size / 2 + 4 + STROKE;
@@ -21,35 +23,22 @@ function ringMetrics(size: number) {
   return { ringSize, radius, circumference };
 }
 
-function subscribeMobile(onChange: () => void) {
-  const mq = window.matchMedia("(max-width: 639px)");
-  mq.addEventListener("change", onChange);
-  return () => mq.removeEventListener("change", onChange);
-}
-
-function getMobileSnapshot() {
-  return window.matchMedia("(max-width: 639px)").matches;
-}
-
 export function BackToTop() {
-  const { scrollToTop, getScrollProgress } = useLenis();
+  const { scrollToTop, getScrollProgress, getScrollY, getScrollLimit } =
+    useLenis();
+  const chatbotOpen = useChatbotOptional()?.isOpen ?? false;
   const { resolvedTheme } = useTheme();
   const mounted = useSyncExternalStore(
     () => () => undefined,
     () => true,
     () => false,
   );
-  const isMobile = useSyncExternalStore(
-    subscribeMobile,
-    getMobileSnapshot,
-    () => false,
-  );
   const isDark = !mounted || resolvedTheme === "dark";
   const ringRef = useRef<SVGCircleElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [pastThreshold, setPastThreshold] = useState(false);
 
-  const size = isMobile ? SIZE_MOBILE : SIZE_DESKTOP;
-  const { ringSize, radius, circumference } = ringMetrics(size);
+  const { ringSize, radius, circumference } = ringMetrics(SIZE);
+  const visible = pastThreshold && !chatbotOpen;
 
   useEffect(() => {
     let frame = 0;
@@ -68,10 +57,13 @@ export function BackToTop() {
         ringRef.current.style.strokeDashoffset = String(offset);
       }
 
-      const nextVisible = progress > SHOW_AFTER;
+      const scrollY = getScrollY();
+      const limit = getScrollLimit();
+      const nextVisible =
+        limit >= MIN_SCROLL_LIMIT_PX && scrollY >= SHOW_AFTER_PX;
       if (nextVisible !== lastVisible) {
         lastVisible = nextVisible;
-        setVisible(nextVisible);
+        setPastThreshold(nextVisible);
       }
 
       frame = requestAnimationFrame(tick);
@@ -83,22 +75,24 @@ export function BackToTop() {
       active = false;
       cancelAnimationFrame(frame);
     };
-  }, [getScrollProgress, circumference]);
+  }, [getScrollProgress, getScrollY, getScrollLimit, circumference]);
 
   return (
     <div
+      data-fab-item="back-to-top"
+      data-visible={visible ? "true" : "false"}
       className={cn(
-        // Same corner insets at every breakpoint — size shrinks inward from here.
-        "fixed right-4 bottom-4 z-50 sm:right-6 sm:bottom-6",
-        "transition-[opacity,transform] duration-300",
+        "relative flex items-center justify-center transition-[opacity,transform] duration-300",
         visible
           ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-3 opacity-0",
+          : "pointer-events-none invisible absolute inset-auto translate-y-3 opacity-0",
       )}
+      style={{ width: ringSize, height: ringSize }}
+      aria-hidden={!visible}
     >
       <div
         className="relative flex items-center justify-center"
-        style={{ width: size, height: size }}
+        style={{ width: SIZE, height: SIZE }}
       >
         <svg
           className="pointer-events-none absolute top-1/2 left-1/2 z-0 -translate-x-1/2 -translate-y-1/2 -rotate-90"
@@ -161,15 +155,15 @@ export function BackToTop() {
         <SlingButton
           className="relative z-[1] isolate"
           onSend={scrollToTop}
-          size={size}
+          size={SIZE}
           strokeWidth={STROKE}
-          armAt={isMobile ? 34 : 44}
-          maxPull={isMobile ? 110 : 140}
+          armAt={36}
+          maxPull={120}
           launchSpeed={2400}
           recoil={0.18}
-          flight={isMobile ? 80 : 100}
-          particles={isMobile ? 10 : 12}
-          spread={isMobile ? 40 : 52}
+          flight={85}
+          particles={10}
+          spread={44}
           axis="any"
           tapSends
           ariaLabel="Back to top"
@@ -183,8 +177,8 @@ export function BackToTop() {
             aria-hidden
             className="stroke-[2.25]"
             style={{
-              width: Math.round(size * 0.4),
-              height: Math.round(size * 0.4),
+              width: Math.round(SIZE * 0.4),
+              height: Math.round(SIZE * 0.4),
             }}
           />
         </SlingButton>
