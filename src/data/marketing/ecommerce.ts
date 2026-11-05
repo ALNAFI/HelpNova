@@ -18,13 +18,13 @@ export type EcommerceInquiryFixture = {
 };
 
 export const ecommerceHero = {
-  eyebrow: "Ecommerce solution",
+  eyebrow: "Ecommerce Support",
   title: "Where’s my order?",
   description:
     "Follow a delivery question from the customer’s first message to the team that can help.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
   secondaryCta: {
-    label: "Follow the inquiry",
+    label: "Follow an order inquiry",
     href: "#where-should-this-inquiry-go",
   },
   orderReference: "ORD-48291",
@@ -32,19 +32,31 @@ export const ecommerceHero = {
 } as const;
 
 export const ecommerceInquirySection = {
-  eyebrow: "Sample conversation",
-  title: "A delivery question lands in the inbox.",
+  eyebrow: "CUSTOMER CONVERSATION",
+  title: "Every order question starts here.",
   description:
-    "One recognizable customer question sets the scene for the Order rule walkthrough below.",
+    "See the customer’s message alongside the order details your team needs to take the next step.",
+  statusBadge: "Open",
+  detailsTitle: "Order details",
+  explanation:
+    "This delivery question belongs with the Orders team. The order and tracking references provide the context they need.",
 } as const;
 
 export const ecommerceWalkthroughCopy = {
-  eyebrow: "Order rule walkthrough",
+  eyebrow: "SMART ROUTING",
   title: "Where should this inquiry go?",
-  instruction: "Change the inquiry to see how the Order rule handles it.",
-  ruleLabel: "Order rule",
+  description:
+    "Switch between inquiries to see which team takes ownership—and why.",
+  activeRuleLabel: "Active rule: Order Tracking",
   conditionQuestion: "Is the topic Order Tracking?",
   liveRegionPrefix: "Routing result",
+  conversationTitle: "Conversation details",
+  internalNoteLabel: "Internal note",
+  internalNoteHelper: "Visible only to your team.",
+  matchedResult:
+    "The topic matches Order Tracking. This inquiry is assigned to Orders.",
+  otherwiseResult:
+    "This inquiry doesn’t match Order Tracking. It goes to General Triage for review.",
 } as const;
 
 export const ecommerceInquiries: EcommerceInquiryFixture[] = [
@@ -62,7 +74,7 @@ export const ecommerceInquiries: EcommerceInquiryFixture[] = [
     internalNote:
       "Check the carrier’s latest scan before giving the customer a delivery estimate.",
     outcome:
-      "The topic matches the Order rule, so the Orders team receives this inquiry.",
+      "The topic matches Order Tracking. This inquiry is assigned to Orders.",
   },
   {
     id: "billing-issue",
@@ -70,15 +82,15 @@ export const ecommerceInquiries: EcommerceInquiryFixture[] = [
     label: "Billing Issue",
     customerName: "Sam Rivera",
     customerEmail: "sam.r@example.com",
-    subject: "Unexpected renewal charge",
+    subject: "Charged twice for my order",
     message:
-      "I was charged today for a renewal, but I thought I cancelled last month. Can you help?",
+      "I can see two charges for the same order. Could you check this?",
     orderReference: null,
     topicLabel: "Billing Issue",
     internalNote:
-      "Review the charge described by the customer and identify who should investigate it.",
+      "Review the order’s payment history and confirm whether the second charge is a duplicate or a pending authorization.",
     outcome:
-      "This is a billing question. The Order rule sends it to General Triage for review.",
+      "This inquiry doesn’t match Order Tracking. It goes to General Triage for review.",
   },
 ];
 
@@ -87,26 +99,29 @@ export const ecommerceIntegrations = [
     id: "shopify",
     name: "Shopify",
     caption:
-      "Storefront order details can give a delivery question context.",
+      "Storefront details add context to delivery and purchase questions.",
   },
   {
     id: "woocommerce",
     name: "WooCommerce",
     caption:
-      "Purchase references can help a team identify the order a customer means.",
+      "Purchase references help teams identify the right order and understand the context behind each customer request.",
   },
   {
     id: "gmail",
     name: "Gmail",
-    caption: "A delivery question can start as an email from the customer.",
+    caption:
+      "Customer emails keep delivery questions and follow-ups together.",
   },
 ] as const;
 
 export const ecommerceIntegrationsSection = {
-  eyebrow: "Illustrative integrations",
-  title: "Where the order context comes from",
+  eyebrow: "ECOMMERCE ECOSYSTEM",
+  title: "Better context for every order question.",
   description:
-    "These names describe examples of where ecommerce support context can begin—not live connections.",
+    "Order details, purchase references, and customer emails help teams understand the question before taking the next step.",
+  previewLabel: "Preview",
+  note: "Integration previews. Live connections are not enabled.",
   viewAllHref: routes.integrations.href,
   viewAllLabel: "View all integrations",
 } as const;
@@ -115,7 +130,7 @@ export const ecommerceCta = {
   eyebrow: "Next step",
   title: "Try the Order Tracking scenario.",
   description:
-    "Open the guided demo to explore the conversation, run a routing rule, and see how the assignment changes team workload.",
+    "Open a conversation, try a routing rule, and see how team assignments shape the workload.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
 } as const;
 

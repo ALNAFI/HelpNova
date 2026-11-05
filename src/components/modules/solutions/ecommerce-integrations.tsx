@@ -7,7 +7,6 @@ import {
   ecommerceIntegrations,
   ecommerceIntegrationsSection,
 } from "@/data/marketing/ecommerce";
-import { integrationsDisclaimer } from "@/data/marketing/integrations";
 
 const icons = {
   shopify: ShoppingCart,
@@ -53,7 +52,7 @@ export function EcommerceIntegrations() {
                           {item.name}
                         </h3>
                         <span className="font-mono text-[9px] tracking-[0.14em] text-muted uppercase">
-                          Slip
+                          {ecommerceIntegrationsSection.previewLabel}
                         </span>
                       </div>
                       <p className="mt-2 text-sm leading-relaxed text-muted">
@@ -68,7 +67,7 @@ export function EcommerceIntegrations() {
         </ul>
 
         <p className="mt-6 max-w-2xl text-sm text-muted">
-          {integrationsDisclaimer}
+          {ecommerceIntegrationsSection.note}
         </p>
       </Container>
     </section>

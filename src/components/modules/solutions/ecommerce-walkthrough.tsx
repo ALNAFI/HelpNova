@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Filter,
   GitBranch,
   Inbox,
-  Package,
   Split,
   StickyNote,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { RubberSegment } from "@/components/ui/rubber-segment";
 import { SectionHeading } from "@/components/ui/section-heading";
 import {
   ecommerceInquiries,
@@ -23,6 +24,15 @@ import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/utils/cn";
 
+const inquirySegmentItems = ecommerceInquiries.map((item) => ({
+  value: item.id,
+  label: item.label,
+}));
+
+function isEcommerceInquiryId(value: string): value is EcommerceInquiryId {
+  return ecommerceInquiries.some((item) => item.id === value);
+}
+
 export function EcommerceWalkthrough() {
   const [selectedId, setSelectedId] =
     useState<EcommerceInquiryId>("order-tracking");
@@ -31,12 +41,16 @@ export function EcommerceWalkthrough() {
   const reducedMotion = usePrefersReducedMotion();
   const canvasRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<{ kill: () => void } | null>(null);
-  const groupId = useId();
+  const animGen = useRef(0);
+  const resultCopy = matched
+    ? ecommerceWalkthroughCopy.matchedResult
+    : ecommerceWalkthroughCopy.otherwiseResult;
 
   useEffect(() => {
     const root = canvasRef.current;
     if (!root) return;
 
+    const gen = ++animGen.current;
     timelineRef.current?.kill();
     timelineRef.current = null;
 
@@ -49,6 +63,7 @@ export function EcommerceWalkthrough() {
     const mainPaths = root.querySelectorAll<SVGPathElement>("[data-route='main']");
     const stamp = root.querySelector("[data-team-stamp]");
     const inbox = root.querySelector("[data-inbox-panel]");
+    const result = root.querySelector("[data-route-result]");
 
     if (reducedMotion) {
       mainPaths.forEach((path) => {
@@ -62,7 +77,7 @@ export function EcommerceWalkthrough() {
         activePath.style.opacity = "1";
       }
       if (inactivePath) {
-        inactivePath.style.opacity = "0.28";
+        inactivePath.style.opacity = "0.4";
         inactivePath.style.strokeDashoffset = "0";
       }
       return;
@@ -79,11 +94,19 @@ export function EcommerceWalkthrough() {
         gsap.set(path, {
           strokeDasharray: length,
           strokeDashoffset: length,
-          opacity: path === inactivePath ? 0.22 : 0.35,
+          opacity: path === inactivePath ? 0.35 : 0.4,
         });
       });
 
-      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      if (result) gsap.set(result, { autoAlpha: 0.45 });
+      if (inbox) gsap.set(inbox, { autoAlpha: 0.55 });
+
+      const tl = gsap.timeline({
+        defaults: { ease: "power2.out" },
+        onComplete: () => {
+          if (gen !== animGen.current) return;
+        },
+      });
       timelineRef.current = tl;
 
       mainPaths.forEach((path, index) => {
@@ -98,23 +121,23 @@ export function EcommerceWalkthrough() {
         activePath,
         { strokeDashoffset: 0, opacity: 1, duration: 0.5 },
         "-=0.05",
-      ).to(
-        inactivePath,
-        { opacity: 0.22, duration: 0.25 },
-        "<",
-      );
+      ).to(inactivePath, { opacity: 0.4, duration: 0.25 }, "<");
 
       if (stamp) {
         tl.fromTo(
           stamp,
-          { scale: 1.08, rotate: -6 },
-          { scale: 1, rotate: -4, duration: 0.28, ease: "power2.out" },
+          { scale: 1.04, rotate: -3 },
+          { scale: 1, rotate: -2, duration: 0.28, ease: "power2.out" },
           "-=0.1",
         );
       }
 
+      if (result) {
+        tl.to(result, { autoAlpha: 1, duration: 0.28 }, "-=0.12");
+      }
+
       if (inbox) {
-        tl.fromTo(
+        tl.to(inbox, { autoAlpha: 1, duration: 0.3 }, "-=0.18").fromTo(
           inbox,
           { boxShadow: "0 0 0 0 transparent" },
           {
@@ -130,6 +153,7 @@ export function EcommerceWalkthrough() {
     }, root);
 
     return () => {
+      animGen.current += 1;
       timelineRef.current?.kill();
       timelineRef.current = null;
       ctx.revert();
@@ -139,56 +163,48 @@ export function EcommerceWalkthrough() {
   return (
     <section
       id="where-should-this-inquiry-go"
-      className="scroll-mt-28 bg-surface-muted/40 py-16 sm:py-20 lg:py-24"
+      className="scroll-mt-28 overflow-x-clip bg-surface-muted/40 py-16 sm:py-20 lg:py-24"
     >
       <Container>
         <SectionHeading
           eyebrow={ecommerceWalkthroughCopy.eyebrow}
           title={ecommerceWalkthroughCopy.title}
-          description={ecommerceWalkthroughCopy.instruction}
+          description={ecommerceWalkthroughCopy.description}
           className="mb-8 max-w-3xl"
         />
 
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <fieldset>
-            <legend className="mb-2 text-sm font-medium text-foreground">
+          <div className="min-w-0">
+            <p className="mb-2 text-sm font-medium text-foreground">
               Select an inquiry
-            </legend>
-            <div
-              role="radiogroup"
+            </p>
+            <RubberSegment
+              items={inquirySegmentItems}
+              value={selectedId}
+              onChange={(value) => {
+                if (isEcommerceInquiryId(value)) setSelectedId(value);
+              }}
+              trackColor="var(--surface-muted)"
+              thumbColor="var(--accent)"
+              textColor="var(--muted)"
+              activeTextColor="var(--accent-foreground)"
+              size="md"
+              radius={12}
+              inset={3}
+              equalSlots
+              stretch={100}
+              squash={3}
+              speed={1}
+              glide={75}
+              draggable
+              className="w-full max-w-md sm:w-auto sm:min-w-[20rem]"
               aria-label="Inquiry type"
-              className="inline-flex rounded-xl border border-border bg-surface p-1 shadow-sm"
-            >
-              {ecommerceInquiries.map((item) => {
-                const checked = selectedId === item.id;
-                return (
-                  <label
-                    key={item.id}
-                    className={cn(
-                      "relative cursor-pointer rounded-[10px] px-3.5 py-2 text-sm font-medium transition",
-                      checked
-                        ? "bg-accent text-accent-foreground shadow-sm"
-                        : "text-muted hover:text-foreground",
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name={groupId}
-                      value={item.id}
-                      checked={checked}
-                      onChange={() => setSelectedId(item.id)}
-                      className="sr-only"
-                    />
-                    {item.label}
-                  </label>
-                );
-              })}
-            </div>
-          </fieldset>
+            />
+          </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 font-mono text-[11px] tracking-[0.12em] text-muted uppercase">
+          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1.5 text-[12px] font-medium text-foreground">
             <Filter className="size-3.5 text-accent" aria-hidden />
-            Rule fixed · {ecommerceWalkthroughCopy.ruleLabel}
+            {ecommerceWalkthroughCopy.activeRuleLabel}
           </div>
         </div>
 
@@ -200,6 +216,7 @@ export function EcommerceWalkthrough() {
             <div className="rounded-[var(--radius-workspace)] border border-border bg-surface p-4 shadow-[var(--shadow-soft)] sm:p-6">
               <WorkflowGraph matched={matched} destination={destination} />
               <p
+                data-route-result
                 className="mt-5 rounded-xl border border-border bg-surface-muted/70 px-4 py-3 text-sm leading-relaxed text-pretty"
                 aria-live="polite"
                 aria-atomic="true"
@@ -207,7 +224,7 @@ export function EcommerceWalkthrough() {
                 <span className="font-medium text-foreground">
                   {ecommerceWalkthroughCopy.liveRegionPrefix}:{" "}
                 </span>
-                <span className="text-muted">{fixture.outcome}</span>
+                <span className="text-muted">{resultCopy}</span>
                 <span className="mt-1 block font-mono text-[11px] tracking-wide text-accent uppercase">
                   {matched ? "Matched" : "Otherwise"} → {destination}
                 </span>
@@ -216,7 +233,8 @@ export function EcommerceWalkthrough() {
           </div>
 
           <div className="min-w-0">
-            <InboxHandoff
+            <ConversationPanel
+              key={selectedId}
               customerName={fixture.customerName}
               subject={fixture.subject}
               message={fixture.message}
@@ -309,18 +327,18 @@ function WorkflowGraph({
               : "border-amber-500/40 bg-amber-500/10",
           )}
         >
-          <div className="flex items-center gap-3">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-surface text-accent shadow-sm">
+          <div className="flex min-w-0 items-center gap-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface text-accent shadow-sm">
               <Users className="size-4" aria-hidden />
             </span>
-            <div>
+            <div className="min-w-0">
               <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
                 Destination
               </p>
               <p className="font-heading text-lg font-semibold">{destination}</p>
             </div>
           </div>
-          <span className="rotate-[-4deg] rounded-md border-2 border-current px-2.5 py-1 font-mono text-[10px] font-bold tracking-[0.12em] uppercase text-accent">
+          <span className="shrink-0 rotate-[-2deg] rounded-md border-2 border-current px-2.5 py-1 font-mono text-[10px] font-bold tracking-[0.12em] text-accent uppercase">
             Assigned to {destination}
           </span>
         </div>
@@ -354,7 +372,7 @@ function NodeCard({
   dimmed,
   emphasize,
 }: {
-  icon: typeof Package;
+  icon: LucideIcon;
   label: string;
   detail: string;
   active?: boolean;
@@ -368,7 +386,7 @@ function NodeCard({
         active
           ? "border-accent/40 bg-accent-soft/70"
           : "border-border bg-surface-muted/40",
-        dimmed && "opacity-45",
+        dimmed && "opacity-60",
         emphasize && "ring-1 ring-accent/25",
       )}
     >
@@ -392,7 +410,7 @@ function NodeCard({
   );
 }
 
-function InboxHandoff({
+function ConversationPanel({
   customerName,
   subject,
   message,
@@ -414,17 +432,17 @@ function InboxHandoff({
       data-inbox-panel
       className="rounded-[var(--radius-workspace)] border border-border bg-surface shadow-[var(--shadow-soft)] transition-[box-shadow] duration-300"
     >
-      <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">
-        <div>
+      <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-3.5">
+        <div className="min-w-0">
           <p className="text-[11px] font-semibold tracking-[0.14em] text-accent uppercase">
-            Shared Inbox handoff
+            {ecommerceWalkthroughCopy.conversationTitle}
           </p>
           <p className="mt-1 font-heading text-base font-semibold">
             {customerName}
           </p>
           <p className="text-sm text-muted">{subject}</p>
         </div>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-500/15 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300">
           <span className="size-1.5 rounded-full bg-emerald-500" />
           Open
         </span>
@@ -436,7 +454,7 @@ function InboxHandoff({
             {topicLabel}
           </span>
           {orderReference ? (
-            <span className="rounded-md border border-border bg-surface-muted px-2 py-1 font-mono tracking-wide">
+            <span className="rounded-md border border-border bg-surface-muted px-2 py-1 font-mono tracking-wide break-all">
               {orderReference}
             </span>
           ) : null}
@@ -449,21 +467,21 @@ function InboxHandoff({
           <p className="text-[11px] font-medium text-muted">
             {customerName} · Customer
           </p>
-          <p className="mt-1.5 text-sm leading-relaxed">{message}</p>
+          <p className="mt-1.5 text-sm leading-relaxed text-pretty">{message}</p>
         </div>
 
         <div className="rounded-2xl border border-accent/25 bg-accent/10 px-3.5 py-3">
           <div className="flex items-center gap-2">
             <StickyNote className="size-3.5 text-accent" aria-hidden />
             <p className="text-[11px] font-semibold tracking-[0.12em] text-accent uppercase">
-              Internal note · Team only
+              {ecommerceWalkthroughCopy.internalNoteLabel}
             </p>
           </div>
           <p className="mt-2 text-sm leading-relaxed text-pretty">
             {internalNote}
           </p>
           <p className="mt-2 text-[11px] text-muted">
-            Written by a team member — not visible as a customer reply.
+            {ecommerceWalkthroughCopy.internalNoteHelper}
           </p>
         </div>
       </div>
