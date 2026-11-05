@@ -82,10 +82,10 @@ export function AuthShell({
           holdTime={400}
           fadeDuration={800}
           lineWidth={1.25}
-          fillOpacity={0.14}
-          gridOpacity={isLight ? 0.2 : 0.1}
-          spotlight={0.85}
-          edgeFade={0.12}
+          fillOpacity={0.1}
+          gridOpacity={isLight ? 0.1 : 0.05}
+          spotlight={0.7}
+          edgeFade={0.14}
           clickPulse
           lightMode={isLight}
           intro={!reducedMotion}
@@ -93,7 +93,7 @@ export function AuthShell({
       </div>
       <div className="pointer-events-none absolute inset-0 bg-noise" />
       <div
-        className="pointer-events-none absolute top-[-10%] left-1/2 size-[22rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_18%,transparent),transparent_70%)] blur-3xl"
+        className="pointer-events-none absolute top-[-10%] left-1/2 size-[22rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_12%,transparent),transparent_70%)] blur-3xl"
         aria-hidden
       />
 
@@ -112,10 +112,12 @@ export function AuthShell({
           <div data-auth-intro className="mb-5">
             <Link
               href="/"
-              aria-label="Back to home"
-              className="inline-flex size-10 items-center justify-center rounded-[var(--radius-control)] border border-border bg-surface text-muted shadow-sm transition-colors hover:border-border-strong hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="group inline-flex items-center gap-2.5 text-sm font-medium text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <ArrowLeft className="size-4" aria-hidden />
+              <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-[var(--radius-control)] border border-border bg-surface shadow-sm transition-colors group-hover:border-border-strong group-hover:text-foreground">
+                <ArrowLeft className="size-4" aria-hidden />
+              </span>
+              Back to home
             </Link>
           </div>
 
@@ -147,8 +149,25 @@ export function AuthShell({
       </main>
 
       <footer className="relative z-10">
-        <Container className="py-5 text-center text-sm text-muted">
-          <p>{siteConfig.copyright}</p>
+        <Container className="flex flex-col items-center gap-2 py-5 text-center">
+          <p className="text-sm text-muted">{siteConfig.copyright}</p>
+          <nav
+            aria-label="Legal"
+            className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted"
+          >
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              Terms
+            </Link>
+          </nav>
         </Container>
       </footer>
     </div>

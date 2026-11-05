@@ -22,7 +22,9 @@ export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [submittedDemo, setSubmittedDemo] = useState(false);
+  const [demoNotice, setDemoNotice] = useState<"signin" | "forgot" | null>(
+    null,
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const clearFieldError = (field: keyof FieldErrors) => {
@@ -32,9 +34,9 @@ export function LoginForm() {
     });
   };
 
-  const showDemoFeedback = () => {
+  const showDemoFeedback = (kind: "signin" | "forgot") => {
     setIsSubmitting(true);
-    setSubmittedDemo(true);
+    setDemoNotice(kind);
     window.setTimeout(() => setIsSubmitting(false), 250);
   };
 
@@ -48,7 +50,7 @@ export function LoginForm() {
       email: emailError,
       password: passwordError,
     });
-    setSubmittedDemo(false);
+    setDemoNotice(null);
 
     if (emailError || passwordError) {
       if (emailError) emailRef.current?.focus();
@@ -57,13 +59,19 @@ export function LoginForm() {
     }
 
     setEmail(normalizeEmail(email));
-    showDemoFeedback();
+    showDemoFeedback("signin");
   };
 
   const handleGoogleClick = () => {
     if (isSubmitting) return;
     setErrors({});
-    showDemoFeedback();
+    showDemoFeedback("signin");
+  };
+
+  const handleForgotPassword = () => {
+    if (isSubmitting) return;
+    setErrors({});
+    showDemoFeedback("forgot");
   };
 
   return (
@@ -92,13 +100,13 @@ export function LoginForm() {
             onChange={(event) => {
               setEmail(event.target.value);
               clearFieldError("email");
-              if (submittedDemo) setSubmittedDemo(false);
+              if (demoNotice) setDemoNotice(null);
             }}
             className={cn(
               "auth-field h-12 w-full rounded-[var(--radius-control)] border bg-surface px-3.5 text-[15px] text-foreground shadow-[inset_0_1px_0_color-mix(in_oklab,white_45%,transparent)] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-muted/70",
               errors.email
                 ? "border-danger focus-visible:ring-2 focus-visible:ring-danger/35"
-                : "border-border focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-ring/30",
+                : "border-border-strong focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-ring/30",
             )}
           />
           {errors.email ? (
@@ -108,7 +116,7 @@ export function LoginForm() {
           ) : null}
         </div>
 
-        <div data-auth-field>
+        <div data-auth-field className="space-y-2">
           <PasswordField
             label="Password"
             value={password}
@@ -117,9 +125,19 @@ export function LoginForm() {
             onChange={(value) => {
               setPassword(value);
               clearFieldError("password");
-              if (submittedDemo) setSubmittedDemo(false);
+              if (demoNotice) setDemoNotice(null);
             }}
           />
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              disabled={isSubmitting}
+              className="text-sm font-medium text-accent underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50"
+            >
+              Forgot password?
+            </button>
+          </div>
         </div>
 
         <div data-auth-field className="pt-1">
@@ -148,7 +166,7 @@ export function LoginForm() {
 
       <div data-auth-field>
         <GoogleAuthButton
-          label="Connect with Google"
+          label="Continue with Google"
           onClick={handleGoogleClick}
           disabled={isSubmitting}
         />
@@ -160,11 +178,12 @@ export function LoginForm() {
         aria-live="polite"
         className="min-h-[1px]"
       >
-        {submittedDemo ? (
+        {demoNotice ? (
           <div className="mt-5 rounded-2xl border border-border bg-surface p-4 shadow-[var(--shadow-soft)]">
             <p className="text-sm leading-6 text-foreground">
-              Sign-in is not available in this interactive concept. You can
-              explore the guided demo without an account.
+              {demoNotice === "forgot"
+                ? "Password recovery is not available in this interactive concept. You can explore the guided demo without an account."
+                : "Sign-in is not available in this interactive concept. You can explore the guided demo without an account."}
             </p>
             <div className="mt-3">
               <Button href="/demo" size="md">

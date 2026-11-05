@@ -85,7 +85,7 @@ export function PasswordField({
             "auth-field h-12 w-full rounded-[var(--radius-control)] border bg-surface px-3.5 pr-12 text-[15px] text-foreground shadow-[inset_0_1px_0_color-mix(in_oklab,white_45%,transparent)] outline-none transition-[border-color,box-shadow,background-color] placeholder:text-muted/70",
             error
               ? "border-danger focus-visible:ring-2 focus-visible:ring-danger/35"
-              : "border-border focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-ring/30",
+              : "border-border-strong focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-ring/30",
           )}
         />
         <button

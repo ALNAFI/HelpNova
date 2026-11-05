@@ -6,9 +6,9 @@ import { LoginForm } from "@/components/modules/auth/login-form";
 export function LoginPageView() {
   return (
     <AuthShell
-      eyebrow="Welcome back"
+      eyebrow="Great to see you"
       title="Welcome back to HelpNova."
-      description="Explore a smarter way to organize conversations, automate workflows, and understand support."
+      description="Sign in to your HelpNova account."
     >
       <LoginForm />
     </AuthShell>
