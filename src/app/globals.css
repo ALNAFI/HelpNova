@@ -1031,3 +1031,145 @@ h4,
   border-left: 3px solid color-mix(in oklab, var(--accent) 65%, transparent);
   background: color-mix(in oklab, var(--accent) 8%, var(--surface));
 }
+
+/* Demo workspace shell (sidebar collapse + mobile glass nav) */
+.demo-sidebar {
+  width: 230px;
+  transition: width 250ms ease;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar {
+  width: 72px;
+  cursor: e-resize;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar [data-sidebar-interactive] {
+  cursor: pointer;
+}
+
+.demo-sidebar-label {
+  display: block;
+  overflow: hidden;
+  max-width: 148px;
+  opacity: 1;
+  white-space: nowrap;
+  transition:
+    max-width 250ms ease,
+    opacity 200ms ease;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-label {
+  display: none;
+  max-width: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.demo-sidebar-expanded-only {
+  display: flex;
+}
+
+.demo-sidebar-collapsed-only {
+  display: none;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-expanded-only {
+  display: none;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-collapsed-only {
+  display: flex;
+}
+
+/* Collapsed: center nav icons and active highlight on the glyph only */
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav {
+  align-items: center;
+  padding-inline: 0.875rem;
+}
+
+html[data-demo-sidebar="collapsed"] .group\/nav {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav-btn:hover {
+  background: transparent;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav-btn-active {
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav-accent {
+  display: none;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav-icon {
+  margin: 0;
+}
+
+html[data-demo-sidebar="collapsed"] .demo-sidebar-nav-btn-active .demo-sidebar-nav-icon {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+.demo-sidebar-expand-hit:hover .demo-sidebar-brand-mark,
+.demo-sidebar-expand-hit:focus-visible .demo-sidebar-brand-mark {
+  opacity: 0;
+}
+
+.demo-sidebar-expand-hit:hover .demo-sidebar-expand-icon,
+.demo-sidebar-expand-hit:focus-visible .demo-sidebar-expand-icon {
+  opacity: 1;
+}
+
+.demo-sidebar-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+html[data-demo-sidebar="collapsed"] .group\/nav:hover .demo-sidebar-tooltip,
+html[data-demo-sidebar="collapsed"] .group\/nav:focus-within .demo-sidebar-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.demo-mobile-nav {
+  background: color-mix(in oklab, var(--demo-panel) 88%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow:
+    0 10px 30px rgb(23 19 33 / 0.12),
+    0 1px 0 rgb(255 255 255 / 0.04) inset;
+}
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .demo-mobile-nav {
+    background: var(--demo-panel);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demo-sidebar,
+  .demo-sidebar-label,
+  .demo-sidebar-tooltip,
+  .demo-sidebar-brand-mark,
+  .demo-sidebar-expand-icon {
+    transition: none;
+  }
+}

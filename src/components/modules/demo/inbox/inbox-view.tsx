@@ -9,6 +9,7 @@ import {
   filterConversations,
   getSelectedConversation,
   selectConversationActivity,
+  selectLiveKpis,
 } from "@/utils/demo-selectors";
 import { cn } from "@/utils/cn";
 
@@ -24,6 +25,15 @@ export function InboxView() {
       ),
     [state.conversations, state.inboxSearch, state.inboxFilter],
   );
+
+  const counts = useMemo(() => {
+    const kpis = selectLiveKpis(state.conversations);
+    return {
+      all: kpis.total,
+      open: kpis.open,
+      resolved: kpis.resolved,
+    };
+  }, [state.conversations]);
 
   const selected = getSelectedConversation(state);
 
@@ -53,16 +63,17 @@ export function InboxView() {
   const showThreadMobile = state.mobileThreadOpen && selected;
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-1 xl:grid-cols-[300px_minmax(0,1fr)_280px]">
+    <div className="grid h-full min-h-0 grid-cols-1 overflow-x-hidden lg:grid-cols-[minmax(300px,320px)_minmax(0,1fr)] xl:grid-cols-[minmax(300px,320px)_minmax(0,1fr)_280px]">
       <section
         className={cn(
           "min-h-0 border-r border-[var(--demo-border)] bg-[var(--demo-panel)]/70",
-          showThreadMobile ? "hidden xl:flex xl:flex-col" : "flex flex-col",
+          showThreadMobile ? "hidden lg:flex lg:flex-col" : "flex flex-col",
         )}
         aria-label="Conversation list"
       >
         <ConversationList
           conversations={filtered}
+          counts={counts}
           selectedId={state.selectedConversationId}
           search={state.inboxSearch}
           filter={state.inboxFilter}
@@ -85,7 +96,7 @@ export function InboxView() {
       <section
         className={cn(
           "min-h-0 bg-[var(--demo-bg)]",
-          showThreadMobile ? "flex flex-col" : "hidden xl:flex xl:flex-col",
+          showThreadMobile ? "flex flex-col" : "hidden lg:flex lg:flex-col",
         )}
         aria-label="Conversation thread"
       >
@@ -146,7 +157,7 @@ export function InboxView() {
           />
         ) : (
           <div className="flex h-full items-center justify-center p-8 text-center">
-            <p className="text-sm text-[var(--demo-muted)]">
+            <p className="text-[13px] text-[var(--demo-muted)]">
               Select a conversation to open the thread.
             </p>
           </div>
@@ -182,7 +193,7 @@ export function InboxView() {
             }
           />
         ) : (
-          <div className="flex h-full items-center justify-center p-6 text-center text-sm text-[var(--demo-muted)]">
+          <div className="flex h-full items-center justify-center p-6 text-center text-[13px] text-[var(--demo-muted)]">
             Customer context appears when a conversation is selected.
           </div>
         )}

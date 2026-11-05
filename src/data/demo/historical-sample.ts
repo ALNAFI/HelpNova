@@ -1,24 +1,27 @@
 export type HistoricalPoint = {
   label: string;
+  /** Full date label for tooltips and accessible listings. */
+  date: string;
   volume: number;
 };
 
+/** Fixed demo dataset — not live history and not affected by workspace actions. */
 export const historicalSample7d: HistoricalPoint[] = [
-  { label: "Mon", volume: 18 },
-  { label: "Tue", volume: 22 },
-  { label: "Wed", volume: 19 },
-  { label: "Thu", volume: 27 },
-  { label: "Fri", volume: 24 },
-  { label: "Sat", volume: 14 },
-  { label: "Sun", volume: 16 },
+  { label: "Mon", date: "Mon, Mar 16, 2026", volume: 18 },
+  { label: "Tue", date: "Tue, Mar 17, 2026", volume: 22 },
+  { label: "Wed", date: "Wed, Mar 18, 2026", volume: 19 },
+  { label: "Thu", date: "Thu, Mar 19, 2026", volume: 27 },
+  { label: "Fri", date: "Fri, Mar 20, 2026", volume: 24 },
+  { label: "Sat", date: "Sat, Mar 21, 2026", volume: 14 },
+  { label: "Sun", date: "Sun, Mar 22, 2026", volume: 16 },
 ];
 
 export const historicalSample30d: HistoricalPoint[] = [
-  { label: "W1", volume: 96 },
-  { label: "W2", volume: 112 },
-  { label: "W3", volume: 104 },
-  { label: "W4", volume: 128 },
-  { label: "W5", volume: 118 },
+  { label: "Feb 16", date: "Week of Feb 16, 2026", volume: 96 },
+  { label: "Feb 23", date: "Week of Feb 23, 2026", volume: 112 },
+  { label: "Mar 2", date: "Week of Mar 2, 2026", volume: 104 },
+  { label: "Mar 9", date: "Week of Mar 9, 2026", volume: 128 },
+  { label: "Mar 16", date: "Week of Mar 16, 2026", volume: 118 },
 ];
 
 export function getHistoricalSample(range: 7 | 30): HistoricalPoint[] {

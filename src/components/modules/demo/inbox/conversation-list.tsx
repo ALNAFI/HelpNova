@@ -14,6 +14,7 @@ const filters: Array<{ id: InboxFilter; label: string }> = [
 
 type ConversationListProps = {
   conversations: DemoConversation[];
+  counts: { all: number; open: number; resolved: number };
   selectedId: string | null;
   search: string;
   filter: InboxFilter;
@@ -25,6 +26,7 @@ type ConversationListProps = {
 
 export function ConversationList({
   conversations,
+  counts,
   selectedId,
   search,
   filter,
@@ -38,12 +40,12 @@ export function ConversationList({
       <div className="shrink-0 space-y-3 border-b border-[var(--demo-border)] p-3">
         <label className="relative block">
           <span className="sr-only">Search conversations</span>
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[var(--demo-muted)]" />
+          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-[var(--demo-muted)]" />
           <input
             value={search}
             onChange={(e) => onSearch(e.target.value)}
-            placeholder="Search name, subject, topic…"
-            className="h-10 w-full rounded-xl border border-[var(--demo-border)] bg-[var(--demo-panel)] pl-9 pr-3 text-sm outline-none transition placeholder:text-[var(--demo-muted)] focus:border-accent/50 focus:ring-2 focus:ring-accent/30"
+            placeholder="Search conversations…"
+            className="h-10 w-full rounded-xl border border-[var(--demo-border)] bg-[var(--demo-panel)] pr-3 pl-9 text-[14px] outline-none transition placeholder:text-[var(--demo-muted)] focus:border-accent/50 focus:ring-2 focus:ring-accent/30"
           />
         </label>
 
@@ -54,6 +56,7 @@ export function ConversationList({
         >
           {filters.map((item) => {
             const active = filter === item.id;
+            const count = counts[item.id];
             return (
               <button
                 key={item.id}
@@ -62,32 +65,40 @@ export function ConversationList({
                 aria-selected={active}
                 onClick={() => onFilter(item.id)}
                 className={cn(
-                  "relative z-10 rounded-lg px-2 py-1.5 text-xs font-medium transition",
+                  "relative z-10 rounded-lg px-1.5 py-1.5 text-[12px] font-medium transition",
                   active
                     ? "bg-[var(--demo-panel)] text-[var(--demo-text)] shadow-sm"
                     : "text-[var(--demo-muted)] hover:text-[var(--demo-text)]",
                 )}
               >
                 {item.label}
+                <span
+                  className={cn(
+                    "ml-1 tabular-nums",
+                    active ? "text-accent" : "text-[var(--demo-muted)]",
+                  )}
+                >
+                  {count}
+                </span>
               </button>
             );
           })}
         </div>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
         {conversations.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-3 px-6 py-10 text-center">
-            <p className="text-sm font-medium text-[var(--demo-text)]">
+            <p className="text-[14px] font-medium text-[var(--demo-text)]">
               No conversations match your search.
             </p>
-            <p className="text-xs text-[var(--demo-muted)]">
+            <p className="text-[12px] text-[var(--demo-muted)]">
               Try a different query or clear filters.
             </p>
             <button
               type="button"
               onClick={onClearFilters}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--demo-border)] px-3 py-1.5 text-xs font-medium transition hover:bg-[var(--demo-hover)]"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--demo-border)] px-3 py-1.5 text-[12px] font-medium transition hover:bg-[var(--demo-hover)]"
             >
               <X className="size-3.5" />
               Clear filters
@@ -114,7 +125,7 @@ export function ConversationList({
                   >
                     <span
                       className={cn(
-                        "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
+                        "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold",
                         active
                           ? "bg-accent text-accent-foreground"
                           : "bg-[var(--demo-panel-2)] text-[var(--demo-muted)]",
@@ -124,24 +135,24 @@ export function ConversationList({
                       {initials(conversation.customerName)}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="flex items-start justify-between gap-2">
-                        <span className="truncate text-sm font-medium">
+                      <span className="flex items-baseline justify-between gap-2">
+                        <span className="truncate text-[14px] font-medium leading-5 text-[var(--demo-text)]">
                           {conversation.customerName}
                         </span>
-                        <span className="shrink-0 text-[10px] text-[var(--demo-muted)]">
+                        <span className="shrink-0 text-[12px] leading-5 text-[var(--demo-muted)]">
                           {formatDemoTime(conversation.updatedAt)}
                         </span>
                       </span>
-                      <span className="mt-0.5 block truncate text-xs text-[var(--demo-muted)]">
+                      <span className="mt-0.5 block truncate text-[13px] leading-5 text-[var(--demo-text)]/80">
                         {conversation.subject}
                       </span>
-                      <span className="mt-1 flex flex-wrap items-center gap-1.5">
+                      <span className="mt-1.5 flex flex-wrap items-center gap-1.5">
                         <StatusPill status={conversation.status} />
-                        <span className="rounded-md bg-[var(--demo-panel-2)] px-1.5 py-0.5 text-[10px] text-[var(--demo-muted)]">
+                        <span className="rounded-md bg-[var(--demo-panel-2)] px-1.5 py-0.5 text-[11px] leading-4 text-[var(--demo-muted)]">
                           {topicLabels[conversation.topic]}
                         </span>
                       </span>
-                      <span className="mt-1 line-clamp-1 text-[11px] text-[var(--demo-muted)]">
+                      <span className="mt-1.5 block truncate text-[12px] leading-4 text-[var(--demo-muted)]">
                         {preview}
                       </span>
                     </span>
@@ -160,7 +171,7 @@ function StatusPill({ status }: { status: DemoConversation["status"] }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
+        "inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-semibold tracking-wide uppercase",
         status === "open"
           ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
           : "bg-sky-500/15 text-sky-700 dark:text-sky-300",

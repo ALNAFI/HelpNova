@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { DemoProvider } from "@/context/demo-context";
+import { DemoSidebarScript } from "@/components/modules/demo/demo-sidebar-script";
 
 export const metadata: Metadata = {
   title: "Command Center Demo",
@@ -14,6 +15,7 @@ export default function DemoLayout({
 }>) {
   return (
     <DemoProvider>
+      <DemoSidebarScript />
       <div className="min-h-dvh flex-1">{children}</div>
     </DemoProvider>
   );

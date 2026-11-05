@@ -26,8 +26,8 @@ export function evaluateAutomation(
   const destination: DemoTeam = matched ? ruleTeamMap[rule] : "General Triage";
 
   const explanation = matched
-    ? `The ${topicLabels[inquiry]} inquiry matches the ${ruleLabels[rule]}, so the example routes to ${destination}.`
-    : `The inquiry topic does not match the selected rule, so the example follows the fallback route to General Triage.`;
+    ? `${topicLabels[inquiry]} matched the ${ruleLabels[rule]}.`
+    : `No match was found for ${topicLabels[inquiry]} against the ${ruleLabels[rule]}, so the conversation was assigned to General Triage.`;
 
   return {
     inquiry,
@@ -45,11 +45,11 @@ export const workflowNodes = [
     id: "inquiry",
     label: "New Inquiry",
     type: "trigger",
-    purpose: "A fictional customer inquiry enters the shared inbox.",
+    purpose: "A customer conversation arrives in the workspace.",
   },
   {
     id: "condition",
-    label: "Topic Condition",
+    label: "Check inquiry topic",
     type: "condition",
     purpose: "Compare the inquiry topic against the selected routing rule.",
   },
@@ -61,7 +61,7 @@ export const workflowNodes = [
   },
   {
     id: "otherwise",
-    label: "Otherwise",
+    label: "No match",
     type: "branch",
     purpose: "When the topic does not match, route to General Triage.",
   },
@@ -69,7 +69,7 @@ export const workflowNodes = [
     id: "destination",
     label: "Destination Team",
     type: "action",
-    purpose: "Apply the local assignment outcome for the selected inquiry.",
+    purpose: "Assign the conversation to the selected team.",
   },
 ] as const;
 

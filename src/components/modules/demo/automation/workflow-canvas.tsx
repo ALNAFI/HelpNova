@@ -18,22 +18,42 @@ type WorkflowCanvasProps = {
   selectedNodeId: string;
   simulation: SimulationResult | null;
   simulationNonce: number;
+  isStale?: boolean;
   onSelectNode: (nodeId: string) => void;
+  onAnimationComplete?: () => void;
 };
 
 export function WorkflowCanvas({
   selectedNodeId,
   simulation,
   simulationNonce,
+  isStale = false,
   onSelectNode,
+  onAnimationComplete,
 }: WorkflowCanvasProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
   const matched = simulation?.matched;
+  const hasRun = Boolean(simulation);
+  const completeRef = useRef(onAnimationComplete);
+
+  useEffect(() => {
+    completeRef.current = onAnimationComplete;
+  }, [onAnimationComplete]);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root || simulationNonce === 0 || !simulation) return;
+
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      completeRef.current?.();
+    };
+
+    // Strict Mode / interrupted timelines can skip GSAP onComplete.
+    const safety = window.setTimeout(finish, 2200);
 
     const ctx = gsap.context(() => {
       const nodes = {
@@ -56,94 +76,104 @@ export function WorkflowCanvas({
       gsap.set(connectors, {
         strokeDasharray: 420,
         strokeDashoffset: 420,
-        opacity: 0.25,
+        opacity: 0.28,
       });
 
       if (reducedMotion) {
         if (simulation.matched) {
           gsap.set(nodes.matched, { outline: "2px solid var(--accent)" });
           gsap.set(pathMatched, { strokeDashoffset: 0, opacity: 1 });
-          gsap.set(nodes.otherwise, { opacity: 0.4 });
+          gsap.set(nodes.otherwise, { opacity: 0.55 });
         } else {
           gsap.set(nodes.otherwise, { outline: "2px solid var(--accent)" });
           gsap.set(pathOtherwise, { strokeDashoffset: 0, opacity: 1 });
-          gsap.set(nodes.matched, { opacity: 0.4 });
+          gsap.set(nodes.matched, { opacity: 0.55 });
         }
         gsap.set(
           [nodes.inquiry, nodes.condition, nodes.destination],
           { outline: "2px solid var(--accent)" },
         );
         gsap.set(pathMain, { strokeDashoffset: 0, opacity: 1 });
+        finish();
         return;
       }
 
-      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      const tl = gsap.timeline({
+        defaults: { ease: "power2.out" },
+        onComplete: finish,
+      });
 
       tl.to(nodes.inquiry, {
-        duration: 0.35,
+        duration: 0.32,
         boxShadow:
           "0 0 0 2px color-mix(in oklab, var(--accent) 55%, transparent)",
       })
         .to(
           pathMain[0] ?? null,
-          { strokeDashoffset: 0, opacity: 1, duration: 0.4 },
-          "<0.1",
+          { strokeDashoffset: 0, opacity: 1, duration: 0.36 },
+          "<0.08",
         )
         .to(nodes.condition, {
-          duration: 0.35,
+          duration: 0.32,
           boxShadow:
             "0 0 0 2px color-mix(in oklab, var(--accent) 55%, transparent)",
         })
         .to(
           pathMain[1] ?? null,
-          { strokeDashoffset: 0, opacity: 1, duration: 0.35 },
+          { strokeDashoffset: 0, opacity: 1, duration: 0.32 },
           "<0.05",
         );
 
       if (simulation.matched) {
         tl.to(nodes.matched, {
-          duration: 0.35,
+          duration: 0.32,
           boxShadow:
-            "0 0 24px color-mix(in oklab, var(--accent) 35%, transparent)",
+            "0 0 20px color-mix(in oklab, var(--accent) 32%, transparent)",
         })
-          .to(nodes.otherwise, { opacity: 0.35, duration: 0.25 }, "<")
+          .to(nodes.otherwise, { opacity: 0.55, duration: 0.22 }, "<")
           .to(
             pathMatched,
-            { strokeDashoffset: 0, opacity: 1, duration: 0.45 },
+            { strokeDashoffset: 0, opacity: 1, duration: 0.4 },
             "<0.05",
           );
       } else {
         tl.to(nodes.otherwise, {
-          duration: 0.35,
+          duration: 0.32,
           boxShadow:
-            "0 0 24px color-mix(in oklab, var(--accent) 35%, transparent)",
+            "0 0 20px color-mix(in oklab, var(--accent) 32%, transparent)",
         })
-          .to(nodes.matched, { opacity: 0.35, duration: 0.25 }, "<")
+          .to(nodes.matched, { opacity: 0.55, duration: 0.22 }, "<")
           .to(
             pathOtherwise,
-            { strokeDashoffset: 0, opacity: 1, duration: 0.45 },
+            { strokeDashoffset: 0, opacity: 1, duration: 0.4 },
             "<0.05",
           );
       }
 
       tl.to(nodes.destination, {
-        duration: 0.4,
+        duration: 0.36,
         boxShadow:
-          "0 0 28px color-mix(in oklab, var(--accent) 40%, transparent)",
+          "0 0 24px color-mix(in oklab, var(--accent) 36%, transparent)",
       });
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      window.clearTimeout(safety);
+      ctx.revert();
+    };
   }, [simulation, simulationNonce, reducedMotion]);
 
   return (
     <div
       ref={rootRef}
-      className="relative overflow-hidden rounded-2xl border border-[var(--demo-border)] bg-[var(--demo-panel)]/80 p-4 sm:p-6"
+      className={cn(
+        "relative overflow-hidden rounded-2xl border border-[var(--demo-border)] bg-[var(--demo-panel)]/80 p-3.5 sm:p-5",
+        isStale && "opacity-[0.92]",
+      )}
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.35]"
+        className="pointer-events-none absolute inset-0 opacity-[0.3]"
         style={{
           backgroundImage:
             "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--demo-muted) 35%, transparent) 1px, transparent 0)",
@@ -151,14 +181,14 @@ export function WorkflowCanvas({
         }}
       />
 
-      <div className="relative mx-auto grid max-w-3xl gap-4">
+      <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-0">
         <WorkflowNodeCard
           id="inquiry"
           label="New Inquiry"
-          detail="Fictional customer message enters the workspace"
+          detail="A customer conversation arrives"
           icon={Inbox}
           selected={selectedNodeId === "inquiry"}
-          active={Boolean(simulation)}
+          active={hasRun}
           onSelect={() => onSelectNode("inquiry")}
         />
 
@@ -166,17 +196,17 @@ export function WorkflowCanvas({
 
         <WorkflowNodeCard
           id="condition"
-          label="Topic Condition"
+          label="Check inquiry topic"
           detail="Compare inquiry topic against the selected rule"
           icon={Filter}
           selected={selectedNodeId === "condition"}
-          active={Boolean(simulation)}
+          active={hasRun}
           onSelect={() => onSelectNode("condition")}
         />
 
         <Connector paths={["main"]} />
 
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid w-full max-w-md gap-2.5 sm:max-w-none sm:grid-cols-2 sm:gap-3">
           <WorkflowNodeCard
             id="matched"
             label="Matched"
@@ -189,7 +219,7 @@ export function WorkflowCanvas({
           />
           <WorkflowNodeCard
             id="otherwise"
-            label="Otherwise"
+            label="No match"
             detail="Fallback to General Triage"
             icon={Split}
             selected={selectedNodeId === "otherwise"}
@@ -199,28 +229,30 @@ export function WorkflowCanvas({
           />
         </div>
 
-        <div className="relative h-10">
+        <div className="relative h-9 w-full max-w-md sm:max-w-none">
           <svg
             className="absolute inset-0 h-full w-full"
-            viewBox="0 0 100 40"
+            viewBox="0 0 100 36"
             preserveAspectRatio="none"
             aria-hidden
           >
             <path
               data-path="matched"
-              d="M25 0 C25 22, 50 22, 50 40"
+              d="M25 0 C25 20, 50 20, 50 36"
               fill="none"
               stroke="var(--accent)"
-              strokeWidth="1.5"
-              opacity="0.25"
+              strokeWidth="1.6"
+              vectorEffect="non-scaling-stroke"
+              opacity="0.28"
             />
             <path
               data-path="otherwise"
-              d="M75 0 C75 22, 50 22, 50 40"
+              d="M75 0 C75 20, 50 20, 50 36"
               fill="none"
               stroke="var(--accent)"
-              strokeWidth="1.5"
-              opacity="0.25"
+              strokeWidth="1.6"
+              vectorEffect="non-scaling-stroke"
+              opacity="0.28"
             />
           </svg>
         </div>
@@ -235,7 +267,7 @@ export function WorkflowCanvas({
           }
           icon={Users}
           selected={selectedNodeId === "destination"}
-          active={Boolean(simulation)}
+          active={hasRun}
           onSelect={() => onSelectNode("destination")}
         />
       </div>
@@ -243,10 +275,17 @@ export function WorkflowCanvas({
   );
 }
 
-function Connector({ paths }: { paths: Array<"main" | "matched" | "otherwise"> }) {
+function Connector({
+  paths,
+}: {
+  paths: Array<"main" | "matched" | "otherwise">;
+}) {
   return (
-    <div className={cn("relative mx-auto h-8 w-px")}>
-      <svg className="absolute inset-0 h-full w-full overflow-visible" aria-hidden>
+    <div className="relative mx-auto h-7 w-px">
+      <svg
+        className="absolute inset-0 h-full w-full overflow-visible"
+        aria-hidden
+      >
         {paths.map((path) => (
           <line
             key={path}
@@ -254,10 +293,10 @@ function Connector({ paths }: { paths: Array<"main" | "matched" | "otherwise"> }
             x1="0.5"
             y1="0"
             x2="0.5"
-            y2="32"
+            y2="28"
             stroke="var(--accent)"
             strokeWidth="2"
-            opacity="0.25"
+            opacity="0.28"
           />
         ))}
       </svg>

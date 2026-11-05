@@ -105,10 +105,12 @@ export function selectRecentActivity(
   limit = 12,
 ): DemoActivity[] {
   return [...activity]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
+    .sort((a, b) => {
+      const byTime =
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      if (byTime !== 0) return byTime;
+      return b.id.localeCompare(a.id);
+    })
     .slice(0, limit);
 }
 

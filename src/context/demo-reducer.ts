@@ -131,7 +131,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const activityUpdate = pushActivity(state, {
         conversationId: action.conversationId,
         kind: "resolved",
-        summary: `Conversation resolved for ${conversation.customerName}`,
+        summary: `Conversation marked as resolved by ${DEMO_AGENT}`,
         createdAt: stamp,
       });
 
@@ -156,7 +156,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const activityUpdate = pushActivity(state, {
         conversationId: action.conversationId,
         kind: "reopened",
-        summary: `Conversation reopened for ${conversation.customerName}`,
+        summary: `Conversation reopened by ${DEMO_AGENT}`,
         createdAt: stamp,
       });
 
@@ -184,7 +184,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const activityUpdate = pushActivity(state, {
         conversationId: action.conversationId,
         kind: "reply",
-        summary: `Local reply added for ${conversation.customerName}`,
+        summary: `Reply added by ${DEMO_AGENT}`,
         createdAt: stamp,
       });
 
@@ -227,7 +227,7 @@ export function demoReducer(state: DemoState, action: DemoAction): DemoState {
       const activityUpdate = pushActivity(state, {
         conversationId: action.conversationId,
         kind: "note",
-        summary: `Internal note added for ${conversation.customerName}`,
+        summary: `Internal note added by ${DEMO_AGENT}`,
         createdAt: stamp,
       });
 
