@@ -8,9 +8,9 @@ export const aboutPageCopy = {
   storySupport:
     "Why switch between tools to understand one customer conversation?",
   missionEyebrow: "Our mission",
-  missionTitle: "Make every interaction feel more intentional.",
+  missionTitle: "Make every conversation easier to handle.",
   missionStatement:
-    "Explore how thoughtful interfaces, connected workflows, and meaningful context can make customer-support experiences easier to understand and navigate.",
+    "Keep conversations organized, give teams the context they need, and make the next step clear.",
   valuesEyebrow: "What guides the design",
   valuesTitle: "Three principles. One thoughtful direction.",
   visionEyebrow: "The product vision",
@@ -59,30 +59,30 @@ export const aboutMissionConcepts = [
   {
     id: "conversations",
     label: "Conversations",
-    title: "Keep the discussion visible.",
+    title: "Every conversation, together.",
     description:
-      "A shared thread keeps replies, notes, and handoffs in one place so context stays readable as work moves.",
+      "Keep customer messages, replies, and internal notes in one shared thread.",
   },
   {
     id: "workflows",
     label: "Workflows",
-    title: "Make the next step understandable.",
+    title: "A clear next step.",
     description:
-      "Illustrative rules show how an inquiry can meet a condition and route toward a clear team destination.",
+      "Route inquiries to the right team with straightforward rules and clear ownership.",
   },
   {
     id: "context",
     label: "Context",
-    title: "Preserve the information that matters.",
+    title: "See the whole picture.",
     description:
-      "Assignment, priority, and internal notes give teammates the details they need without losing the customer voice.",
+      "Bring customer details and conversation history into view before responding.",
   },
   {
     id: "insights",
     label: "Insights",
-    title: "See the bigger picture.",
+    title: "Know what needs attention.",
     description:
-      "Illustrative metrics and workload views help teams understand open work and resolution patterns at a glance.",
+      "See open conversations, team workload, and resolution progress at a glance.",
   },
 ] as const;
 

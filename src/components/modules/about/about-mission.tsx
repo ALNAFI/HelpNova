@@ -1,19 +1,28 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
+import { RubberSegment } from "@/components/ui/rubber-segment";
+import {
+  AboutMissionVisual,
+  type MissionConceptId,
+} from "@/components/modules/about/about-mission-visuals";
 import {
   aboutMissionConcepts,
   aboutPageCopy,
 } from "@/data/marketing/about";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
-import { cn } from "@/utils/cn";
+
+function isMissionConceptId(value: string): value is MissionConceptId {
+  return aboutMissionConcepts.some((concept) => concept.id === value);
+}
 
 export function AboutMission() {
   const sectionRef = useRef<HTMLElement>(null);
-  const labelId = useId();
-  const [activeId, setActiveId] = useState<(typeof aboutMissionConcepts)[number]["id"]>(
+  const panelRef = useRef<HTMLDivElement>(null);
+  const baseId = useId();
+  const [activeId, setActiveId] = useState<MissionConceptId>(
     aboutMissionConcepts[0].id,
   );
   const reducedMotion = usePrefersReducedMotion();
@@ -42,6 +51,31 @@ export function AboutMission() {
     return () => ctx.revert();
   }, [reducedMotion]);
 
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+    if (reducedMotion) {
+      panel.style.opacity = "1";
+      panel.style.transform = "none";
+      return;
+    }
+
+    const { gsap } = getGsap();
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        panel,
+        { autoAlpha: 0, y: 12 },
+        { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out" },
+      );
+    }, panel);
+    return () => ctx.revert();
+  }, [activeId, reducedMotion]);
+
+  const onSegmentChange = useCallback((value: string) => {
+    if (!isMissionConceptId(value)) return;
+    setActiveId(value);
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -68,126 +102,60 @@ export function AboutMission() {
           data-mission-reveal
           className="mt-10 overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[var(--shadow-soft)]"
         >
-          <div className="grid lg:grid-cols-[16rem_minmax(0,1fr)]">
-            <div
-              role="tablist"
-              aria-labelledby={labelId}
-              className="flex gap-2 overflow-x-auto border-b border-border p-3 lg:flex-col lg:overflow-visible lg:border-r lg:border-b-0 lg:p-4"
-            >
-              <span id={labelId} className="sr-only">
-                Mission concepts
-              </span>
-              {aboutMissionConcepts.map((concept) => {
-                const selected = concept.id === activeId;
-                return (
-                  <button
-                    key={concept.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={selected}
-                    onClick={() => setActiveId(concept.id)}
-                    className={cn(
-                      "min-w-[9.5rem] rounded-2xl px-4 py-3 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:min-w-0",
-                      selected
-                        ? "bg-accent text-accent-foreground"
-                        : "bg-surface-muted/50 text-muted hover:bg-surface-muted hover:text-foreground",
-                    )}
-                  >
-                    {concept.label}
-                  </button>
-                );
-              })}
+          <div className="border-b border-border">
+            <div className="min-w-0 overflow-x-auto overscroll-x-contain p-3 [-ms-overflow-style:none] [scrollbar-width:none] sm:p-3.5 [&::-webkit-scrollbar]:hidden">
+              <RubberSegment
+                items={aboutMissionConcepts.map((concept) => ({
+                  value: concept.id,
+                  label: concept.label,
+                }))}
+                value={activeId}
+                onChange={onSegmentChange}
+                trackColor="var(--surface-muted)"
+                thumbColor="var(--accent)"
+                textColor="var(--muted)"
+                activeTextColor="var(--accent-foreground)"
+                size="lg"
+                radius={12}
+                inset={3}
+                equalSlots
+                stretch={100}
+                squash={3}
+                speed={1}
+                glide={75}
+                draggable
+                className="w-full min-w-[28rem] sm:min-w-0"
+                aria-label="Mission topics"
+              />
             </div>
+          </div>
 
-            <div className="grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
-              <MissionPreview activeId={activeId} />
-              <div className="flex flex-col justify-center">
-                <p className="text-[11px] font-semibold tracking-[0.16em] text-accent uppercase">
-                  {active.label}
-                </p>
-                <h3 className="mt-2 font-heading text-2xl font-semibold tracking-tight">
-                  {active.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-muted sm:text-[0.98rem]">
-                  {active.description}
-                </p>
-              </div>
+          <div
+            ref={panelRef}
+            role="tabpanel"
+            id={`${baseId}-panel-${active.id}`}
+            aria-label={active.label}
+            className="grid min-h-0 items-center gap-5 p-4 sm:gap-6 sm:p-6 lg:min-h-[22.5rem] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-8 lg:p-7"
+          >
+            <AboutMissionVisual
+              activeId={active.id}
+              className="w-full lg:min-h-[18.5rem]"
+            />
+
+            <div className="flex min-w-0 flex-col justify-center lg:py-2">
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-accent uppercase">
+                {active.label}
+              </p>
+              <h3 className="mt-2 font-heading text-xl font-semibold tracking-tight text-balance sm:text-2xl">
+                {active.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-[0.98rem]">
+                {active.description}
+              </p>
             </div>
           </div>
         </div>
       </Container>
     </section>
-  );
-}
-
-function MissionPreview({ activeId }: { activeId: string }) {
-  return (
-    <div className="relative min-h-[16rem] overflow-hidden rounded-[1.35rem] border border-border bg-[linear-gradient(160deg,var(--accent-soft),var(--surface)_48%,var(--surface-muted))] p-5">
-      <svg viewBox="0 0 320 220" className="absolute inset-0 size-full opacity-80" aria-hidden>
-        <path
-          d="M160 110 L70 60 M160 110 L250 60 M160 110 L70 170 M160 110 L250 170"
-          stroke="var(--accent)"
-          strokeOpacity="0.28"
-          strokeWidth="1.5"
-        />
-        {(
-          [
-            ["conversations", 70, 60],
-            ["workflows", 250, 60],
-            ["context", 70, 170],
-            ["insights", 250, 170],
-          ] as const
-        ).map(([id, x, y]) => {
-          const active = id === activeId;
-          return (
-            <g key={id}>
-              <circle
-                cx={x}
-                cy={y}
-                r={active ? 18 : 12}
-                fill={active ? "var(--accent)" : "var(--surface)"}
-                stroke="var(--accent)"
-                strokeOpacity={active ? 1 : 0.35}
-              />
-              {active ? (
-                <circle
-                  cx={x}
-                  cy={y}
-                  r="28"
-                  fill="none"
-                  stroke="var(--accent)"
-                  strokeOpacity="0.25"
-                />
-              ) : null}
-            </g>
-          );
-        })}
-        <rect
-          x="118"
-          y="78"
-          width="84"
-          height="64"
-          rx="16"
-          fill="var(--surface)"
-          stroke="var(--accent)"
-          strokeOpacity="0.35"
-        />
-        <path
-          d="M136 100 H184 M136 112 H170 M136 124 H158"
-          stroke="var(--foreground)"
-          strokeOpacity="0.35"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="relative rounded-2xl border border-border/80 bg-surface/90 p-4 shadow-[var(--shadow-soft)] backdrop-blur-sm">
-        <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
-          Concept canvas
-        </p>
-        <p className="mt-2 text-sm font-medium text-foreground">
-          Conversations, workflows, context, and insights share one illustrative language.
-        </p>
-      </div>
-    </div>
   );
 }
