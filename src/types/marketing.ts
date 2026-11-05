@@ -140,4 +140,6 @@ export type FaqItem = {
   question: string;
   answer: string;
   category?: Exclude<FaqCategoryId, "all">;
+  /** Phrases in `answer` that render as in-copy links. */
+  links?: ReadonlyArray<{ phrase: string; href: string }>;
 };

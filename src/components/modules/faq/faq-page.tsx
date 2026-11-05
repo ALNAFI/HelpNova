@@ -21,6 +21,10 @@ function normalize(value: string) {
   return value.trim().toLowerCase();
 }
 
+function formatQuestionCount(count: number) {
+  return count === 1 ? "1 question" : `${count} questions`;
+}
+
 export function FaqPage() {
   const pageRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -53,14 +57,8 @@ export function FaqPage() {
     });
   }, [category, categoryLabels, query]);
 
-  const resultLabel = useMemo(() => {
-    const count = filtered.length;
-    const total = faqItems.length;
-    if (query.trim() || category !== "all") {
-      return `${count} of ${total} answers`;
-    }
-    return `${total} answers`;
-  }, [category, filtered.length, query]);
+  const resultLabel = formatQuestionCount(filtered.length);
+  const hasActiveFilters = Boolean(query.trim()) || category !== "all";
 
   const clearFilters = () => {
     setQuery("");
@@ -104,24 +102,16 @@ export function FaqPage() {
   }, [reducedMotion]);
 
   return (
-    <div ref={pageRef} className="relative isolate overflow-hidden">
-      {/* Continuous page atmosphere — no hard section cuts */}
+    <div ref={pageRef} className="relative isolate">
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_55%_at_50%_-8%,var(--glow),transparent_58%)]"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
         aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-grid-fade [mask-image:linear-gradient(to_bottom,black_42%,transparent_100%)]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute top-[18%] left-[-12%] size-[26rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_14%,transparent),transparent_70%)]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute top-[8%] right-[-10%] size-[22rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_12%,transparent),transparent_72%)]"
-        aria-hidden
-      />
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_90%_55%_at_50%_-8%,var(--glow),transparent_58%)]" />
+        <div className="absolute inset-x-0 top-0 h-[34rem] bg-grid-fade [mask-image:linear-gradient(to_bottom,black_42%,transparent_100%)]" />
+        <div className="absolute top-[18%] left-[-12%] size-[26rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_14%,transparent),transparent_70%)]" />
+        <div className="absolute top-[8%] right-[-10%] size-[22rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_12%,transparent),transparent_72%)]" />
+      </div>
 
       <Container className="relative max-w-7xl pt-12 pb-16 sm:pt-14 sm:pb-20 lg:pt-16 lg:pb-24">
         <header className="mx-auto max-w-3xl text-center">
@@ -160,10 +150,10 @@ export function FaqPage() {
 
         <div
           data-faq-main
-          className="mt-12 grid items-start gap-6 lg:mt-14 lg:grid-cols-[14.5rem_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[15rem_minmax(0,1fr)] xl:gap-10"
+          className="mt-12 grid items-stretch gap-6 lg:mt-14 lg:grid-cols-[14.5rem_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[15rem_minmax(0,1fr)] xl:gap-10"
         >
-          <aside className="hidden self-start lg:block">
-            <div className="sticky top-24 rounded-2xl border border-border bg-surface/80 p-2.5 shadow-[var(--shadow-soft)] backdrop-blur-sm">
+          <aside className="relative hidden lg:block">
+            <div className="sticky top-[calc(var(--header-height)+24px)] z-10 max-h-[calc(100vh-var(--header-height)-3rem)] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface/90 p-2.5 shadow-[var(--shadow-soft)] backdrop-blur-sm">
               <FaqCategories
                 categories={faqCategories}
                 active={category}
@@ -179,7 +169,7 @@ export function FaqPage() {
                 categories={faqCategories}
                 active={category}
                 onChange={setCategory}
-                variant="tabs"
+                variant="dropdown"
               />
             </div>
 
@@ -192,7 +182,7 @@ export function FaqPage() {
                   {resultLabel}
                 </p>
               </div>
-              {query.trim() || category !== "all" ? (
+              {hasActiveFilters ? (
                 <Button
                   type="button"
                   variant="ghost"
@@ -200,7 +190,7 @@ export function FaqPage() {
                   onClick={clearFilters}
                   className="text-muted"
                 >
-                  Clear filters
+                  {faqPageCopy.clearFiltersLabel}
                 </Button>
               ) : null}
             </div>
@@ -221,21 +211,22 @@ export function FaqPage() {
                 <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-muted">
                   {faqPageCopy.emptyDescription}
                 </p>
+                <p className="sr-only">{faqPageCopy.emptyMessage}</p>
                 <div className="mt-5 flex justify-center">
                   <Button
                     type="button"
                     variant="secondary"
                     onClick={clearFilters}
                   >
-                    Clear Filters
+                    {faqPageCopy.clearFiltersLabel}
                   </Button>
                 </div>
               </div>
             )}
-
-            <FaqCta />
           </div>
         </div>
+
+        <FaqCta />
       </Container>
     </div>
   );

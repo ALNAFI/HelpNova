@@ -56,70 +56,76 @@ export const faqItems: FaqItem[] = [
     category: "getting-started",
     question: "What is HelpNova?",
     answer:
-      "HelpNova is a visually ambitious customer-support and automation concept website. It showcases how a shared inbox, workflow automation, and insights can feel in one premium product experience—built as a personal project, not a live support platform.",
+      "HelpNova brings customer conversations, automated workflows, and support insights into one interactive product demo. Explore it to see how these tools work together.",
   },
   {
     id: "how-demo-works",
     category: "demo",
     question: "How does the interactive demo work?",
     answer:
-      "The Guided Demo is a local, browser-only workspace. Inbox, Automation, and Insights share one sample state so you can assign conversations, add replies or internal notes, run a routing simulation, and watch the derived metrics update. Refreshing restores the original seed data.",
+      "Try assigning conversations, adding replies or internal notes, and running automated routing examples. The support insights update as you explore. The demo uses sample data and resets when you refresh.",
   },
   {
     id: "no-account",
     category: "getting-started",
     question: "Can I explore HelpNova without creating an account?",
     answer:
-      "Yes. Login and Sign Up screens are UI simulations with local validation only. No accounts are created, and you can browse the marketing pages and Guided Demo freely without signing in.",
+      "Yes. You can explore all pages and try the interactive demo without signing in. The sign-in and sign-up forms are demonstrations and do not create accounts.",
   },
   {
     id: "inbox-demo",
     category: "features",
     question: "What can I do inside the shared inbox demo?",
     answer:
-      "You can search and filter sample conversations, open a thread, assign a team, add a local reply or visually distinct internal note, resolve or reopen a conversation, and review the activity log. Tags and priority are display-only in this concept.",
+      "Search and filter conversations, assign teams, add replies or internal notes, and resolve or reopen conversations. You can also review their activity history. Tags and priority labels are examples and cannot be edited.",
   },
   {
     id: "automation-demo",
     category: "features",
     question: "How does workflow automation work?",
     answer:
-      "In the demo, you pick a sample inquiry and a rule, then run or replay a simulation along New Inquiry → Topic Condition → Matched or Otherwise. Matched routes to the corresponding team; Otherwise goes to General Triage. The inspector explains each node—nothing is executed against a real system.",
+      "Choose a sample inquiry and a routing rule to see how conversations reach the right team. Inquiries that do not match the rule go to general triage. You can replay the example to follow each step.",
   },
   {
     id: "chatbot-ai",
     category: "features",
-    question: "Does the chatbot use real AI?",
+    question: "How does the chatbot demo work?",
     answer:
-      "No. Chatbot examples use a small set of preset local questions and answers. There is no AI model call, streaming response, or knowledge-base connection in this experience.",
+      "The chatbot responds to a selection of example questions using prepared answers. It lets you explore the chat experience without connecting to a live AI service.",
   },
   {
     id: "integrations-live",
     category: "integrations",
     question: "Are the integrations connected to real services?",
     answer:
-      "No. Integration cards are illustrative examples (such as Shopify, Slack, or Stripe) used for browsing and filtering on this site. There is no OAuth, Connect flow, or live third-party connection.",
+      "The integration gallery shows examples of tools that could work with HelpNova. You can browse and filter them, but they are not connected to live services.",
   },
   {
     id: "pricing-real",
     category: "pricing",
-    question: "Are the pricing plans real subscriptions?",
+    question: "Can I purchase a plan?",
     answer:
-      "The Essential, Team, and Scale plans are sample concepts for exploring the pricing layout. Monthly and yearly amounts are illustrative only—there is no checkout, billing, or paid subscription.",
+      "The plans and prices show example packages for HelpNova. Paid subscriptions and checkout are currently unavailable.",
   },
   {
     id: "demo-storage",
     category: "privacy",
-    question: "Is my demo information stored or transmitted?",
+    question: "What happens to the information I enter?",
     answer:
-      "Demo actions stay in your browser session. They are not sent to a server as tickets, and refreshing returns to the original sample data. Theme preference may be stored locally so Light or Dark mode can persist between visits.",
+      "Conversation changes stay in your browser session and are not submitted as support tickets. Refreshing restores the sample conversations. Your theme preference may be saved on your device for future visits.",
   },
   {
     id: "get-in-touch",
     category: "getting-started",
-    question: "How can I get in touch or learn more?",
+    question: "Where can I learn more about HelpNova?",
     answer:
-      "Use the Contact page to try the local form (it validates and confirms that nothing is sent), explore the Guided Demo, or browse Features, Blog, and Case Studies for more product storytelling.",
+      "Explore the features, try the interactive demo, or browse the blog and case studies to learn more.",
+    links: [
+      { phrase: "Explore the features", href: "/features" },
+      { phrase: "interactive demo", href: "/demo" },
+      { phrase: "blog", href: "/blog" },
+      { phrase: "case studies", href: "/case-studies" },
+    ],
   },
 ];
 
@@ -132,10 +138,12 @@ export const faqPageCopy = {
   searchPlaceholder: "Search for answers...",
   sectionTitle: "Browse answers",
   emptyTitle: "No answers found.",
-  emptyDescription: "Try another keyword or explore all questions.",
-  ctaTitle: "Still have questions?",
+  emptyDescription: "Try another keyword.",
+  emptyMessage: "No answers found. Try another keyword.",
+  clearFiltersLabel: "Clear filters",
+  ctaTitle: "Get to know HelpNova better.",
   ctaDescription:
-    "Explore the interactive demo or reach out to learn more about HelpNova.",
-  contactLabel: "Contact Us",
+    "Try the interactive demo or explore the features at your own pace.",
+  featuresLabel: "Explore Features",
   demoLabel: "Explore Demo",
 } as const;

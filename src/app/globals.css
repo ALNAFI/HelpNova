@@ -310,6 +310,33 @@ h4,
   box-shadow: inset 0 1px 0 color-mix(in oklab, white 8%, transparent);
 }
 
+.faq-glass-item {
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+
+.faq-glass-item-open {
+  border-color: color-mix(in oklab, var(--accent) 28%, transparent);
+  background: color-mix(in oklab, var(--accent-soft) 42%, var(--surface));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 36%, transparent),
+    0 12px 32px color-mix(in oklab, var(--accent) 8%, transparent);
+}
+
+.dark .faq-glass-item {
+  border-color: color-mix(in oklab, var(--border) 75%, transparent);
+  background: color-mix(in oklab, var(--surface) 86%, transparent);
+}
+
+.dark .faq-glass-item-open {
+  border-color: color-mix(in oklab, var(--accent) 34%, transparent);
+  background: color-mix(in oklab, var(--accent-soft) 22%, var(--surface));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 8%, transparent),
+    0 14px 34px color-mix(in oklab, var(--accent) 12%, transparent);
+}
+
 /* Smooth FAQ accordion height — grid 0fr → 1fr avoids hardcoded heights */
 .faq-panel {
   display: grid;

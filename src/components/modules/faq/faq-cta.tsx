@@ -64,12 +64,12 @@ export function FaqCta() {
           data-faq-cta
           className="relative mt-5 flex flex-col gap-2.5 sm:mt-0 sm:flex-row sm:items-center"
         >
-          <Button href="/contact" size="lg">
-            {faqPageCopy.contactLabel}
+          <Button href="/demo" size="lg">
+            {faqPageCopy.demoLabel}
             <ArrowUpRight className="size-4" aria-hidden />
           </Button>
-          <Button href="/demo" variant="secondary" size="lg">
-            {faqPageCopy.demoLabel}
+          <Button href="/features" variant="secondary" size="lg">
+            {faqPageCopy.featuresLabel}
           </Button>
         </div>
       </div>
