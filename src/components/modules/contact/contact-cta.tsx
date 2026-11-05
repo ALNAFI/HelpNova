@@ -7,14 +7,49 @@ import { contactPageCopy } from "@/data/marketing/contact";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
+const LINE_PATHS = [
+  {
+    d: "M28 188 C92 168 118 72 188 96 C248 116 268 48 308 28",
+    opacity: 0.55,
+    width: 1.6,
+    delay: 0,
+  },
+  {
+    d: "M18 204 C78 186 108 108 172 122 C230 134 258 78 298 58",
+    opacity: 0.32,
+    width: 1.25,
+    delay: 0.12,
+  },
+  {
+    d: "M48 170 C110 154 138 58 198 78 C250 94 274 36 312 18",
+    opacity: 0.22,
+    width: 1.1,
+    delay: 0.22,
+  },
+] as const;
+
 export function ContactCta() {
   const sectionRef = useRef<HTMLElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const reducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const el = sectionRef.current;
-    if (!el || reducedMotion) return;
-    const { gsap } = getGsap();
+    const svg = svgRef.current;
+    if (!el || !svg || reducedMotion) return;
+    const { gsap, ScrollTrigger } = getGsap();
+    const paths = Array.from(
+      svg.querySelectorAll<SVGPathElement>("[data-contact-cta-line]"),
+    );
+    const lengths = paths.map((path) => path.getTotalLength());
+
+    paths.forEach((path, index) => {
+      gsap.set(path, {
+        strokeDasharray: lengths[index],
+        strokeDashoffset: lengths[index],
+      });
+    });
+
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-contact-cta]",
@@ -28,13 +63,27 @@ export function ContactCta() {
           scrollTrigger: { trigger: el, start: "top 86%" },
         },
       );
-      gsap.to("[data-contact-cta-line]", {
-        strokeDashoffset: 0,
-        duration: 1.2,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 80%" },
+
+      ScrollTrigger.create({
+        trigger: el,
+        start: "top 75%",
+        end: "top 25%",
+        scrub: 0.65,
+        onUpdate: (self) => {
+          paths.forEach((path, index) => {
+            const delay = LINE_PATHS[index]?.delay ?? 0;
+            const local = Math.min(
+              1,
+              Math.max(0, (self.progress - delay) / (1 - delay)),
+            );
+            gsap.set(path, {
+              strokeDashoffset: lengths[index] * (1 - local),
+            });
+          });
+        },
       });
     }, el);
+
     return () => ctx.revert();
   }, [reducedMotion]);
 
@@ -51,21 +100,26 @@ export function ContactCta() {
             aria-hidden
           />
           <svg
-            className="pointer-events-none absolute inset-0 size-full opacity-60"
+            ref={svgRef}
+            className="pointer-events-none absolute right-0 bottom-0 z-0 h-[58%] w-[min(52%,22rem)] opacity-50 sm:h-[62%] sm:w-[min(46%,26rem)] sm:opacity-60 lg:w-[min(42%,28rem)]"
+            viewBox="0 0 320 220"
+            preserveAspectRatio="xMaxYMax meet"
             aria-hidden
           >
-            <path
-              data-contact-cta-line
-              d="M30 150 C160 60 260 220 560 90"
-              stroke="var(--accent)"
-              strokeOpacity="0.45"
-              strokeWidth="1.5"
-              fill="none"
-              strokeDasharray="420"
-              strokeDashoffset="420"
-            />
+            {LINE_PATHS.map((line) => (
+              <path
+                key={line.d}
+                data-contact-cta-line
+                d={line.d}
+                stroke="var(--accent)"
+                strokeOpacity={line.opacity}
+                strokeWidth={line.width}
+                strokeLinecap="round"
+                fill="none"
+              />
+            ))}
           </svg>
-          <div className="relative max-w-2xl">
+          <div className="relative z-10 max-w-2xl">
             <h2
               id="contact-cta-heading"
               data-contact-cta

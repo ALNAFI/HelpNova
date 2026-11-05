@@ -58,7 +58,15 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       const el = document.querySelector(hash);
       if (!el) return;
       event.preventDefault();
-      instance.scrollTo(el as HTMLElement, { offset: -80 });
+      const headerOffset =
+        Number.parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--header-height",
+          ),
+        ) || 72;
+      instance.scrollTo(el as HTMLElement, {
+        offset: -(headerOffset + 16),
+      });
     };
 
     document.addEventListener("click", onAnchorClick);

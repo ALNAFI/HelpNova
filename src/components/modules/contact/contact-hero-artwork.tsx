@@ -48,12 +48,21 @@ export function ContactHeroArtwork({ className }: { className?: string }) {
         stagger: 0.3,
       });
 
+      // Rotate only the inner wrapper. Outer translate keeps the pivot fixed
+      // at the illustration center so the orbit never drifts.
+      gsap.set("[data-contact-orbit]", {
+        transformOrigin: "center center",
+        svgOrigin: "0 0",
+        x: 0,
+        y: 0,
+      });
       gsap.to("[data-contact-orbit]", {
         rotate: 360,
-        transformOrigin: "210px 210px",
         duration: 40,
         ease: "none",
         repeat: -1,
+        transformOrigin: "center center",
+        svgOrigin: "0 0",
       });
     }, svg);
     return () => ctx.revert();
@@ -72,30 +81,34 @@ export function ContactHeroArtwork({ className }: { className?: string }) {
         cy="210"
         r="170"
         stroke="currentColor"
-        strokeOpacity="0.08"
-      />
-      <circle
-        data-contact-orbit
-        cx="210"
-        cy="210"
-        r="126"
-        stroke="currentColor"
         strokeOpacity="0.16"
-        strokeDasharray="5 11"
       />
+      {/* Position wrapper (static) + rotation wrapper (animated) */}
+      <g transform="translate(210 210)">
+        <g data-contact-orbit>
+          <circle
+            cx="0"
+            cy="0"
+            r="126"
+            stroke="currentColor"
+            strokeOpacity="0.28"
+            strokeDasharray="5 11"
+          />
+        </g>
+      </g>
       <path
         data-contact-path
         d="M96 268 C140 220 170 200 210 210 C252 220 286 250 330 292"
         stroke="currentColor"
-        strokeOpacity="0.4"
+        strokeOpacity="0.58"
         strokeWidth="1.5"
         strokeLinecap="round"
       />
       <path
         data-contact-path
-        d="M120 130 C160 150 180 180 210 210 C240 240 270 270 310 300"
+        d="M120 130 C160 150 180 180 210 210 C245 185 275 140 300 114"
         stroke="currentColor"
-        strokeOpacity="0.22"
+        strokeOpacity="0.36"
         strokeWidth="1.25"
         strokeDasharray="5 8"
         strokeLinecap="round"
@@ -119,9 +132,9 @@ export function ContactHeroArtwork({ className }: { className?: string }) {
           rx="14"
           fill="var(--surface)"
           stroke="currentColor"
-          strokeOpacity="0.28"
+          strokeOpacity="0.42"
         />
-        <path d="M92 124 H126 M92 134 H114" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.5" strokeLinecap="round" />
+        <path d="M92 124 H126 M92 134 H114" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round" />
       </g>
 
       <g data-contact-float data-contact-node>
@@ -129,7 +142,7 @@ export function ContactHeroArtwork({ className }: { className?: string }) {
         <circle cx="330" cy="292" r="5.5" fill="currentColor" />
       </g>
       <g data-contact-float data-contact-node>
-        <circle cx="96" cy="268" r="12" fill="var(--surface)" stroke="currentColor" strokeOpacity="0.3" />
+        <circle cx="96" cy="268" r="12" fill="var(--surface)" stroke="currentColor" strokeOpacity="0.45" />
         <circle cx="96" cy="268" r="4" fill="currentColor" />
       </g>
       <g data-contact-float data-contact-node>
@@ -141,10 +154,10 @@ export function ContactHeroArtwork({ className }: { className?: string }) {
           rx="12"
           fill="var(--accent-soft)"
           stroke="currentColor"
-          strokeOpacity="0.25"
+          strokeOpacity="0.4"
         />
-        <circle cx="302" cy="114" r="3.5" fill="currentColor" fillOpacity="0.55" />
-        <path d="M312 111 H330" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.5" strokeLinecap="round" />
+        <circle cx="302" cy="114" r="3.5" fill="currentColor" fillOpacity="0.7" />
+        <path d="M312 111 H330" stroke="currentColor" strokeOpacity="0.55" strokeWidth="1.5" strokeLinecap="round" />
       </g>
     </svg>
   );

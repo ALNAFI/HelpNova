@@ -16,9 +16,10 @@ const icons = {
 } as const;
 
 const accents = {
-  violet: "from-accent/25 via-accent-soft/60 to-surface",
-  indigo: "from-indigo-400/20 via-accent-soft/40 to-surface",
-  rose: "from-rose-400/20 via-accent-soft/35 to-surface",
+  featured:
+    "border-accent/30 bg-[linear-gradient(160deg,color-mix(in_oklab,var(--accent)_22%,transparent),var(--accent-soft)_42%,var(--surface)_78%)] shadow-[0_18px_40px_-28px_color-mix(in_oklab,var(--accent)_55%,transparent)]",
+  subtle:
+    "border-border bg-surface hover:border-accent/25",
 } as const;
 
 export function ContactResources() {
@@ -65,30 +66,28 @@ export function ContactResources() {
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-6">
-          {contactResources.map((resource, index) => {
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {contactResources.map((resource) => {
             const Icon = icons[resource.id as keyof typeof icons];
-            const wide = index === 0;
             return (
               <Link
                 key={resource.id}
                 href={resource.href}
                 data-contact-resource
                 className={cn(
-                  "group relative overflow-hidden rounded-[1.55rem] border border-border bg-gradient-to-br p-6 shadow-[var(--shadow-soft)] transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-accent/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-7",
+                  "group relative flex h-full flex-col overflow-hidden rounded-[1.55rem] border p-6 shadow-[var(--shadow-soft)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6",
                   accents[resource.accent],
-                  wide ? "lg:col-span-3" : "lg:col-span-3",
-                  index === 0 && "lg:col-span-6 xl:col-span-3 xl:row-span-2",
-                  index > 0 && "xl:col-span-3",
+                  resource.accent === "featured" &&
+                    "hover:border-accent/45 hover:shadow-[0_22px_48px_-26px_color-mix(in_oklab,var(--accent)_65%,transparent)]",
                 )}
               >
-                <span className="inline-flex size-11 items-center justify-center rounded-2xl border border-accent/25 bg-surface/80 text-accent">
-                  <Icon className="size-5" aria-hidden />
+                <span className="inline-flex size-10 items-center justify-center rounded-2xl border border-accent/25 bg-accent-soft text-accent">
+                  <Icon className="size-4" aria-hidden />
                 </span>
-                <h3 className="mt-5 font-heading text-xl font-semibold tracking-tight sm:text-2xl">
+                <h3 className="mt-5 font-heading text-xl font-semibold tracking-tight text-balance">
                   {resource.title}
                 </h3>
-                <p className="mt-3 max-w-md text-sm leading-7 text-muted">
+                <p className="mt-3 flex-1 text-sm leading-7 text-muted">
                   {resource.description}
                 </p>
                 <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent">

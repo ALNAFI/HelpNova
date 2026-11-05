@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { CheckCircle2, Info, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { ContactSubjectSelector } from "@/components/modules/contact/contact-subject-selector";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { routes } from "@/config/routes";
 import {
   contactPageCopy,
   type ContactSubjectId,
@@ -103,6 +105,19 @@ export function ContactFormSection() {
     return () => ctx.revert();
   }, [confirmed, reducedMotion]);
 
+  useEffect(() => {
+    if (!confirmed) return;
+    const timer = window.setTimeout(() => {
+      setName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+      setErrors({});
+      setConfirmed(false);
+    }, 5000);
+    return () => window.clearTimeout(timer);
+  }, [confirmed]);
+
   const clearFieldError = (field: keyof FieldErrors) => {
     setErrors((current) => {
       if (!current[field]) return current;
@@ -153,16 +168,13 @@ export function ContactFormSection() {
     setEmail(normalizeEmail(email));
     setMessage(message.trim());
     setConfirmed(true);
-    window.requestAnimationFrame(() => {
-      confirmationRef.current?.focus();
-    });
   };
 
   return (
     <section
       ref={sectionRef}
       id="contact-form"
-      className="relative py-12 sm:py-16"
+      className="relative scroll-mt-[calc(var(--header-height)+1rem)] py-12 sm:py-16"
       aria-labelledby="contact-form-heading"
     >
       <Container>
@@ -173,80 +185,17 @@ export function ContactFormSection() {
           >
             {contactPageCopy.formTitle}
           </h2>
-          <p className="mt-3 text-base leading-7 text-muted">
+          <p className="mt-3 max-w-xl text-base leading-7 text-muted">
             {contactPageCopy.formSupport}
           </p>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-8">
-          <aside
-            data-contact-form-reveal
-            className="rounded-[1.75rem] border border-border bg-surface p-6 shadow-[var(--shadow-soft)] sm:p-7"
-          >
-            <span className="inline-flex size-11 items-center justify-center rounded-2xl border border-accent/25 bg-accent-soft text-accent">
-              <Sparkles className="size-5" aria-hidden />
-            </span>
-            <h3 className="mt-5 font-heading text-xl font-semibold tracking-tight">
-              {contactPageCopy.formIntroTitle}
-            </h3>
-            <p className="mt-3 text-sm leading-7 text-muted">
-              {contactPageCopy.formIntroBody}
-            </p>
-            <div className="mt-6 rounded-[1.2rem] border border-accent/25 bg-accent-soft/45 px-4 py-3 text-sm text-foreground">
-              <p className="flex items-start gap-2">
-                <Info className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
-                <span>{contactPageCopy.formNotice}</span>
-              </p>
-            </div>
-            <div className="mt-6 overflow-hidden rounded-[1.25rem] border border-border bg-surface-muted/40 p-4" aria-hidden>
-              <div className="rounded-2xl bg-accent px-4 py-3 text-sm text-accent-foreground">
-                Exploring HelpNova&apos;s contact interface…
-              </div>
-              <div className="mt-3 rounded-2xl border border-border bg-surface px-4 py-3 text-sm text-muted">
-                Local preview only. No inbox delivery.
-              </div>
-            </div>
-          </aside>
-
-          <div
-            data-contact-form-reveal
-            className="rounded-[1.75rem] border border-border bg-surface p-5 shadow-[var(--shadow-soft)] sm:p-7"
-          >
-            {confirmed ? (
-              <div
-                ref={confirmationRef}
-                id={confirmationId}
-                tabIndex={-1}
-                role="status"
-                aria-live="polite"
-                className="outline-none"
-              >
-                <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                  <span className="inline-flex size-14 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
-                    <CheckCircle2 className="size-7" aria-hidden />
-                  </span>
-                  <div>
-                    <h3 className="font-heading text-2xl font-semibold tracking-tight">
-                      {contactPageCopy.confirmationTitle}
-                    </h3>
-                    <p className="mt-2 text-sm leading-7 text-muted">
-                      {contactPageCopy.confirmationDescription}
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-muted">
-                      {contactPageCopy.confirmationHint}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                  <Button type="button" onClick={resetForm} size="lg">
-                    {contactPageCopy.startAgainLabel}
-                  </Button>
-                  <Button href="/demo" variant="secondary" size="lg">
-                    Explore Demo
-                  </Button>
-                </div>
-              </div>
-            ) : (
+        <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-8">
+          <div className="relative order-1 lg:order-2">
+            <div
+              data-contact-form-reveal
+              className="rounded-[1.75rem] border border-border bg-surface p-5 shadow-[var(--shadow-soft)] sm:p-7"
+            >
               <form noValidate onSubmit={handleSubmit} className="space-y-5">
                 <div className="space-y-2">
                   <label htmlFor={nameId} className="block text-sm font-medium">
@@ -258,7 +207,7 @@ export function ContactFormSection() {
                     name="name"
                     type="text"
                     autoComplete="name"
-                    placeholder="Alex Morgan"
+                    placeholder="Your full name"
                     value={name}
                     aria-invalid={errors.name ? true : undefined}
                     aria-describedby={
@@ -331,7 +280,8 @@ export function ContactFormSection() {
 
                 <div className="space-y-2">
                   <p id={subjectId} className="block text-sm font-medium">
-                    Subject <span className="text-accent">*</span>
+                    {contactPageCopy.subjectLabel}{" "}
+                    <span className="text-accent">*</span>
                   </p>
                   <ContactSubjectSelector
                     value={subject}
@@ -357,23 +307,18 @@ export function ContactFormSection() {
                 </div>
 
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-3">
-                    <label
-                      htmlFor={messageId}
-                      className="block text-sm font-medium"
-                    >
-                      Message <span className="text-accent">*</span>
-                    </label>
-                    <span className="text-xs text-muted">
-                      {message.trim().length} characters
-                    </span>
-                  </div>
+                  <label
+                    htmlFor={messageId}
+                    className="block text-sm font-medium"
+                  >
+                    Message <span className="text-accent">*</span>
+                  </label>
                   <textarea
                     ref={messageRef}
                     id={messageId}
                     name="message"
-                    rows={6}
-                    placeholder="Share a question, idea, or note about the HelpNova concept…"
+                    rows={4}
+                    placeholder="Tell us how we can help…"
                     value={message}
                     aria-invalid={errors.message ? true : undefined}
                     aria-describedby={
@@ -392,7 +337,7 @@ export function ContactFormSection() {
                     }}
                     className={cn(
                       fieldClass(Boolean(errors.message)),
-                      "min-h-[9.5rem] resize-y py-3",
+                      "min-h-[7rem] resize-y py-3",
                     )}
                   />
                   {errors.message ? (
@@ -406,22 +351,73 @@ export function ContactFormSection() {
                   ) : null}
                 </div>
 
-                <div className="flex flex-col gap-3 pt-1 sm:flex-row">
+                <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center">
                   <Button type="submit" size="lg">
                     {contactPageCopy.submitLabel}
                   </Button>
                   <Button
                     type="button"
-                    variant="secondary"
+                    variant="ghost"
                     size="lg"
                     onClick={resetForm}
+                    className="px-3 text-muted hover:text-foreground"
                   >
                     {contactPageCopy.clearLabel}
                   </Button>
                 </div>
               </form>
-            )}
+            </div>
+
+            {confirmed ? (
+              <div
+                ref={confirmationRef}
+                id={confirmationId}
+                role="status"
+                aria-live="polite"
+                className="absolute top-full left-0 right-0 z-10 mt-3 flex items-center gap-2.5 rounded-[1.15rem] border border-accent/30 bg-surface px-4 py-3 text-sm font-medium text-foreground shadow-[var(--shadow-soft)]"
+              >
+                <CheckCircle2
+                  className="size-4 shrink-0 text-accent"
+                  aria-hidden
+                />
+                <p>{contactPageCopy.confirmationTitle}</p>
+              </div>
+            ) : null}
           </div>
+
+          <aside
+            data-contact-form-reveal
+            className="order-2 h-fit rounded-[1.75rem] border border-border bg-surface p-6 shadow-[var(--shadow-soft)] sm:p-7 lg:sticky lg:top-[calc(var(--header-height)+1.5rem)] lg:order-1 lg:self-start"
+          >
+            <span className="inline-flex size-11 items-center justify-center rounded-2xl border border-accent/25 bg-accent-soft text-accent">
+              <Sparkles className="size-5" aria-hidden />
+            </span>
+            <h3 className="mt-5 font-heading text-xl font-semibold tracking-tight">
+              {contactPageCopy.formIntroTitle}
+            </h3>
+            <p className="mt-3 text-sm leading-7 text-muted">
+              {contactPageCopy.formIntroBody}
+            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+              <Link
+                href={routes.demo.href}
+                className="inline-flex items-center gap-1 font-medium text-accent transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {contactPageCopy.formDemoLinkLabel}
+                <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+              <span className="text-border" aria-hidden>
+                ·
+              </span>
+              <Link
+                href={routes.faq.href}
+                className="inline-flex items-center gap-1 font-medium text-accent transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {contactPageCopy.formFaqLinkLabel}
+                <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+            </div>
+          </aside>
         </div>
       </Container>
     </section>

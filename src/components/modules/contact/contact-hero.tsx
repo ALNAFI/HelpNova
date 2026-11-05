@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { ArrowDown } from "lucide-react";
 import { ContactHeroArtwork } from "@/components/modules/contact/contact-hero-artwork";
+import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { contactPageCopy } from "@/data/marketing/contact";
 import { getGsap } from "@/lib/gsap";
@@ -35,7 +37,7 @@ export function ContactHero() {
   return (
     <header
       ref={ref}
-      className="relative overflow-hidden pt-12 pb-10 sm:pt-16 sm:pb-14"
+      className="relative overflow-hidden pt-12 pb-6 sm:pt-16 sm:pb-8"
     >
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] overflow-hidden"
@@ -58,7 +60,8 @@ export function ContactHero() {
               data-contact-hero
               className="mt-5 font-heading text-[2.2rem] leading-[1.08] font-semibold tracking-tight text-balance sm:text-[3rem] lg:text-[3.4rem]"
             >
-              {contactPageCopy.heroTitle}
+              <span className="sm:whitespace-nowrap">Great ideas begin</span>{" "}
+              <span className="sm:block">with a conversation.</span>
             </h1>
             <p
               data-contact-hero
@@ -66,12 +69,12 @@ export function ContactHero() {
             >
               {contactPageCopy.heroDescription}
             </p>
-            <p
-              data-contact-hero
-              className="mt-4 text-sm font-medium tracking-wide text-accent"
-            >
-              {contactPageCopy.heroSecondary}
-            </p>
+            <div data-contact-hero className="mt-7">
+              <Button href={contactPageCopy.heroCtaHref} size="lg">
+                {contactPageCopy.heroCtaLabel}
+                <ArrowDown className="size-4" aria-hidden />
+              </Button>
+            </div>
           </div>
           <div data-contact-hero className="mx-auto w-full max-w-md lg:max-w-none">
             <ContactHeroArtwork className="mx-auto aspect-square w-full max-w-[26rem]" />

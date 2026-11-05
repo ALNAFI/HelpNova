@@ -35,7 +35,7 @@ export function Accordion({ items }: { items: AccordionItemData[] }) {
                 <span>{item.question}</span>
                 <ChevronDown
                   className={cn(
-                    "size-4 shrink-0 text-muted transition-transform duration-200",
+                    "size-4 shrink-0 text-muted transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
                     isOpen && "rotate-180",
                   )}
                   aria-hidden
@@ -46,10 +46,17 @@ export function Accordion({ items }: { items: AccordionItemData[] }) {
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
-              hidden={!isOpen}
-              className="px-5 pb-5 text-sm leading-6 text-muted"
+              data-open={isOpen}
+              className="faq-panel"
             >
-              {item.answer}
+              <div className="faq-panel-inner">
+                <div
+                  className="faq-panel-content px-5 pb-5 text-sm leading-6 text-muted"
+                  aria-hidden={!isOpen}
+                >
+                  {item.answer}
+                </div>
+              </div>
             </div>
           </div>
         );
