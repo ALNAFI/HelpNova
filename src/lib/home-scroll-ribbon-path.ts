@@ -292,22 +292,24 @@ export function buildHomeRibbonPath(opts: {
   }
   side = 1;
 
-  // Weave through homepage sections (skip hero = index 0)
+  // Weave through homepage sections (skip hero = index 0).
+  // Follow each section through its full height so the path reaches pricing / CTA / footer.
   for (let i = 1; i < opts.sections.length; i++) {
     const sec = opts.sections[i];
-    if (!sec || sec.top < yCursor) continue;
-    fillTo(sec.top);
+    if (!sec) continue;
+    if (sec.top > yCursor + 0.2) fillTo(sec.top);
     const next: 1 | -1 = side === 1 ? -1 : 1;
-    crossTo(next, sec.headBottom);
-    // Soft loop into the section body
-    if (sec.bottom > yCursor + 0.55) {
-      push(bridge(side, side, yCursor, Math.min(sec.bottom - 0.15, yCursor + 1.4), ctx));
+    crossTo(next, Math.max(sec.headBottom, yCursor + 0.55));
+    if (sec.bottom > yCursor + 0.4) {
+      push(bridge(side, side, yCursor, sec.bottom - 0.08, ctx));
     }
   }
 
-  // Closing run
-  if (opts.endY > yCursor + 0.35) {
-    push(bridge(side, side, yCursor, opts.endY + 1.2, ctx));
+  // Closing run through the remaining page (final CTA → footer).
+  const closeY = Math.max(opts.endY + 0.85, yCursor + 1.2);
+  if (closeY > yCursor + 0.25) {
+    fillTo(yCursor + (closeY - yCursor) * 0.35);
+    push(bridge(side, side, yCursor, closeY, ctx));
   }
 
   const smooth = resample(catmullRom(raw, 20), 0.065);
@@ -363,8 +365,9 @@ export function indexAtLength(path: RibbonPath, target: number) {
 
 /**
  * Target unroll length for the current scroll.
- * Maps viewport tip Y evenly across path length so sideways weaves
- * don't jump (1…6 then suddenly 15…). Tip stays near tipViewportY on average.
+ * Aims the tip at `tipViewportY` using the real path Y (path shape unchanged).
+ * Sideways weaves can jump this target — the ribbon component eases through
+ * the gap so segments play out instead of blinking 6 → 15.
  * (screenY/height = (pathY - scrollNorm) / 1.76)
  */
 export function headLengthForScroll(
@@ -375,7 +378,10 @@ export function headLengthForScroll(
   if (!path.length || path.totalLength <= 0) return 0;
   const { tipViewportY } = homeScrollRibbonConfig;
   const targetY = scrollNorm + tipViewportY * 1.76;
-  const span = path.yEnd - path.yStart;
-  const t = Math.max(0, Math.min(1, (targetY - path.yStart) / span));
-  return path.totalLength * t;
+
+  let idx = 0;
+  for (let i = 0; i < path.length; i++) {
+    if (path.points[i * 4 + 1] <= targetY) idx = i;
+  }
+  return path.reached[idx];
 }

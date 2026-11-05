@@ -24,13 +24,13 @@ function readTheme(): ThemeColors {
     return {
       copper: [0.62, 0.48, 0.92],
       ivory: [0.96, 0.93, 1],
-      opacity: 0.26,
+      opacity: 0.30,
     };
   }
   return {
     copper: [0.55, 0.32, 0.78],
     ivory: [0.98, 0.94, 0.9],
-    opacity: 0.22,
+    opacity: .50,
   };
 }
 
@@ -198,7 +198,15 @@ export function HomeScrollRibbon({
     let height = 0;
     let dpr = 1;
     let headCurrent = 0;
-    const { reducedMotionLength } = homeScrollRibbonConfig;
+    let headTarget = 0;
+    let lastTs = 0;
+    let prevNorm = 0;
+    const {
+      reducedMotionLength,
+      headFollow,
+      headCatchUp,
+      headFollowBoost,
+    } = homeScrollRibbonConfig;
 
     const rebuild = () => {
       const vh = Math.max(1, window.innerHeight);
@@ -212,6 +220,7 @@ export function HomeScrollRibbon({
         desktop: window.innerWidth > 700,
       });
       headCurrent = Math.min(headCurrent, path.totalLength);
+      headTarget = Math.min(headTarget, path.totalLength);
     };
 
     const scrollNorm = () =>
@@ -229,38 +238,62 @@ export function HomeScrollRibbon({
         const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
         return t * t * (3 - 2 * t);
       };
-      const mid = ease(0.03, 0.14, p) * (1 - ease(0.86, 0.97, p));
-      const tail = ease(0.86, 0.97, p);
-      const base = 0.24 * (1 - tail) + 0.2 * tail;
-      return (base + (0.12 - base) * mid) * (theme.opacity / 0.24);
+      // Stay visible through pricing / FAQ; only ease out near the very end.
+      const mid = ease(0.03, 0.14, p) * (1 - ease(0.94, 0.995, p));
+      const tail = ease(0.94, 0.995, p);
+      const base = 0.24 * (1 - tail) + 0.16 * tail;
+      return (base + (0.14 - base) * mid) * (theme.opacity / 0.24);
     };
 
-    const syncHead = () => {
-      if (!path) return;
-      const progress = scrollProgress();
-      const norm = scrollNorm();
-      const target = headLengthForScroll(path, norm, progress);
-      // Locked 1:1 to scroll — no catch-up lag on fast up/down.
-      headCurrent = reducedMotion
-        ? Math.min(path.totalLength * reducedMotionLength, target)
-        : target;
-    };
-
-    const paintFrame = () => {
+    const paintFrame = (ts: number) => {
       raf = 0;
       if (!path) return;
 
       const progress = scrollProgress();
       const norm = scrollNorm();
-      syncHead();
+      const target = headLengthForScroll(path, norm, progress);
+
+      if (reducedMotion) {
+        headTarget = Math.min(path.totalLength * reducedMotionLength, target);
+        headCurrent = headTarget;
+        lastTs = 0;
+        prevNorm = norm;
+      } else {
+        headTarget = target;
+        const dt = lastTs ? Math.min(0.05, (ts - lastTs) / 1000) : 0.016;
+        const scrollVel = lastTs
+          ? (norm - prevNorm) / Math.max(dt, 1e-4)
+          : 0;
+        prevNorm = norm;
+        lastTs = ts;
+
+        const delta = headTarget - headCurrent;
+        if (Math.abs(delta) > 0.0005) {
+          // Ease through weave gaps (no snap blink); boost with scroll speed.
+          const rate = headFollow + Math.abs(scrollVel) * headFollowBoost;
+          const eased = Math.abs(delta) * (1 - Math.exp(-rate * dt));
+          const floor = headCatchUp * dt;
+          const step = Math.min(Math.abs(delta), Math.max(eased, floor));
+          headCurrent += Math.sign(delta) * step;
+        } else {
+          headCurrent = headTarget;
+        }
+      }
 
       canvas.style.opacity = String(opacityForProgress(progress));
       ctx.clearRect(0, 0, width, height);
       drawRibbon(ctx, path, norm, headCurrent, width, height, dpr, theme);
+
+      if (!reducedMotion && Math.abs(headTarget - headCurrent) > 0.001) {
+        raf = requestAnimationFrame(paintFrame);
+      } else {
+        lastTs = 0;
+      }
     };
 
     const requestPaint = () => {
       if (raf) return;
+      lastTs = 0;
       raf = requestAnimationFrame(paintFrame);
     };
 
