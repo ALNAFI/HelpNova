@@ -17,6 +17,7 @@ export function NotFoundView() {
     if (!root || reducedMotion) return;
 
     const { gsap } = getGsap();
+    const mm = gsap.matchMedia();
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: { ease: "power3.out", immediateRender: false },
@@ -46,23 +47,6 @@ export function NotFoundView() {
           "-=0.55",
         );
 
-      gsap.to("[data-orbit-node]", {
-        y: 7,
-        duration: 3.4,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
-
-      gsap.to("[data-orbit-chip]", {
-        y: -6,
-        duration: 4.2,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        stagger: 0.45,
-      });
-
       gsap.to("[data-orbit-path]", {
         opacity: 0.55,
         duration: 2.6,
@@ -70,9 +54,58 @@ export function NotFoundView() {
         yoyo: true,
         repeat: -1,
       });
+
+      mm.add(
+        {
+          isMobile: "(max-width: 639px)",
+          isDesktop: "(min-width: 640px)",
+        },
+        (mediaContext) => {
+          const isMobile = Boolean(mediaContext.conditions?.isMobile);
+          const speedScale = isMobile ? 1.5 : 1;
+
+          const spinAroundCenter = (selector: string) => {
+            const elements = gsap.utils.toArray<SVGGElement>(selector);
+
+            elements.forEach((el) => {
+              const baseDuration = Number(
+                el.getAttribute("data-orbit-duration") || "24",
+              );
+              const direction =
+                el.getAttribute("data-orbit-dir") === "reverse" ? -1 : 1;
+              const duration = baseDuration * speedScale;
+
+              gsap.to(el, {
+                rotation: 360 * direction,
+                svgOrigin: "210 210",
+                duration,
+                ease: "none",
+                repeat: -1,
+              });
+
+              const counters = el.querySelectorAll("[data-orbit-counter]");
+              counters.forEach((counter) => {
+                gsap.to(counter, {
+                  rotation: -360 * direction,
+                  transformOrigin: "50% 50%",
+                  duration,
+                  ease: "none",
+                  repeat: -1,
+                });
+              });
+            });
+          };
+
+          spinAroundCenter("[data-orbit-body]");
+          spinAroundCenter("[data-orbit-core]");
+        },
+      );
     }, root);
 
-    return () => ctx.revert();
+    return () => {
+      mm.revert();
+      ctx.revert();
+    };
   }, [reducedMotion]);
 
   return (
