@@ -1,22 +1,152 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Flip } from "gsap/Flip";
 import { Container } from "@/components/ui/container";
 import { aboutPageCopy, aboutValues } from "@/data/marketing/about";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/utils/cn";
 
-export function AboutValues() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const labelId = useId();
-  const [activeId, setActiveId] = useState<(typeof aboutValues)[number]["id"]>(
-    aboutValues[0].id,
+type ValueId = (typeof aboutValues)[number]["id"];
+type ValueItem = (typeof aboutValues)[number];
+type FlipState = ReturnType<typeof Flip.getState>;
+
+const CYCLE_MS = 15_000;
+const SEGMENT_COUNT = aboutValues.length;
+const PANEL_EASE = "sine.inOut";
+const PANEL_OUT_MS = 0.3;
+const PANEL_IN_MS = 0.34;
+const PANEL_SHIFT = 8;
+const STACK_FLIP_MS = 0.72;
+const STACK_FLIP_EASE = "back.out(0.85)";
+
+function indexFromProgress(progress: number) {
+  if (progress >= 1) return 0;
+  return Math.min(
+    SEGMENT_COUNT - 1,
+    Math.floor(progress * SEGMENT_COUNT),
   );
-  const reducedMotion = usePrefersReducedMotion();
+}
+
+function progressFromIndex(index: number) {
+  return index / SEGMENT_COUNT;
+}
+
+/** Active first; remaining keep canonical Clarity → Ownership → Care order. */
+function stackForActive(activeId: ValueId): ValueItem[] {
   const active =
     aboutValues.find((value) => value.id === activeId) ?? aboutValues[0];
-  const activeIndex = aboutValues.findIndex((value) => value.id === activeId);
+  const rest = aboutValues.filter((value) => value.id !== active.id);
+  return [active, ...rest];
+}
+
+export function AboutValues() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const tabListRef = useRef<HTMLDivElement>(null);
+  const panelContentRef = useRef<HTMLDivElement>(null);
+  const labelId = useId();
+  const [activeId, setActiveId] = useState<ValueId>(aboutValues[0].id);
+  const [renderedId, setRenderedId] = useState<ValueId>(aboutValues[0].id);
+  const [progress, setProgress] = useState(0);
+  const reducedMotion = usePrefersReducedMotion();
+
+  const stackedValues = useMemo(() => stackForActive(activeId), [activeId]);
+  const rendered =
+    aboutValues.find((value) => value.id === renderedId) ?? aboutValues[0];
+
+  const progressRef = useRef(0);
+  const pausedRef = useRef(false);
+  const rafRef = useRef<number | null>(null);
+  const lastTsRef = useRef<number | null>(null);
+  const panelAnimGen = useRef(0);
+  const renderedIdRef = useRef<ValueId>(aboutValues[0].id);
+  const activeIdRef = useRef<ValueId>(aboutValues[0].id);
+  const reducedMotionRef = useRef(reducedMotion);
+  const flipStateRef = useRef<FlipState | null>(null);
+  const stackFlipTlRef = useRef<ReturnType<typeof Flip.from> | null>(null);
+
+  useEffect(() => {
+    activeIdRef.current = activeId;
+  }, [activeId]);
+
+  useEffect(() => {
+    reducedMotionRef.current = reducedMotion;
+  }, [reducedMotion]);
+
+  const captureStackFlipState = useCallback(() => {
+    const tabs = tabListRef.current?.querySelectorAll("[data-value-tab]");
+    if (!tabs?.length || reducedMotionRef.current) {
+      flipStateRef.current = null;
+      return;
+    }
+    const { Flip: FlipPlugin } = getGsap();
+    flipStateRef.current = FlipPlugin.getState(tabs);
+  }, []);
+
+  const syncFromProgress = useCallback(
+    (nextProgress: number) => {
+      const wrapped =
+        nextProgress >= 1 ? nextProgress % 1 : Math.max(0, nextProgress);
+      progressRef.current = wrapped;
+      setProgress(wrapped * 100);
+      const nextId = aboutValues[indexFromProgress(wrapped)].id;
+      if (nextId === activeIdRef.current) return;
+      captureStackFlipState();
+      activeIdRef.current = nextId;
+      setActiveId(nextId);
+    },
+    [captureStackFlipState],
+  );
+
+  const selectValue = useCallback(
+    (id: ValueId) => {
+      const index = aboutValues.findIndex((value) => value.id === id);
+      if (index < 0) return;
+      syncFromProgress(progressFromIndex(index));
+    },
+    [syncFromProgress],
+  );
+
+  useLayoutEffect(() => {
+    const state = flipStateRef.current;
+    flipStateRef.current = null;
+    if (!state || reducedMotion) return;
+
+    const tabs = tabListRef.current?.querySelectorAll("[data-value-tab]");
+    if (!tabs?.length) return;
+
+    const { gsap, Flip } = getGsap();
+    stackFlipTlRef.current?.kill();
+    gsap.killTweensOf(tabs);
+
+    stackFlipTlRef.current = Flip.from(state, {
+      targets: tabs,
+      duration: STACK_FLIP_MS,
+      ease: STACK_FLIP_EASE,
+      stagger: 0.035,
+      nested: true,
+      prune: true,
+      onComplete: () => {
+        stackFlipTlRef.current = null;
+      },
+    });
+  }, [activeId, stackedValues, reducedMotion]);
+
+  useEffect(() => {
+    return () => {
+      stackFlipTlRef.current?.kill();
+      stackFlipTlRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -38,6 +168,82 @@ export function AboutValues() {
     }, el);
     return () => ctx.revert();
   }, [reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    const tick = (timestamp: number) => {
+      if (lastTsRef.current == null) {
+        lastTsRef.current = timestamp;
+      }
+      const delta = timestamp - lastTsRef.current;
+      lastTsRef.current = timestamp;
+
+      if (!pausedRef.current) {
+        syncFromProgress(progressRef.current + delta / CYCLE_MS);
+      }
+
+      rafRef.current = window.requestAnimationFrame(tick);
+    };
+
+    rafRef.current = window.requestAnimationFrame(tick);
+
+    return () => {
+      if (rafRef.current != null) {
+        window.cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      lastTsRef.current = null;
+    };
+  }, [reducedMotion, syncFromProgress]);
+
+  useEffect(() => {
+    if (activeId === renderedIdRef.current) return;
+
+    const node = panelContentRef.current;
+    if (!node || reducedMotion) {
+      renderedIdRef.current = activeId;
+      setRenderedId(activeId);
+      return;
+    }
+
+    const { gsap } = getGsap();
+    const gen = ++panelAnimGen.current;
+    gsap.killTweensOf(node);
+
+    const tl = gsap.timeline({ defaults: { ease: PANEL_EASE } });
+
+    tl.to(node, {
+      autoAlpha: 0,
+      y: -PANEL_SHIFT,
+      duration: PANEL_OUT_MS,
+    })
+      .add(() => {
+        if (gen !== panelAnimGen.current) return;
+        renderedIdRef.current = activeId;
+        setRenderedId(activeId);
+      })
+      .set(node, { y: PANEL_SHIFT })
+      .to(node, {
+        autoAlpha: 1,
+        y: 0,
+        duration: PANEL_IN_MS,
+      });
+
+    return () => {
+      tl.kill();
+      gsap.killTweensOf(node);
+    };
+  }, [activeId, reducedMotion]);
+
+  const pauseAutoplay = () => {
+    pausedRef.current = true;
+  };
+
+  const resumeAutoplay = () => {
+    pausedRef.current = false;
+    lastTsRef.current = null;
+  };
 
   return (
     <section
@@ -61,29 +267,34 @@ export function AboutValues() {
         <div
           data-values-reveal
           className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-10"
+          onMouseEnter={pauseAutoplay}
+          onMouseLeave={resumeAutoplay}
         >
           <div
+            ref={tabListRef}
             role="tablist"
             aria-labelledby={labelId}
-            className="space-y-3"
+            className="relative space-y-3"
           >
             <span id={labelId} className="sr-only">
-              Core values
+              Our principles
             </span>
-            {aboutValues.map((value) => {
+            {stackedValues.map((value) => {
               const selected = value.id === activeId;
               return (
                 <button
                   key={value.id}
                   type="button"
                   role="tab"
+                  data-value-tab={value.id}
                   aria-selected={selected}
-                  onClick={() => setActiveId(value.id)}
+                  onClick={() => selectValue(value.id)}
                   className={cn(
-                    "group w-full rounded-[1.35rem] border px-5 py-4 text-left transition-[border-color,background-color,transform] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-6 sm:py-5",
+                    "group w-full rounded-[1.35rem] border px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-6 sm:py-5",
+                    "transition-[border-color,background-color,box-shadow,color] duration-[600ms] ease-in-out",
                     selected
                       ? "border-accent/40 bg-accent-soft/50 shadow-[var(--shadow-soft)]"
-                      : "border-border bg-surface hover:border-accent/25",
+                      : "border-border bg-surface shadow-none hover:border-accent/25",
                   )}
                 >
                   <div className="flex items-baseline justify-between gap-4">
@@ -92,15 +303,15 @@ export function AboutValues() {
                     </span>
                     <span
                       className={cn(
-                        "h-1 flex-1 rounded-full bg-border transition-colors",
-                        selected && "bg-accent/50",
+                        "h-1 flex-1 rounded-full transition-colors duration-[600ms] ease-in-out",
+                        selected ? "bg-accent/50" : "bg-border",
                       )}
                       aria-hidden
                     />
                   </div>
                   <p
                     className={cn(
-                      "mt-3 font-heading text-3xl font-semibold tracking-tight transition-colors sm:text-4xl",
+                      "mt-3 font-heading text-3xl font-semibold tracking-tight transition-colors duration-[600ms] ease-in-out sm:text-4xl",
                       selected ? "text-foreground" : "text-muted",
                     )}
                   >
@@ -120,19 +331,19 @@ export function AboutValues() {
               aria-hidden
             >
               <div
-                className="h-full rounded-full bg-accent transition-[width] duration-500 ease-out"
-                style={{
-                  width: `${((activeIndex + 1) / aboutValues.length) * 100}%`,
-                }}
+                className="h-full rounded-full bg-accent"
+                style={{ width: `${progress}%` }}
               />
             </div>
-            <ValueArtwork valueId={active.id} />
-            <h3 className="mt-6 font-heading text-2xl font-semibold tracking-tight">
-              {active.title}
-            </h3>
-            <p className="mt-3 text-sm leading-7 text-muted sm:text-[0.98rem]">
-              {active.detail}
-            </p>
+            <div ref={panelContentRef} className="will-change-transform">
+              <ValueArtwork valueId={rendered.id} />
+              <h3 className="mt-6 font-heading text-2xl font-semibold tracking-tight">
+                {rendered.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-muted sm:text-[0.98rem]">
+                {rendered.detail}
+              </p>
+            </div>
           </div>
         </div>
       </Container>
@@ -156,7 +367,7 @@ function ValueArtwork({ valueId }: { valueId: string }) {
     );
   }
 
-  if (valueId === "consideration") {
+  if (valueId === "care") {
     return (
       <svg viewBox="0 0 420 220" className="w-full rounded-2xl bg-surface-muted/40" aria-hidden>
         <circle cx="210" cy="110" r="54" fill="var(--accent-soft)" />

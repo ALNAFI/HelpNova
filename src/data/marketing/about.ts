@@ -11,8 +11,8 @@ export const aboutPageCopy = {
   missionTitle: "Make every conversation easier to handle.",
   missionStatement:
     "Keep conversations organized, give teams the context they need, and make the next step clear.",
-  valuesEyebrow: "What guides the design",
-  valuesTitle: "Three principles. One thoughtful direction.",
+  valuesEyebrow: "Our principles",
+  valuesTitle: "Clear by design. Human at heart.",
   visionEyebrow: "The product vision",
   visionTitle: "Designed to connect the dots.",
   visionDescription:
@@ -91,25 +91,25 @@ export const aboutValues = [
     id: "clarity",
     number: "01",
     title: "Clarity",
-    description: "Make complex interactions easier to understand.",
+    description: "Less searching. More understanding.",
     detail:
-      "Hierarchy, labels, and restrained surfaces help people scan conversations, rules, and outcomes without noise.",
+      "Clear labels and organized conversations help teams find what matters and know what to do next.",
   },
   {
     id: "ownership",
     number: "02",
     title: "Ownership",
-    description: "Make responsibilities and next steps visible.",
+    description: "Every conversation has a next step.",
     detail:
-      "Assignments, statuses, and routing paths keep the next action clear so work does not disappear between handoffs.",
+      "Visible assignments and statuses help teams take responsibility and keep handoffs moving.",
   },
   {
-    id: "consideration",
+    id: "care",
     number: "03",
-    title: "Consideration",
-    description: "Design every interaction with people in mind.",
+    title: "Care",
+    description: "Built around the people using it.",
     detail:
-      "From keyboard focus to reduced motion, the experience should feel calm, readable, and respectful of attention.",
+      "Readable content, comfortable controls, and thoughtful interactions make everyday work easier.",
   },
 ] as const;
 
