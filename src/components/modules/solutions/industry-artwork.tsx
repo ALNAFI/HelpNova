@@ -14,7 +14,7 @@ export function IndustryArtwork({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-xl border border-border bg-[color-mix(in_oklab,var(--surface)_90%,#f4efe6)] p-3 dark:bg-surface-muted/60",
+        "relative flex min-h-[7.5rem] flex-col justify-center overflow-hidden rounded-xl border border-border bg-[color-mix(in_oklab,var(--surface)_90%,#f4efe6)] p-3 dark:bg-surface-muted/60",
         active && "ring-1 ring-accent/35",
         className,
       )}
@@ -38,7 +38,7 @@ function EcommerceMark() {
         <span className="font-mono text-[10px] text-accent">ORD-48291</span>
       </div>
       <div className="rounded-lg border border-dashed border-border bg-surface px-2.5 py-2">
-        <p className="font-mono text-[10px] text-muted">Tracking line</p>
+        <p className="font-mono text-[10px] text-muted">In transit</p>
         <svg viewBox="0 0 120 12" className="mt-1.5 h-3 w-full">
           <path
             d="M2 6 H118"
@@ -62,7 +62,7 @@ function SaasMark() {
         <span className="size-1.5 rounded-full bg-success/70" />
         <span className="ml-2 inline-flex items-center gap-1 rounded-md bg-accent-soft px-1.5 py-0.5 text-[10px] font-medium text-accent">
           <SquareStack className="size-3" />
-          Workspace
+          Workspace access
         </span>
       </div>
       <div className="grid grid-cols-[48px_1fr] gap-2 p-2">

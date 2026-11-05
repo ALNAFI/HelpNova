@@ -92,6 +92,42 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
           behavior: reducedMotion ? "auto" : "smooth",
         });
       },
+      scrollToElement: (
+        target: string | HTMLElement,
+        options?: { offset?: number; immediate?: boolean },
+      ) => {
+        const el =
+          typeof target === "string"
+            ? document.getElementById(target)
+            : target;
+        if (!el) return;
+
+        const headerOffset =
+          options?.offset ??
+          (Number.parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue(
+              "--header-height",
+            ),
+          ) ||
+            72);
+        const offset = -(headerOffset + 16);
+
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(el, {
+            offset,
+            duration: options?.immediate || reducedMotion ? 0 : 1.05,
+          });
+          return;
+        }
+
+        const top =
+          el.getBoundingClientRect().top + window.scrollY + offset;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior:
+            options?.immediate || reducedMotion ? "auto" : "smooth",
+        });
+      },
       getScrollProgress: () => {
         const lenis = lenisRef.current;
         if (lenis) return lenis.progress;

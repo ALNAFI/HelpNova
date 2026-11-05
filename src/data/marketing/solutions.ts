@@ -14,20 +14,22 @@ export type SolutionsScenario = {
   reference: string | null;
   team: DemoTeam;
   assignmentExplanation: string;
-  insightLabel: string;
+  workloadLabel: string;
+  workloadDescription: string;
   workloadSummary: string;
+  galleryCategory: string;
   galleryQuote: string;
   context: string;
   selectionLabel: string;
 };
 
 export const solutionsHero = {
-  eyebrow: "Solutions",
-  title: "Different businesses. Familiar support questions.",
+  eyebrow: "SOLUTIONS",
+  title: "Different businesses. Better connected support.",
   description:
-    "A delayed order, a workspace issue, or a question about an invoice. Choose an example and follow it from the first message to the team responsible.",
+    "From order updates to account access and billing questions, bring every request to the right team with the context they need.",
   primaryCta: {
-    label: "Choose your industry",
+    label: "Find your solution",
     href: "#choose-your-industry",
   },
   secondaryCta: {
@@ -37,44 +39,48 @@ export const solutionsHero = {
   slips: [
     {
       industry: "Ecommerce",
-      question: "Has my order shipped?",
+      question: "Where is my order?",
     },
     {
-      industry: "SaaS",
-      question: "Why can’t I open my workspace?",
+      industry: "Software & SaaS",
+      question: "Why can’t I access my workspace?",
     },
     {
       industry: "Services",
-      question: "Can you check this invoice?",
+      question: "Can you help with my invoice?",
     },
   ],
 } as const;
 
 export const solutionsIndustrySection = {
   id: "choose-your-industry",
-  title: "Choose your industry.",
+  title: "Find the right fit for your business.",
   description:
-    "Pick the kind of business you support. The journey below will show a customer question, its owner, and how it appears in the team’s workload.",
+    "Choose your industry to see how a customer request moves from the first message to the right team.",
 } as const;
 
 export const solutionsJourneySection = {
   id: "follow-the-inquiry",
-  title: "Follow the inquiry.",
+  title: "From first message to clear ownership.",
   description:
-    "A sample journey from the first message to the team that owns it—and where that open conversation appears in workload.",
-  sampleLabel: "Sample journey",
+    "See how a customer question reaches the right team and becomes part of their open workload.",
+  workloadStatus: "Open · Assigned",
+  workloadScope: "From this journey",
 } as const;
 
 export const solutionsGallerySection = {
-  title: "Start with a customer question.",
+  title: "A familiar question. A clear next step.",
   description:
-    "Recognize a specific issue? Trace it into the journey above.",
+    "Choose a customer question to see who takes ownership and how the conversation moves forward.",
+  actionLabel: "Follow this request",
 } as const;
 
 export const solutionsCta = {
-  title: "Take the next conversation.",
+  title: "Start your next conversation.",
   description:
-    "Open the guided demo to assign a conversation, run a routing rule, and see how the team’s workload changes.",
+    "Assign a conversation, try a routing rule, and see your team’s workload update all in one workspace.",
+  previewHeader: "Shared inbox",
+  previewStatus: "Open",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
   secondaryCta: {
     label: "Explore ecommerce solution",
@@ -95,18 +101,21 @@ export const solutionsScenarios: SolutionsScenario[] = [
     reference: "ORD-48291",
     team: "Orders",
     assignmentExplanation:
-      "The customer is asking about delivery, so the Orders team owns this inquiry.",
-    insightLabel: "Sample workload",
-    workloadSummary: "Orders · 1 open inquiry in this example.",
+      "The Orders team takes ownership, with the customer’s message and order reference in view.",
+    workloadLabel: "Open conversations",
+    workloadDescription:
+      "This conversation now appears in the Orders team’s open workload.",
+    workloadSummary: "Orders · 1 open conversation",
+    galleryCategory: "Order Tracking",
     galleryQuote:
       "My tracking hasn’t changed since Monday. Could you check my order?",
     context:
-      "A shopper is waiting for a delivery update and has an order reference.",
-    selectionLabel: "Show ecommerce journey",
+      "Keep order updates, delivery questions, and customer conversations connected.",
+    selectionLabel: "View ecommerce journey",
   },
   {
     id: "saas",
-    industry: "SaaS",
+    industry: "Software & SaaS",
     topic: "technical-support",
     topicLabel: "Technical Support",
     customerName: "Priya Nair",
@@ -116,14 +125,17 @@ export const solutionsScenarios: SolutionsScenario[] = [
     reference: "WS-Nova-Studio",
     team: "Technical",
     assignmentExplanation:
-      "The customer can authenticate but cannot open the product workspace, so Technical owns this inquiry.",
-    insightLabel: "Sample workload",
-    workloadSummary: "Technical · 1 open inquiry in this example.",
+      "The Technical team takes ownership, with the sign-in issue and workspace details in view.",
+    workloadLabel: "Open conversations",
+    workloadDescription:
+      "This conversation now appears in the Technical team’s open workload.",
+    workloadSummary: "Technical · 1 open conversation",
+    galleryCategory: "Account Access",
     galleryQuote:
       "I can sign in, but my workspace won’t open. Can you help?",
     context:
-      "A customer needs help opening a workspace they normally use.",
-    selectionLabel: "Show SaaS journey",
+      "Help customers resolve account access and workspace issues with the right context.",
+    selectionLabel: "View SaaS journey",
   },
   {
     id: "services",
@@ -137,14 +149,17 @@ export const solutionsScenarios: SolutionsScenario[] = [
     reference: "INV-2048",
     team: "Billing",
     assignmentExplanation:
-      "The client is questioning an invoice tied to a booked service, so Billing owns this inquiry.",
-    insightLabel: "Sample workload",
-    workloadSummary: "Billing · 1 open inquiry in this example.",
+      "The Billing team takes ownership, with the client’s question and invoice details in view.",
+    workloadLabel: "Open conversations",
+    workloadDescription:
+      "This conversation now appears in the Billing team’s open workload.",
+    workloadSummary: "Billing · 1 open conversation",
+    galleryCategory: "Billing Questions",
     galleryQuote:
       "The amount on my invoice looks different from my booking. Could you check it?",
     context:
-      "A client has a question about an invoice for a booked service.",
-    selectionLabel: "Show services journey",
+      "Keep booking details and billing questions together for clearer client support.",
+    selectionLabel: "View services journey",
   },
 ];
 
