@@ -181,12 +181,21 @@ function StagePreview({ stageId }: { stageId: string }) {
     return (
       <div className="mt-4 space-y-3 rounded-2xl border border-border bg-workspace p-3 text-workspace-text">
         <div className="grid grid-cols-3 gap-2">
-          {["12", "5", "7"].map((value) => (
+          {(
+            [
+              { value: "12", label: "Total" },
+              { value: "5", label: "Open" },
+              { value: "7", label: "Resolved" },
+            ] as const
+          ).map((metric) => (
             <div
-              key={value}
-              className="rounded-lg bg-white/8 px-2 py-2 text-center text-xs font-semibold"
+              key={metric.label}
+              className="rounded-lg bg-white/8 px-2 py-2 text-center"
             >
-              {value}
+              <div className="text-xs font-semibold">{metric.value}</div>
+              <div className="mt-0.5 text-[9px] font-medium tracking-wide text-workspace-text/70">
+                {metric.label}
+              </div>
             </div>
           ))}
         </div>

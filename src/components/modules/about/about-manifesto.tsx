@@ -27,12 +27,16 @@ export function AboutManifesto() {
           scrollTrigger: { trigger: el, start: "top 78%" },
         },
       );
-      gsap.to("[data-manifesto-line]", {
-        strokeDashoffset: 0,
-        duration: 1.4,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 70%" },
-      });
+      gsap.fromTo(
+        "[data-manifesto-line]",
+        { strokeDashoffset: 420 },
+        {
+          strokeDashoffset: 0,
+          duration: 1.4,
+          ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 70%" },
+        },
+      );
     }, el);
     return () => ctx.revert();
   }, [reducedMotion]);
@@ -40,30 +44,19 @@ export function AboutManifesto() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 sm:py-24"
+      className="relative overflow-x-clip pt-12 pb-8 sm:pt-16 sm:pb-10"
       aria-labelledby="about-manifesto-heading"
     >
       <Container>
-        <div className="relative overflow-hidden rounded-[2rem] border border-border bg-workspace px-6 py-12 text-workspace-text shadow-[var(--shadow-soft)] sm:px-10 sm:py-16 lg:px-14">
+        <div className="relative">
           <div
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,color-mix(in_oklab,var(--accent)_34%,transparent),transparent_42%),radial-gradient(circle_at_85%_15%,color-mix(in_oklab,#a78bfa_22%,transparent),transparent_35%)]"
+            className="pointer-events-none absolute -top-10 left-0 h-56 w-56 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_28%,transparent),transparent_68%)] blur-2xl sm:h-72 sm:w-72"
             aria-hidden
           />
-          <svg
-            className="pointer-events-none absolute inset-0 size-full opacity-50"
+          <div
+            className="pointer-events-none absolute top-24 right-0 hidden h-40 w-40 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_70%)] blur-2xl sm:block"
             aria-hidden
-          >
-            <path
-              data-manifesto-line
-              d="M40 180 C180 80 280 260 560 120"
-              stroke="var(--accent)"
-              strokeOpacity="0.45"
-              strokeWidth="1.5"
-              fill="none"
-              strokeDasharray="420"
-              strokeDashoffset="420"
-            />
-          </svg>
+          />
 
           <div className="relative max-w-3xl">
             <p
@@ -75,17 +68,35 @@ export function AboutManifesto() {
             <h2
               id="about-manifesto-heading"
               data-manifesto
-              className="mt-5 font-heading text-[2.1rem] leading-[1.08] font-semibold tracking-tight text-balance sm:text-[3rem] lg:text-[3.4rem]"
+              className="mt-5 font-heading text-[2.1rem] leading-[1.12] font-semibold tracking-tight text-balance sm:text-[3rem] lg:text-[3.25rem]"
             >
               {aboutPageCopy.manifestoTitle}
             </h2>
             <p
               data-manifesto
-              className="mt-6 max-w-2xl text-base leading-8 text-workspace-text/75 sm:text-lg"
+              className="mt-6 max-w-2xl text-base leading-8 text-muted sm:text-lg"
             >
               {aboutPageCopy.manifestoDescription}
             </p>
           </div>
+
+          <svg
+            className="pointer-events-none relative mt-10 block h-16 w-full max-w-md text-accent"
+            viewBox="0 0 420 64"
+            fill="none"
+            aria-hidden
+          >
+            <path
+              data-manifesto-line
+              d="M8 40 C90 8 160 56 250 24 C320 4 370 36 412 28"
+              stroke="currentColor"
+              strokeOpacity="0.45"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeDasharray="420"
+              strokeDashoffset={reducedMotion ? 0 : 420}
+            />
+          </svg>
         </div>
       </Container>
     </section>

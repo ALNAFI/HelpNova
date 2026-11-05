@@ -13,25 +13,23 @@ export const aboutPageCopy = {
     "Keep conversations organized, give teams the context they need, and make the next step clear.",
   valuesEyebrow: "Our principles",
   valuesTitle: "Clear by design. Human at heart.",
-  visionEyebrow: "The product vision",
-  visionTitle: "Designed to connect the dots.",
+  visionEyebrow: "THE PRODUCT VISION",
+  visionTitle: "One workspace. A clearer picture.",
   visionDescription:
-    "HelpNova brings three core ideas into one illustrative experience: shared conversations, workflow automation, and connected insights.",
-  rolesEyebrow: "The people behind the experience",
-  rolesTitle: "Different perspectives. Shared purpose.",
-  rolesLabel: "Illustrative roles",
-  rolesNote:
-    "HelpNova is currently a personal product concept. These roles describe disciplines that shape the experience—not a real team roster.",
-  manifestoEyebrow: "Looking ahead",
-  manifestoTitle: "The future of support should feel more connected.",
+    "Bring conversations, workflows, and insights together so every team can see what’s happening and what comes next.",
+  rolesEyebrow: "BEHIND THE EXPERIENCE",
+  rolesTitle: "Four perspectives. One connected experience.",
+  rolesDescription:
+    "Product thinking, thoughtful design, careful engineering, and customer understanding shape every part of HelpNova.",
+  manifestoEyebrow: "LOOKING AHEAD",
+  manifestoTitle: "Better support starts with better connections.",
   manifestoDescription:
-    "HelpNova is an exploration of what happens when thoughtful design, clear workflows, and useful context come together.",
-  ctaTitle: "Explore the experience behind the idea.",
+    "Our direction is simple: bring people, conversations, and workflows closer together, with clear context at every step.",
+  ctaTitle: "See how it all comes together.",
   ctaDescription:
-    "Step inside HelpNova's guided demo and discover how sample conversations, workflows, and insights connect.",
+    "Explore the shared inbox, route an inquiry, and see how each action shapes your support overview.",
   demoLabel: "Explore Demo",
   featuresLabel: "Explore Features",
-  homeLabel: "Back to Home",
 } as const;
 
 export const aboutStoryChapters = [
@@ -117,53 +115,53 @@ export const aboutVisionStages = [
   {
     id: "inbox",
     label: "Inbox",
-    title: "Shared conversations",
+    title: "Keep conversations connected.",
     description:
-      "A sample thread with assignment, an internal note, and status—so the conversation stays visible as work moves.",
+      "Bring messages, assignments, and internal notes into one thread, so everyone can follow the conversation and its next step.",
   },
   {
     id: "automation",
     label: "Automation",
-    title: "Intentional routing",
+    title: "Give every inquiry a clear direction.",
     description:
-      "An illustrative flow from inquiry to topic condition, then Matched or Otherwise toward a team destination.",
+      "Route inquiries by topic, connect them with the right team, and send unmatched requests to General Triage.",
   },
   {
     id: "insights",
     label: "Insights",
-    title: "Connected perspective",
+    title: "See where attention is needed.",
     description:
-      "Sample overview metrics, status visualization, and open workload by team drawn from the same illustrative state.",
+      "Track conversation status, resolution progress, and open workload by team—all connected to the same workspace.",
   },
 ] as const;
 
 export const aboutRoles = [
   {
     id: "product",
+    number: "01",
     title: "Product Thinking",
     description:
-      "Shaping the experience around clear problems and thoughtful solutions.",
-    accent: "violet" as const,
+      "Start with a clear problem and make every feature serve a purpose.",
   },
   {
     id: "design",
+    number: "02",
     title: "Experience Design",
     description:
-      "Making complex workflows feel intuitive, useful, and approachable.",
-    accent: "indigo" as const,
+      "Make everyday tasks easy to understand and comfortable to use.",
   },
   {
     id: "engineering",
+    number: "03",
     title: "Engineering",
     description:
-      "Bringing interactions, performance, and accessibility together.",
-    accent: "blue" as const,
+      "Bring reliable interactions, responsive layouts, and smooth performance together.",
   },
   {
     id: "customer",
+    number: "04",
     title: "Customer Perspective",
     description:
-      "Keeping real-world support needs central to the product vision.",
-    accent: "rose" as const,
+      "Keep customer needs and the realities of support work at the center.",
   },
 ] as const;
