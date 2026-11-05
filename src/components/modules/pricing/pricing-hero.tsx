@@ -7,7 +7,7 @@ export function PricingHero() {
   return (
     <header className="relative mx-auto max-w-3xl pt-10 text-center sm:pt-14 lg:pt-16">
       <div
-        className="pointer-events-none absolute top-0 left-1/2 h-56 w-[min(100%,36rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_28%,transparent),transparent_70%)] blur-2xl"
+        className="pointer-events-none absolute top-0 left-1/2 h-56 w-[min(100%,36rem)] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_12%,transparent),transparent_72%)] blur-2xl"
         aria-hidden
       />
       <div
@@ -19,10 +19,12 @@ export function PricingHero() {
       </div>
       <h1
         data-pricing-hero="title"
-        className="relative font-heading text-[2.15rem] font-semibold leading-[1.08] tracking-tight text-balance sm:text-5xl lg:text-[3.4rem]"
+        className="relative font-heading text-[2.15rem] font-semibold leading-[1.12] tracking-tight text-balance sm:text-5xl sm:leading-[1.1] lg:text-[3.4rem]"
       >
-        <span className="text-foreground">{pricingPageCopy.titleBefore} </span>
-        <span className="bg-gradient-to-r from-accent via-[#8b5cf6] to-[#c4b5fd] bg-clip-text text-transparent dark:from-[#c4b5fd] dark:via-accent dark:to-[#ddd6fe]">
+        <span className="block text-foreground">
+          {pricingPageCopy.titleBefore}
+        </span>
+        <span className="block bg-gradient-to-r from-accent via-[#8b5cf6] to-[#c4b5fd] bg-clip-text text-transparent dark:from-[#c4b5fd] dark:via-accent dark:to-[#ddd6fe]">
           {pricingPageCopy.titleAccent}
         </span>
       </h1>

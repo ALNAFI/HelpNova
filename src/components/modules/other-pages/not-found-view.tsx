@@ -130,7 +130,7 @@ export function NotFoundView() {
               className="mx-auto mt-4 max-w-md text-base leading-7 text-muted lg:mx-0"
             >
               The page you&apos;re looking for may have moved, disappeared, or
-              never existed. Don&apos;t worry—there&apos;s still plenty to
+              never existed. Don&apos;t worry, there&apos;s still plenty to
               explore.
             </p>
 

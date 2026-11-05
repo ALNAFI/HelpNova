@@ -106,7 +106,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     slug: "organizing-shared-inbox",
     introduction: [
       "A shared inbox works when every message has a place, an owner, and a next action. Without that structure, channels blur together and attention scatters across unfinished threads.",
-      "This article looks at practical ways to organize conversations—status, ownership, and filters—so teams can stay oriented. The examples are conceptual and intended for product exploration.",
+      "This article looks at practical ways to organize conversations status, ownership, and filters—so teams can stay oriented. The examples are conceptual and intended for product exploration.",
     ],
     sections: [
       {

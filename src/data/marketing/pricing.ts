@@ -1,10 +1,16 @@
-import { faqItems } from "@/data/marketing/faq";
 import type {
   BillingPeriod,
-  FaqItem,
   PricingComparisonRow,
   PricingPlan,
 } from "@/types/marketing";
+
+export type PricingFaqItem = {
+  id: string;
+  question: string;
+  answer: string;
+  /** Phrases in `answer` that render as in-copy links. */
+  links?: ReadonlyArray<{ phrase: string; href: string }>;
+};
 
 export const pricingPlans: PricingPlan[] = [
   {
@@ -12,43 +18,46 @@ export const pricingPlans: PricingPlan[] = [
     name: "Essential",
     priceMonthly: 29,
     priceYearly: 24,
-    description: "For small teams exploring a unified support workspace.",
+    description:
+      "Everything a small team needs to organize customer support.",
     features: [
-      "Shared inbox preview",
-      "Basic topic routing examples",
-      "Sample insights dashboard",
-      "Up to 3 teammate seats (sample)",
+      "Shared inbox",
+      "Automatic routing by topic",
+      "Support performance dashboard",
+      "Up to 3 team members",
     ],
-    cta: { label: "Explore Demo", href: "/demo" },
+    cta: { label: "Purchase", href: "/demo" },
   },
   {
     id: "team",
     name: "Team",
     priceMonthly: 79,
     priceYearly: 66,
-    description: "For growing support orgs that need clearer handoffs.",
+    description:
+      "Help your growing team collaborate and automate everyday tasks.",
     features: [
       "Everything in Essential",
-      "Matched / Otherwise workflows",
+      "Conditional workflows",
       "Internal notes & assignments",
-      "Workload by team views",
-      "Priority tags (display-only in samples)",
+      "Team workload overview",
+      "Conversation priority tags",
     ],
     highlighted: true,
-    cta: { label: "Explore Demo", href: "/demo" },
+    cta: { label: "Purchase", href: "/demo" },
   },
   {
     id: "scale",
     name: "Scale",
     priceMonthly: 149,
     priceYearly: 124,
-    description: "For larger fictional orgs evaluating advanced structure.",
+    description:
+      "Manage more conversations with advanced workflows and insights.",
     features: [
       "Everything in Team",
-      "Expanded scenario library",
-      "Historical sample charts",
-      "Illustrative integration map",
-      "Dedicated concept walkthrough",
+      "Order, billing & technical support workflows",
+      "7-day & 30-day conversation insights",
+      "12 integration previews (browse only)",
+      "Interactive guided demo walkthrough",
     ],
     cta: { label: "Contact Us", href: "/contact" },
   },
@@ -58,35 +67,37 @@ export const pricingPlans: PricingPlan[] = [
 export const pricingComparisonRows: PricingComparisonRow[] = [
   {
     id: "shared-inbox",
-    label: "Shared inbox preview",
+    label: "Shared inbox",
     essential: true,
     team: true,
     scale: true,
   },
   {
     id: "topic-routing",
-    label: "Basic topic routing examples",
+    label: "Automatic routing by topic",
     essential: true,
     team: true,
     scale: true,
   },
   {
     id: "insights",
-    label: "Sample insights dashboard",
+    label: "Support performance dashboard",
     essential: true,
     team: true,
     scale: true,
   },
   {
     id: "teammate-seats",
-    label: "Teammate seats (sample)",
+    label: "Team members",
+    // Essential defines “Up to 3”; Team/Scale inherit that cap via “Everything in …”.
+    // No higher seat counts exist in project data.
     essential: "Up to 3",
-    team: "Growing teams",
-    scale: "Expanded teams",
+    team: "Up to 3",
+    scale: "Up to 3",
   },
   {
     id: "matched-workflows",
-    label: "Matched / Otherwise workflows",
+    label: "Conditional workflows",
     essential: false,
     team: true,
     scale: true,
@@ -100,97 +111,131 @@ export const pricingComparisonRows: PricingComparisonRow[] = [
   },
   {
     id: "workload",
-    label: "Workload by team views",
+    label: "Team workload overview",
     essential: false,
     team: true,
     scale: true,
   },
   {
     id: "priority-tags",
-    label: "Priority tags (display-only)",
+    label: "Conversation priority tags",
     essential: false,
     team: true,
     scale: true,
   },
   {
     id: "scenario-library",
-    label: "Expanded scenario library",
+    label: "Order, billing & technical support workflows",
     essential: false,
     team: false,
     scale: true,
   },
   {
     id: "historical-charts",
-    label: "Historical sample charts",
+    label: "7-day & 30-day conversation insights",
     essential: false,
     team: false,
     scale: true,
   },
   {
     id: "integration-map",
-    label: "Illustrative integration map",
+    label: "12 integration previews (browse only)",
     essential: false,
     team: false,
     scale: true,
   },
   {
     id: "walkthrough",
-    label: "Dedicated concept walkthrough",
+    label: "Interactive guided demo walkthrough",
     essential: false,
     team: false,
     scale: true,
   },
 ];
 
-export const pricingDisclaimer =
-  "Sample concept pricing for this personal project—not a live paid service. No checkout or billing is connected.";
+export const pricingDisclaimer = "Find the right fit for your team.";
 
 export const pricingPageCopy = {
   eyebrow: "Flexible pricing",
-  titleBefore: "Simple plans.",
-  titleAccent: "Extraordinary possibilities.",
+  titleBefore: "Better support.",
+  titleAccent: "A plan for every team.",
   description:
-    "Explore flexible plans designed to bring conversations, workflows, and team collaboration together.",
+    "Choose the right plan to manage conversations, automate tasks, and support your customers.",
   comparisonEyebrow: "Plan comparison",
   comparisonTitle: "Compare plans with confidence.",
   comparisonDescription:
-    "See how Essential, Team, and Scale differ across the same sample capabilities shown in the cards above.",
+    "Compare features and choose the right plan for your team.",
+  comparisonFeaturesLabel: "Features",
+  comparisonLegendIncluded: "Included",
+  comparisonLegendNotIncluded: "Not included",
   faqEyebrow: "Pricing FAQ",
-  faqTitle: "Questions about these sample plans.",
+  faqTitle: "Your pricing questions, answered.",
   faqDescription:
-    "Clear answers about illustrative pricing, what you can explore locally, and where to go next.",
+    "Learn about the plans, explore the demo, and find the right fit for your team.",
   faqViewAllLabel: "View all FAQs",
   faqViewAllHref: "/faq",
-  ctaTitle: "Ready to explore a smarter way to support?",
+  ctaTitle: "See HelpNova in action.",
   ctaDescription:
-    "Discover how conversations, automation, and insights come together in one connected experience.",
+    "Explore the inbox, try automated workflows, and see your team’s insights all in one interactive demo.",
   ctaPrimary: { label: "Explore Demo", href: "/demo" },
-  ctaSecondary: { label: "Contact Us", href: "/contact" },
+  ctaSecondary: { label: "Explore Features", href: "/features" },
   featuredBadge: "Most Popular",
   monthlyLabel: "Monthly",
   yearlyLabel: "Yearly",
   perMonthSuffix: "/mo",
   billedYearlyHint: "billed yearly",
   billedMonthlyHint: "billed monthly",
+  billingToggleHint: "Choose monthly or yearly billing.",
 } as const;
 
-const pricingFaqIds = [
-  "pricing-real",
-  "what-is-helpnova",
-  "how-demo-works",
-  "no-account",
-  "get-in-touch",
-] as const;
-
-export const pricingFaqItems: FaqItem[] = pricingFaqIds
-  .map((id) => faqItems.find((item) => item.id === id))
-  .filter((item): item is FaqItem => Boolean(item));
+export const pricingFaqItems: PricingFaqItem[] = [
+  {
+    id: "plans-available",
+    question: "Are these plans available to purchase?",
+    answer:
+      "The plans and prices shown are examples of how HelpNova could be packaged. Paid subscriptions are currently unavailable.",
+  },
+  {
+    id: "plans-compare",
+    question: "How do the plans compare?",
+    answer:
+      "Essential covers shared inbox and basic support tools. Team adds workflows and collaboration features. Scale showcases additional insights and advanced support workflows. See the comparison table above for the full breakdown.",
+  },
+  {
+    id: "try-before",
+    question: "Can I try HelpNova before choosing a plan?",
+    answer:
+      "Yes. Explore the interactive demo to manage conversations, try automated workflows, and view support insights. It uses sample data, which resets when you refresh the page.",
+    links: [{ phrase: "Explore the interactive demo", href: "/demo" }],
+  },
+  {
+    id: "account-required",
+    question: "Do I need an account to explore HelpNova?",
+    answer:
+      "No account is required. You can browse the website and explore the interactive demo freely.",
+  },
+  {
+    id: "learn-more",
+    question: "Where can I learn more about HelpNova?",
+    answer:
+      "Explore our features to learn about the inbox, automation, and insights, or visit the full FAQ for more answers.",
+    links: [
+      { phrase: "Explore our features", href: "/features" },
+      { phrase: "full FAQ", href: "/faq" },
+    ],
+  },
+];
 
 export function getPlanPrice(
   plan: PricingPlan,
   period: BillingPeriod,
 ): number {
   return period === "yearly" ? plan.priceYearly : plan.priceMonthly;
+}
+
+/** Yearly field is the monthly equivalent; annual total is that amount × 12. */
+export function getYearlyAnnualTotal(plan: PricingPlan): number {
+  return plan.priceYearly * 12;
 }
 
 /** Yearly amount is a lower monthly-equivalent from the same plan data. */

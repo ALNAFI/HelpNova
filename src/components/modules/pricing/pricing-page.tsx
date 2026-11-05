@@ -8,7 +8,6 @@ import { PricingCta } from "@/components/modules/pricing/pricing-cta";
 import { PricingFaq } from "@/components/modules/pricing/pricing-faq";
 import { PricingHero } from "@/components/modules/pricing/pricing-hero";
 import { Container } from "@/components/ui/container";
-import { getMaxYearlySavingsPercent } from "@/data/marketing/pricing";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import type { BillingPeriod } from "@/types/marketing";
@@ -18,7 +17,6 @@ export function PricingPage() {
   const reducedMotion = usePrefersReducedMotion();
   const [billingPeriod, setBillingPeriod] =
     useState<BillingPeriod>("monthly");
-  const savingsPercent = getMaxYearlySavingsPercent();
 
   useEffect(() => {
     const el = pageRef.current;
@@ -98,11 +96,11 @@ export function PricingPage() {
       <div className="pointer-events-none absolute inset-0 bg-grid-fade opacity-80" />
       <div className="pointer-events-none absolute inset-0 bg-noise" />
       <div
-        className="pointer-events-none absolute top-[28%] left-[-10%] size-[22rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_18%,transparent),transparent_70%)] blur-3xl"
+        className="pointer-events-none absolute top-[28%] left-[-10%] size-[22rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_8%,transparent),transparent_72%)] blur-3xl"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute top-[52%] right-[-12%] size-[24rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_14%,transparent),transparent_70%)] blur-3xl"
+        className="pointer-events-none absolute top-[52%] right-[-12%] size-[24rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_6%,transparent),transparent_72%)] blur-3xl"
         aria-hidden
       />
 
@@ -113,7 +111,6 @@ export function PricingPage() {
             <BillingToggle
               value={billingPeriod}
               onChange={setBillingPeriod}
-              savingsPercent={savingsPercent}
             />
           </div>
           <div className="mt-8 sm:mt-10">

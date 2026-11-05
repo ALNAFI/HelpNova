@@ -318,6 +318,6 @@ export const supportScenarios: SupportScenario[] = [
 export const finalCta = {
   headline: "See how support feels when routing is calm and clear",
   description:
-    "Explore the interactive workspace preview, switch themes, and walk through sample conversations—entirely local, with nothing sent.",
+    "Explore the interactive workspace preview, switch themes, and walk through sample conversations entirely local, with nothing sent.",
   cta: { label: "Explore the workspace", href: homeAnchors.workspace },
 } as const;

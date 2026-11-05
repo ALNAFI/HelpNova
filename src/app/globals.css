@@ -371,7 +371,49 @@ h4,
   box-shadow:
     0 8px 22px color-mix(in oklab, var(--accent) 18%, transparent),
     inset 0 1px 0 color-mix(in oklab, white 70%, transparent);
-  transition: transform 0.45s cubic-bezier(0.22, 1.4, 0.36, 1);
+  /* Position/scale driven by GSAP jelly tween — no CSS transform transition. */
+}
+
+.pricing-glass-toggle-opt {
+  transition: color 0.25s ease;
+}
+
+.pricing-billing-badge {
+  opacity: 0;
+  transform: translateY(-12px) scale(0.6);
+  transition:
+    transform 0.45s cubic-bezier(0.3, 1.8, 0.5, 1),
+    opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.pricing-billing-badge-visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.pricing-billing-note {
+  animation: pricing-billing-note-in 0.35s ease-out;
+}
+
+@keyframes pricing-billing-note-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pricing-digit-reel {
+  transition: transform 0.6s cubic-bezier(0.3, 1.2, 0.5, 1);
+}
+
+.pricing-digit-reel-static {
+  transition: none;
 }
 
 .dark .pricing-glass-toggle-thumb {
@@ -707,21 +749,37 @@ h4,
 }
 
 .pricing-glass-faq {
-  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 52%, transparent);
+  background: color-mix(in oklab, var(--surface) 90%, transparent);
   box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 45%, transparent),
-    var(--shadow-soft);
+    inset 0 1px 0 color-mix(in oklab, white 32%, transparent),
+    0 10px 28px color-mix(in oklab, var(--foreground) 3.5%, transparent);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
 .pricing-glass-faq-open {
-  border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
-  background: color-mix(in oklab, var(--accent-soft) 28%, var(--surface));
+  border-color: color-mix(in oklab, var(--accent) 26%, transparent);
+  background: color-mix(in oklab, var(--accent-soft) 42%, var(--surface));
   box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 40%, transparent),
-    0 14px 36px color-mix(in oklab, var(--accent) 10%, transparent);
+    inset 0 1px 0 color-mix(in oklab, white 36%, transparent),
+    0 12px 32px color-mix(in oklab, var(--accent) 8%, transparent);
+}
+
+.dark .pricing-glass-faq {
+  border-color: color-mix(in oklab, var(--border) 70%, transparent);
+  background: color-mix(in oklab, var(--surface) 82%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 6%, transparent),
+    0 10px 28px color-mix(in oklab, black 22%, transparent);
+}
+
+.dark .pricing-glass-faq-open {
+  border-color: color-mix(in oklab, var(--accent) 34%, transparent);
+  background: color-mix(in oklab, var(--accent-soft) 22%, var(--surface));
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 8%, transparent),
+    0 14px 34px color-mix(in oklab, var(--accent) 12%, transparent);
 }
 
 .pricing-glass-cta {
@@ -785,8 +843,23 @@ h4,
     transform: none !important;
   }
 
-  .pricing-glass-toggle-thumb {
+  .pricing-glass-toggle-thumb,
+  .pricing-digit-reel,
+  .pricing-billing-badge {
     transition: none !important;
+  }
+
+  .pricing-billing-note {
+    animation: none !important;
+  }
+
+  .pricing-billing-badge:not(.pricing-billing-badge-visible) {
+    opacity: 0 !important;
+  }
+
+  .pricing-billing-badge-visible {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

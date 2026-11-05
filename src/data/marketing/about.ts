@@ -2,7 +2,7 @@ export const aboutPageCopy = {
   heroEyebrow: "The thinking behind HelpNova",
   heroTitle: "Better support begins with a better way to think.",
   heroDescription:
-    "HelpNova explores a more connected approach to customer conversations—bringing clarity to the inbox, intention to workflows, and perspective to every interaction.",
+    "HelpNova explores a more connected approach to customer conversations bringing clarity to the inbox, intention to workflows, and perspective to every interaction.",
   heroLabel: "An independent product concept",
   storyTitle: "Every great experience starts with a simple question.",
   storySupport: "What if support tools felt less fragmented—and more connected?",

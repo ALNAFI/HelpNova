@@ -175,8 +175,8 @@ export function PricingCards({ period }: PricingCardsProps) {
     <div className="relative">
       <div ref={shellRef} className="relative">
         <div className="sr-only" aria-live="polite" aria-atomic="true">
-          {selectedPlanName} plan selected. Purchase chooses a sample plan
-          visually only—no payment is processed.
+          {selectedPlanName} plan selected. Plan selection is visual only—no
+          payment is processed.
         </div>
 
         <div ref={frameRef} className="pricing-selection-frame" aria-hidden />
@@ -194,7 +194,7 @@ export function PricingCards({ period }: PricingCardsProps) {
           ))}
         </div>
       </div>
-      <p className="mx-auto mt-7 max-w-2xl text-center text-sm leading-6 text-muted">
+      <p className="mx-auto mt-6 max-w-xl text-center text-sm leading-6 text-foreground/70 dark:text-foreground/65">
         {pricingDisclaimer}
       </p>
     </div>

@@ -5,7 +5,9 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedPrice } from "@/components/modules/pricing/animated-price";
 import {
+  formatPlanPrice,
   getPlanPrice,
+  getYearlyAnnualTotal,
   pricingPageCopy,
 } from "@/data/marketing/pricing";
 import type { BillingPeriod, PricingPlan } from "@/types/marketing";
@@ -39,7 +41,9 @@ export function PricingCard({
 }: PricingCardProps) {
   const localRef = useRef<HTMLElement | null>(null);
   const price = getPlanPrice(plan, period);
+  const yearlyAnnual = getYearlyAnnualTotal(plan);
   const showPopularBadge = Boolean(plan.highlighted);
+  const isContactCta = plan.cta.href.includes("contact");
 
   const assignRef = (node: HTMLElement | null) => {
     localRef.current = node;
@@ -125,35 +129,35 @@ export function PricingCard({
         <h3 className="mt-4 font-heading text-2xl font-semibold tracking-tight text-foreground">
           {plan.name}
         </h3>
-        <p className="mt-2 min-h-[3rem] text-sm leading-6 text-muted">
+        <p className="mt-2 min-h-[3rem] text-sm leading-6 text-foreground/75 dark:text-foreground/70">
           {plan.description}
         </p>
 
-        <div className="mt-6 flex items-end gap-1.5">
+        <div className="mt-5 flex items-end gap-1.5">
           <AnimatedPrice
             amount={price}
             className="font-heading text-4xl font-semibold tracking-tight text-foreground sm:text-[2.75rem]"
           />
-          <div className="mb-1.5 flex flex-col text-sm text-muted">
+          <div className="mb-1.5 flex flex-col text-sm text-foreground/70 dark:text-foreground/65">
             <span>{pricingPageCopy.perMonthSuffix}</span>
-            <span className="text-xs">
+            <span key={period} className="pricing-billing-note text-xs text-foreground/65 dark:text-foreground/60">
               {period === "yearly"
-                ? pricingPageCopy.billedYearlyHint
+                ? `${formatPlanPrice(yearlyAnnual)} billed yearly`
                 : pricingPageCopy.billedMonthlyHint}
             </span>
           </div>
         </div>
 
         <div
-          className="mt-7 h-px w-full bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--border-strong)_85%,transparent)] to-transparent"
+          className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-[color-mix(in_oklab,var(--border-strong)_85%,transparent)] to-transparent"
           aria-hidden
         />
 
-        <ul className="mt-6 flex flex-1 flex-col gap-3">
+        <ul className="mt-5 flex flex-1 flex-col gap-2.5">
           {plan.features.map((feature) => (
             <li
               key={feature}
-              className="flex gap-2.5 text-sm leading-6 text-foreground"
+              className="flex gap-2.5 text-sm leading-6 text-foreground/90"
             >
               <span className="mt-0.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent">
                 <Check className="size-3.5" strokeWidth={2.5} aria-hidden />
@@ -164,24 +168,34 @@ export function PricingCard({
         </ul>
 
         <div className="mt-8">
-          <Button
-            type="button"
-            variant={selected ? "primary" : "secondary"}
-            size="lg"
-            className={cn(
-              "w-full",
-              selected && "pricing-purchase-selected",
-            )}
-            aria-pressed={selected}
-            aria-label={
-              selected
-                ? `${plan.name} plan selected`
-                : `Select ${plan.name} plan`
-            }
-            onClick={() => onSelect(plan.id)}
-          >
-            Purchase
-          </Button>
+          {isContactCta ? (
+            <Button
+              href={plan.cta.href}
+              variant={selected ? "primary" : "secondary"}
+              size="lg"
+              className={cn("w-full", selected && "pricing-purchase-selected")}
+              aria-label={plan.cta.label}
+              onClick={() => onSelect(plan.id)}
+            >
+              {plan.cta.label}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant={selected ? "primary" : "secondary"}
+              size="lg"
+              className={cn("w-full", selected && "pricing-purchase-selected")}
+              aria-pressed={selected}
+              aria-label={
+                selected
+                  ? `${plan.name} plan selected`
+                  : `${plan.cta.label} — select ${plan.name}`
+              }
+              onClick={() => onSelect(plan.id)}
+            >
+              {plan.cta.label}
+            </Button>
+          )}
         </div>
       </div>
     </article>

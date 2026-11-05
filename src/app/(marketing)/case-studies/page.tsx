@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 export const metadata: Metadata = {
   title: "Case Studies",
   description:
-    "Explore illustrative HelpNova support scenarios for order tracking, billing, and technical conversations—connected through inbox, automation, and insights.",
+    "Explore illustrative HelpNova support scenarios for order tracking, billing, and technical conversations connected through inbox, automation, and insights.",
   alternates: {
     canonical: `${siteConfig.url}/case-studies`,
   },

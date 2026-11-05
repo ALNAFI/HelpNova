@@ -21,7 +21,9 @@ function ComparisonCell({
       <span
         className={cn(
           "text-sm font-medium",
-          featured ? "text-foreground" : "text-muted",
+          featured
+            ? "text-foreground"
+            : "text-foreground/75 dark:text-foreground/70",
         )}
       >
         {value}
@@ -39,7 +41,7 @@ function ComparisonCell({
   }
 
   return (
-    <span className="inline-flex size-7 items-center justify-center text-muted/70">
+    <span className="inline-flex size-7 items-center justify-center text-foreground/40 dark:text-foreground/35">
       <Minus className="size-3.5" aria-hidden />
       <span className="sr-only">Not included</span>
     </span>
@@ -66,24 +68,30 @@ export function PricingComparison() {
         >
           {pricingPageCopy.comparisonTitle}
         </h2>
-        <p className="mt-4 text-base leading-7 text-muted">
+        <p className="mt-4 text-base leading-7 text-foreground/75 dark:text-foreground/70">
           {pricingPageCopy.comparisonDescription}
         </p>
       </div>
 
       <div className="pricing-glass-panel overflow-hidden rounded-[1.35rem]">
         <div className="overflow-x-auto overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:thin]">
-          <table className="w-full min-w-[40rem] border-collapse text-left">
+          <table className="w-full min-w-[44rem] table-fixed border-collapse text-left">
             <caption className="sr-only">
-              Feature comparison across Essential, Team, and Scale sample plans
+              Feature comparison across Essential, Team, and Scale plans
             </caption>
+            <colgroup>
+              <col className="w-[40%]" />
+              <col className="w-[20%]" />
+              <col className="w-[20%]" />
+              <col className="w-[20%]" />
+            </colgroup>
             <thead>
-              <tr className="border-b border-border/80">
+              <tr className="border-b border-border/50">
                 <th
                   scope="col"
-                  className="sticky left-0 z-10 min-w-[12rem] bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] px-4 py-4 text-sm font-semibold text-foreground backdrop-blur-md sm:px-5"
+                  className="sticky left-0 z-10 min-w-[11rem] bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] px-4 py-4 text-[0.9375rem] font-semibold text-foreground backdrop-blur-md sm:min-w-[14rem] sm:px-5"
                 >
-                  Capability
+                  {pricingPageCopy.comparisonFeaturesLabel}
                 </th>
                 {pricingPlans.map((plan) => (
                   <th
@@ -111,11 +119,11 @@ export function PricingComparison() {
               {pricingComparisonRows.map((row) => (
                 <tr
                   key={row.id}
-                  className="pricing-compare-row border-b border-border/60 last:border-b-0"
+                  className="pricing-compare-row border-b border-border/35 last:border-b-0"
                 >
                   <th
                     scope="row"
-                    className="sticky left-0 z-10 bg-[color-mix(in_oklab,var(--surface)_94%,transparent)] px-4 py-3.5 text-sm font-medium text-foreground backdrop-blur-md sm:px-5"
+                    className="sticky left-0 z-10 bg-[color-mix(in_oklab,var(--surface)_94%,transparent)] px-4 py-3.5 text-[0.9375rem] font-medium leading-6 text-foreground backdrop-blur-md sm:px-5"
                   >
                     {row.label}
                   </th>
@@ -156,6 +164,31 @@ export function PricingComparison() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <div
+        className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-foreground/70 dark:text-foreground/65"
+        role="list"
+        aria-label="Comparison legend"
+      >
+        <div className="inline-flex items-center gap-2" role="listitem">
+          <span
+            className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent"
+            aria-hidden
+          >
+            <Check className="size-3.5" strokeWidth={2.5} />
+          </span>
+          <span>{pricingPageCopy.comparisonLegendIncluded}</span>
+        </div>
+        <div className="inline-flex items-center gap-2" role="listitem">
+          <span
+            className="inline-flex size-7 shrink-0 items-center justify-center text-foreground/40 dark:text-foreground/35"
+            aria-hidden
+          >
+            <Minus className="size-3.5" />
+          </span>
+          <span>{pricingPageCopy.comparisonLegendNotIncluded}</span>
         </div>
       </div>
     </section>
