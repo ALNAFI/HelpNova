@@ -7,8 +7,8 @@ export function SignupPageView() {
   return (
     <AuthShell
       eyebrow="Get started"
-      title="Explore a smarter way to support."
-      description="Discover connected conversations, intelligent workflows, and meaningful insights—all in one interactive experience."
+      title="Create your HelpNova account."
+      description="Bring your conversations, workflows, and team together."
     >
       <SignupForm />
     </AuthShell>

@@ -206,7 +206,7 @@ export function SignupForm() {
 
       <div data-auth-field>
         <GoogleAuthButton
-          label="Connect with Google"
+          label="Continue with Google"
           onClick={handleGoogleClick}
           disabled={isSubmitting}
         />

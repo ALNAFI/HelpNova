@@ -39,26 +39,24 @@ function RequirementRow({ item }: { item: PasswordRequirement }) {
   return (
     <li
       className={cn(
-        "flex items-center gap-2 text-sm transition-colors duration-200",
+        "flex items-start gap-2 text-sm leading-5 transition-colors duration-200 sm:items-center",
         item.met ? "text-success" : "text-muted",
       )}
     >
       <span
         className={cn(
-          "inline-flex size-4 shrink-0 items-center justify-center rounded-full transition-[background-color,color,transform] duration-200",
-          item.met
-            ? "bg-success/15 text-success"
-            : "bg-surface-muted text-muted",
+          "mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full transition-[background-color,color,transform] duration-200 sm:mt-0",
+          item.met ? "bg-success/15 text-success" : "text-muted/70",
         )}
         aria-hidden
       >
         {item.met ? (
           <Check className="size-3" strokeWidth={2.5} />
         ) : (
-          <Circle className="size-2.5" strokeWidth={2.25} />
+          <Circle className="size-3.5" strokeWidth={1.75} fill="none" />
         )}
       </span>
-      <span>
+      <span className="min-w-0 text-pretty">
         <span className="sr-only">{item.met ? "Met: " : "Not met: "}</span>
         {item.label}
       </span>
