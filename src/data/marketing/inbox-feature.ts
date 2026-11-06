@@ -49,7 +49,7 @@ export const inboxFeatureConversation = {
   orderReference: "ORD-48291",
   priority: "Medium",
   tags: ["orders", "shipping"],
-  sampleLabel: "Sample conversation",
+  sampleLabel: "Conversation journey",
 } as const;
 
 export const inboxFeatureMoments: InboxMoment[] = [
@@ -166,27 +166,27 @@ export const inboxFeatureWalkthrough = {
 export const inboxFeatureConnection = {
   title: "What changes beyond the thread?",
   description:
-    "The same sample conversation connects routing, ownership, and open workload.",
+    "See how one customer conversation connects routing, team ownership, and workload insights.",
   automation: {
     title: "Automation — Routing",
-    copy: "An Order rule can match an Order Tracking inquiry and assign it to Orders.",
+    copy: "Route order-related questions to the right team, so every inquiry has a clear owner.",
     href: "/features/automation",
     linkLabel: "Explore automation",
   },
   inbox: {
     title: "Shared Inbox — Ownership",
-    copy: "The agent sees the question, assignment, and internal note together. Resolving the conversation updates its status while preserving its history.",
+    copy: "Keep customer messages, team assignments, and internal notes together in one conversation.",
   },
   insights: {
     title: "Insights — Open workload",
-    copy: "This conversation’s contribution to the receiving team’s open workload.",
+    copy: "See how conversations affect your team's workload and track what still needs attention.",
   },
 } as const;
 
 export const inboxFeatureCta = {
   title: "Take the next conversation.",
   description:
-    "Open the guided demo to assign a thread, add a team-only note, and resolve or reopen the conversation yourself.",
+    "Take control of customer conversations. Assign them to the right team, leave internal notes, and keep every request moving forward.",
   primaryCta: { label: "Explore Demo", href: "/demo" },
 } as const;
 

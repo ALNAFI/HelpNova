@@ -1,12 +1,10 @@
 import { InboxFeatureCta } from "@/components/modules/features/inbox/inbox-feature-cta";
-import { InboxFeatureHero } from "@/components/modules/features/inbox/inbox-feature-hero";
-import { InboxFeatureWalkthrough } from "@/components/modules/features/inbox/inbox-feature-walkthrough";
+import { InboxFeatureDragSurface } from "@/components/modules/features/inbox/inbox-feature-drag-surface";
 
 export function InboxFeaturePage() {
   return (
     <>
-      <InboxFeatureHero />
-      <InboxFeatureWalkthrough />
+      <InboxFeatureDragSurface />
       <InboxFeatureCta />
     </>
   );

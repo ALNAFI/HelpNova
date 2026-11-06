@@ -26,7 +26,7 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/utils/cn";
 
 export function InboxFeatureWalkthrough() {
-  const [momentId, setMomentId] = useState<InboxMomentId>("handoff");
+  const [momentId, setMomentId] = useState<InboxMomentId>("resolved");
   const moment = getInboxMoment(momentId);
   const reducedMotion = usePrefersReducedMotion();
   const threadRef = useRef<HTMLDivElement>(null);
@@ -46,9 +46,15 @@ export function InboxFeatureWalkthrough() {
 
     const { gsap } = getGsap();
     const ctx = gsap.context(() => {
-      const assignment = root.querySelector("[data-handoff-assignment]");
-      const stamp = root.querySelector("[data-owner-stamp]");
-      const note = root.querySelector("[data-handoff-note]");
+      const assignment = root.querySelector(
+        '[data-moment-thread="handoff"] [data-handoff-assignment]',
+      );
+      const note = root.querySelector(
+        '[data-moment-thread="handoff"] [data-handoff-note]',
+      );
+      const stamp = root.querySelector(
+        '[data-moment-details="handoff"] [data-owner-stamp]',
+      );
 
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
       timelineRef.current = tl;
@@ -170,9 +176,25 @@ export function InboxFeatureWalkthrough() {
 
           <div
             ref={threadRef}
-            className="grid gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
+            className="grid items-start gap-4 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]"
           >
-            <article className="overflow-hidden rounded-[var(--radius-workspace)] border border-border bg-surface shadow-[var(--shadow-soft)]">
+            {/* Same cell for every tab. Height follows the Resolved thread box. */}
+            <div className="grid min-w-0">
+            {inboxFeatureMoments.map((panel) => {
+              const active = momentId === panel.id;
+              return (
+            <article
+              key={panel.id}
+              data-moment-thread={panel.id}
+              aria-hidden={!active}
+              style={{ gridColumn: 1, gridRow: 1, alignSelf: "start" }}
+              className={cn(
+                "overflow-hidden rounded-[var(--radius-workspace)] border border-border bg-surface shadow-[var(--shadow-soft)]",
+                active
+                  ? "relative z-10 visible"
+                  : "pointer-events-none invisible",
+              )}
+            >
               <header className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-4 py-3.5 sm:px-5">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
@@ -189,11 +211,11 @@ export function InboxFeatureWalkthrough() {
                     </div>
                   </div>
                 </div>
-                <StatusBadge status={moment.status} />
+                <StatusBadge status={panel.status} />
               </header>
 
-              <div className="space-y-3 p-4 sm:p-5">
-                {moment.items.map((item) => {
+              <div className="space-y-2.5 p-4 sm:p-5">
+                {panel.items.map((item) => {
                   if (item.kind === "activity") {
                     const isResolved = item.id === "act-resolved";
                     return (
@@ -232,11 +254,10 @@ export function InboxFeatureWalkthrough() {
                       className={cn(
                         "rounded-2xl border px-3.5 py-3",
                         isCustomer &&
-                          "rounded-tl-md border-border bg-surface-muted/70",
+                          "rounded-tl-md border-border bg-surface-muted/90",
                         item.kind === "reply" &&
                           "ml-auto max-w-[92%] border-accent/25 bg-accent/10",
-                        isNote &&
-                          "border-accent/30 bg-accent/10",
+                        isNote && "border-accent/30 bg-accent/10",
                       )}
                     >
                       <div className="mb-1.5 flex flex-wrap items-center gap-2">
@@ -245,13 +266,13 @@ export function InboxFeatureWalkthrough() {
                           {isCustomer
                             ? " · Customer"
                             : item.kind === "reply"
-                              ? " · Sample agent"
+                              ? " · Support Agent"
                               : ""}
                         </span>
                         {isNote ? (
                           <span className="inline-flex items-center gap-1 rounded-md bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-accent uppercase">
                             <StickyNote className="size-3" aria-hidden />
-                            Internal note · Team only
+                            Internal note
                           </span>
                         ) : null}
                         <span className="ml-auto font-mono text-[10px] text-muted">
@@ -266,19 +287,37 @@ export function InboxFeatureWalkthrough() {
                 })}
               </div>
             </article>
+              );
+            })}
+            </div>
 
-            <aside className="rounded-[var(--radius-workspace)] border border-border bg-surface p-4 shadow-[var(--shadow-soft)] sm:p-5">
+            <div className="grid w-full self-start">
+            {inboxFeatureMoments.map((panel) => {
+              const active = momentId === panel.id;
+              return (
+            <aside
+              key={panel.id}
+              data-moment-details={panel.id}
+              aria-hidden={!active}
+              style={{ gridColumn: 1, gridRow: 1, alignSelf: "start" }}
+              className={cn(
+                "w-full rounded-[var(--radius-workspace)] border border-border bg-surface p-4 shadow-[var(--shadow-soft)] sm:p-5",
+                active
+                  ? "relative z-10 visible"
+                  : "pointer-events-none invisible",
+              )}
+            >
               <h3 className="font-heading text-sm font-semibold">
                 Conversation details
               </h3>
 
-              <div className="mt-4 space-y-4 text-sm">
+              <div className="mt-3.5 space-y-3.5 text-sm">
                 <DetailRow label="Assigned team">
                   <span
                     data-owner-stamp
                     className="inline-flex rotate-[-4deg] rounded-md border-2 border-accent/50 bg-accent/10 px-2.5 py-1 font-mono text-[11px] font-bold tracking-[0.1em] text-accent uppercase"
                   >
-                    {moment.team}
+                    {panel.team}
                   </span>
                 </DetailRow>
                 <DetailRow label="Topic">{conversation.topic}</DetailRow>
@@ -299,20 +338,20 @@ export function InboxFeatureWalkthrough() {
                       </span>
                     ))}
                   </div>
-                  <p className="mt-2 text-[11px] text-muted">
-                    Tags and priority are display-only on this page.
-                  </p>
                 </div>
-                <div className="rounded-xl border border-border bg-surface-muted/60 px-3 py-3">
+                <div className="rounded-xl border border-border bg-accent/10 px-3.5 py-3.5">
                   <p className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
-                    This moment
+                    Current status
                   </p>
                   <p className="mt-1.5 text-sm leading-relaxed text-pretty">
-                    {moment.explanation}
+                    {panel.explanation}
                   </p>
                 </div>
               </div>
             </aside>
+              );
+            })}
+            </div>
           </div>
         </Container>
       </section>
@@ -322,10 +361,10 @@ export function InboxFeatureWalkthrough() {
           <SectionHeading
             title={inboxFeatureConnection.title}
             description={inboxFeatureConnection.description}
-            className="mb-8 max-w-3xl"
+            className="mb-6 max-w-3xl"
           />
 
-          <div className="grid gap-4 lg:grid-cols-3">
+          <div className="grid items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">
             <ConnectionCard
               icon={GitBranch}
               title={inboxFeatureConnection.automation.title}
@@ -350,17 +389,16 @@ export function InboxFeatureWalkthrough() {
               title={inboxFeatureConnection.insights.title}
               copy={inboxFeatureConnection.insights.copy}
               footer={
-                <div className="rounded-xl border border-border bg-surface-muted/70 px-3 py-2.5">
+                <div className="rounded-xl border border-border bg-surface-muted/70 px-3 py-2">
                   <p className="text-[10px] font-semibold tracking-[0.14em] text-muted uppercase">
-                    This conversation’s contribution
+                    Workload overview
                   </p>
                   <p className="mt-1.5 font-heading text-sm font-semibold">
-                    {moment.openContribution.label} ·{" "}
+                    {moment.openContribution.label} team ·{" "}
                     {moment.openContribution.count}{" "}
                     {moment.openContribution.count === 1
                       ? "open conversation"
-                      : "open conversations"}{" "}
-                    from this example.
+                      : "open conversations"}
                   </p>
                 </div>
               }
@@ -422,13 +460,13 @@ function ConnectionCard({
   footer?: React.ReactNode;
 }) {
   return (
-    <article className="flex h-full flex-col rounded-[var(--radius-card)] border border-border bg-surface p-4 shadow-[var(--shadow-soft)] sm:p-5">
+    <article className="flex h-full flex-col rounded-[var(--radius-card)] border border-border bg-surface p-5 shadow-[var(--shadow-soft)]">
       <span className="flex size-9 items-center justify-center rounded-xl bg-accent-soft text-accent">
         <Icon className="size-4" aria-hidden />
       </span>
-      <h3 className="mt-3 font-heading text-base font-semibold">{title}</h3>
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{copy}</p>
-      {footer ? <div className="mt-4">{footer}</div> : null}
+      <h3 className="mt-2.5 font-heading text-base font-semibold">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted">{copy}</p>
+      {footer ? <div className="mt-3">{footer}</div> : null}
     </article>
   );
 }
