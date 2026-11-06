@@ -13,91 +13,81 @@ export const integrationCategories: IntegrationCategory[] = [
   "Automation",
 ];
 
-/** All twelve approved illustrative integrations. */
+/** All twelve integrations shown in the directory. */
 export const allIntegrations: Integration[] = [
   {
     id: "shopify",
     name: "Shopify",
     category: "Commerce & payments",
     description:
-      "An order reference gives a delivery question context.",
+      "Access order details to understand customer delivery questions.",
   },
   {
     id: "woocommerce",
     name: "WooCommerce",
     category: "Commerce & payments",
-    description:
-      "Purchase details help identify the item a shopper means.",
+    description: "Find purchase details and customer order information.",
   },
   {
     id: "stripe",
     name: "Stripe",
     category: "Commerce & payments",
-    description:
-      "An invoice reference helps frame a billing question.",
+    description: "View payment details to help resolve billing questions.",
   },
   {
     id: "gmail",
     name: "Gmail",
     category: "Communication",
-    description:
-      "A customer email provides the original question and subject.",
+    description: "Keep customer emails and support conversations together.",
   },
   {
     id: "slack",
     name: "Slack",
     category: "Communication",
-    description:
-      "A team discussion can clarify who owns a follow-up.",
+    description: "Collaborate with your team on customer follow-ups.",
   },
   {
     id: "microsoft-teams",
     name: "Microsoft Teams",
     category: "Communication",
-    description:
-      "A channel conversation can give a handoff useful background.",
+    description: "Coordinate customer requests and team handoffs.",
   },
   {
     id: "hubspot",
     name: "HubSpot",
     category: "CRM & support",
-    description:
-      "A customer record gives an agent account context.",
+    description: "Bring customer records into support conversations.",
   },
   {
     id: "salesforce",
     name: "Salesforce",
     category: "CRM & support",
-    description:
-      "An account record helps distinguish customers with similar requests.",
+    description: "Understand customer history and account details.",
   },
   {
     id: "zendesk",
     name: "Zendesk",
     category: "CRM & support",
     description:
-      "A ticket reference preserves the history of a reported issue.",
+      "Keep ticket history and previous support requests accessible.",
   },
   {
     id: "notion",
     name: "Notion",
     category: "Knowledge & files",
-    description:
-      "A shipping guide gives the team a policy to consult.",
+    description: "Find guides and documentation when answering questions.",
   },
   {
     id: "google-drive",
     name: "Google Drive",
     category: "Knowledge & files",
-    description:
-      "A shared document can hold instructions relevant to a reply.",
+    description: "Access shared documents and helpful support resources.",
   },
   {
     id: "zapier",
     name: "Zapier",
     category: "Automation",
-    description:
-      "A trigger-and-action example illustrates a possible handoff.",
+    description: "Connect workflows and automate repetitive support tasks.",
   },
 ];
 

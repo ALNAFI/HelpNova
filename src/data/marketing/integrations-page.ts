@@ -1,3 +1,5 @@
+import { routes } from "@/config/routes";
+
 export const integrationsPageCopy = {
   hero: {
     eyebrow: "Integrations",
@@ -9,8 +11,8 @@ export const integrationsPageCopy = {
       href: "#browse-integrations",
     },
     secondaryCta: {
-      label: "Explore Demo",
-      href: "/demo",
+      label: "Explore Features",
+      href: routes.features.href,
     },
     sampleMessage: "Can you check the status of my order?",
     tiles: [
@@ -23,7 +25,7 @@ export const integrationsPageCopy = {
     id: "browse-integrations",
     title: "Browse integrations",
     description:
-      "Search by name or filter by category to find the tools that fit a support conversation.",
+      "Find the tools your team uses. Search by name or explore integrations by category.",
     searchLabel: "Search integrations",
     searchPlaceholder: "Search by tool, category, or use case",
     clearSearchLabel: "Clear search",
@@ -31,15 +33,20 @@ export const integrationsPageCopy = {
     allLabel: "All",
   },
   empty: {
-    title: "No integrations match your filters.",
-    description:
-      "Try another tool name or clear your filters to browse all 12 integrations.",
+    title: "No integrations found. Try another search or category.",
     actionLabel: "Clear all filters",
   },
   cta: {
     title: "Follow a customer question through HelpNova.",
     description:
-      "Open the guided demo to explore a sample conversation, run a routing rule, and see the receiving team’s workload.",
-    primaryCta: { label: "Explore Demo", href: "/demo" },
+      "See how HelpNova brings customer questions, smart routing, and team workflows together in one seamless experience.",
+    primaryCta: {
+      label: "Explore Demo",
+      href: routes.demo.href,
+    },
+    messageLabel: "Customer message",
+    message: "Can you check the status of my order?",
+    messageSupport:
+      "See how a customer question moves from the first message to the right team.",
   },
 } as const;

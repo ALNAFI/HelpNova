@@ -54,15 +54,17 @@ export function IntegrationsHero() {
   return (
     <header
       ref={rootRef}
-      className="relative overflow-hidden pt-12 pb-14 sm:pt-16 sm:pb-16 lg:pb-20"
+      className="relative overflow-hidden pt-12 pb-10 sm:pt-16 sm:pb-12 lg:pb-14"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_65%_50%_at_85%_0%,var(--glow),transparent_60%)]" />
         <div className="absolute inset-0 bg-grid-fade [mask-image:linear-gradient(to_bottom,black_40%,transparent)]" />
+        {/* Soften far-left grid edge marks without removing the background grid */}
+        <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-background via-background/80 to-transparent sm:w-16" />
       </div>
 
       <Container className="relative">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-12 xl:gap-14">
           <div className="max-w-xl">
             <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
               {copy.eyebrow}
@@ -89,11 +91,7 @@ export function IntegrationsHero() {
             </div>
           </div>
 
-          <div className="mx-auto w-full max-w-md">
-            <p className="mb-3 font-mono text-[10px] tracking-[0.16em] text-muted uppercase">
-              Illustrative example
-            </p>
-
+          <div className="mx-auto w-full max-w-md lg:mx-0 lg:justify-self-end">
             {/* Mobile / tablet: readable sequence */}
             <div className="space-y-3 lg:hidden">
               <MessageCard text={copy.sampleMessage} />
@@ -157,7 +155,7 @@ function MessageCard({ text }: { text: string }) {
       className="rounded-2xl border border-border bg-surface px-4 py-3.5 shadow-[var(--shadow-soft)]"
     >
       <p className="text-[10px] font-semibold tracking-[0.14em] text-accent uppercase">
-        Sample customer message
+        Customer message
       </p>
       <p className="mt-2 font-heading text-sm font-semibold leading-snug sm:text-base">
         “{text}”

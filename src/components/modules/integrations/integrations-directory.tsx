@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useMemo, useRef, useState } from "react";
-import { Info, Search, SearchX, X } from "lucide-react";
+import { Search, SearchX, X } from "lucide-react";
 import { integrationIconById } from "@/components/modules/integrations/integration-icons";
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -10,7 +10,6 @@ import {
   filterIntegrations,
   formatIntegrationCount,
   integrationCategories,
-  integrationsDisclaimer,
 } from "@/data/marketing/integrations";
 import { integrationsPageCopy } from "@/data/marketing/integrations-page";
 import type { IntegrationCategory } from "@/types/marketing";
@@ -50,17 +49,11 @@ export function IntegrationsDirectory() {
       className="scroll-mt-28 border-t border-border py-16 sm:py-20 lg:py-24"
     >
       <Container>
-        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <SectionHeading
-            title={copy.title}
-            description={copy.description}
-            className="mb-0 max-w-2xl"
-          />
-          <div className="inline-flex max-w-xl items-start gap-2 rounded-xl border border-border bg-surface-muted/60 px-3.5 py-3 text-sm text-muted">
-            <Info className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden />
-            <p>{integrationsDisclaimer}</p>
-          </div>
-        </div>
+        <SectionHeading
+          title={copy.title}
+          description={copy.description}
+          className="mb-8 max-w-2xl"
+        />
 
         <div className="rounded-2xl border border-border bg-surface px-4 py-4 sm:px-5">
           <div className="flex flex-col gap-4">
@@ -133,12 +126,9 @@ export function IntegrationsDirectory() {
               <span className="flex size-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
                 <SearchX className="size-5" aria-hidden />
               </span>
-              <h3 className="mt-4 font-heading text-lg font-semibold">
+              <h3 className="mt-4 max-w-md font-heading text-lg font-semibold text-balance">
                 {integrationsPageCopy.empty.title}
               </h3>
-              <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
-                {integrationsPageCopy.empty.description}
-              </p>
               <button
                 type="button"
                 onClick={clearAllFilters}
@@ -152,26 +142,34 @@ export function IntegrationsDirectory() {
               {visible.map((item) => {
                 const Icon = integrationIconById[item.id];
                 return (
-                  <li key={item.id}>
-                    <article className="flex h-full gap-3 rounded-[var(--radius-card)] border border-border bg-surface p-4 shadow-[var(--shadow-soft)] transition-[border-color,background-color] duration-200 hover:border-accent/30 hover:bg-surface-muted/30">
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-muted text-accent">
-                        {Icon ? (
-                          <Icon className="size-5" aria-hidden />
-                        ) : null}
-                      </span>
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                          <h3 className="font-heading text-base font-semibold">
+                  <li key={item.id} className="min-w-0">
+                    <article
+                      className={cn(
+                        "group flex h-full flex-col rounded-[var(--radius-card)] border border-border bg-surface p-3.5 shadow-[var(--shadow-soft)] sm:p-4",
+                        "transition-[transform,border-color,background-color,box-shadow] duration-200",
+                        "hover:-translate-y-[2px] hover:border-accent/40 hover:bg-surface-muted/30",
+                        "motion-reduce:hover:translate-y-0",
+                      )}
+                    >
+                      <div className="flex min-w-0 items-start gap-2.5">
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-muted text-accent transition-colors duration-200 group-hover:bg-accent-soft">
+                          {Icon ? (
+                            <Icon className="size-[1.125rem]" aria-hidden />
+                          ) : null}
+                        </span>
+                        <div className="min-w-0">
+                          <h3 className="font-heading text-[15px] leading-snug font-semibold">
                             {item.name}
                           </h3>
-                          <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-medium text-muted">
+                          <span className="mt-1.5 inline-flex w-fit max-w-full truncate rounded-full border border-border bg-surface-muted px-2 py-0.5 text-[10px] font-medium tracking-wide text-muted">
                             {item.category}
                           </span>
                         </div>
-                        <p className="mt-2 text-sm leading-relaxed text-muted">
-                          {item.description}
-                        </p>
                       </div>
+
+                      <p className="mt-2 text-[13px] leading-[1.55] text-pretty text-muted">
+                        {item.description}
+                      </p>
                     </article>
                   </li>
                 );
@@ -212,7 +210,10 @@ function CategoryChip({
         className="sr-only"
       />
       {checked ? (
-        <span className="mr-1.5 size-1.5 rounded-full bg-accent-foreground" aria-hidden />
+        <span
+          className="mr-1.5 size-1.5 rounded-full bg-accent-foreground"
+          aria-hidden
+        />
       ) : null}
       {label}
     </label>
