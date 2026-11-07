@@ -9,10 +9,12 @@ import {
   yFromDocument,
   type RibbonPath,
 } from "@/lib/home-scroll-ribbon-path";
+import { loadRibbonIntegrationIcons } from "@/lib/home-scroll-ribbon-icons";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import { cn } from "@/utils/cn";
 
 type ThemeColors = {
+  dark: boolean;
   copper: [number, number, number];
   ivory: [number, number, number];
   opacity: number;
@@ -22,15 +24,17 @@ function readTheme(): ThemeColors {
   const dark = document.documentElement.classList.contains("dark");
   if (dark) {
     return {
+      dark: true,
       copper: [0.62, 0.48, 0.92],
       ivory: [0.96, 0.93, 1],
       opacity: 0.30,
     };
   }
   return {
+    dark: false,
     copper: [0.55, 0.32, 0.78],
     ivory: [0.98, 0.94, 0.9],
-    opacity: .50,
+    opacity: 0.5,
   };
 }
 
@@ -62,6 +66,7 @@ function drawRibbon(
   height: number,
   dpr: number,
   theme: ThemeColors,
+  icons: HTMLImageElement[],
 ) {
   const { points, length } = path;
   if (length < 3 || headLen <= 0) return;
@@ -156,16 +161,24 @@ function drawRibbon(
   ctx.lineWidth = Math.max(1, 1.2 * dpr);
   ctx.stroke();
 
-  ctx.fillStyle = `rgba(${Math.round(ir * 255)}, ${Math.round(ig * 255)}, ${Math.round(ib * 255)}, 0.5)`;
-  for (let i = 2; i < visible.length - 2; i += 8) {
-    const e = visible[i];
-    const mx = (e.lx + e.rx) / 2;
-    const my = (e.ly + e.ry) / 2;
-    if (my < 8 || my > height - 8) continue;
-    const r = Math.max(2.2, 3 * dpr) * (0.7 + 0.3 * e.lit);
-    ctx.beginPath();
-    ctx.arc(mx, my, r, 0, Math.PI * 2);
-    ctx.fill();
+  // Same cadence as the former dots (every 8 samples), cycling the 12
+  // Integrations icons continuously along the full ribbon path.
+  if (icons.length > 0) {
+    const iconSize = Math.max(20, Math.min(30, halfW * 0.62));
+    for (let i = 2; i < edges.length - 2; i += 8) {
+      const e = edges[i];
+      const mx = (e.lx + e.rx) / 2;
+      const my = (e.ly + e.ry) / 2;
+      if (my < 8 || my > height - 8) continue;
+      const icon = icons[Math.floor(i / 8) % icons.length];
+      if (!icon?.complete) continue;
+      const size = iconSize * (0.9 + 0.1 * e.lit);
+      // Light mode needs a stronger punch so #A78BFA marks read on the ribbon.
+      ctx.globalAlpha = theme.dark
+        ? Math.min(1, 0.18 + theme.opacity * (1.05 + 0.2 * e.lit))
+        : Math.min(1, 0.52 + theme.opacity * (1.35 + 0.3 * e.lit));
+      ctx.drawImage(icon, mx - size / 2, my - size / 2, size, size);
+    }
   }
 
   ctx.restore();
@@ -194,6 +207,8 @@ export function HomeScrollRibbon({
     let path: RibbonPath | null = null;
     let raf = 0;
     let theme = readTheme();
+    let icons: HTMLImageElement[] = [];
+    let iconLoadId = 0;
     let width = 0;
     let height = 0;
     let dpr = 1;
@@ -282,13 +297,36 @@ export function HomeScrollRibbon({
 
       canvas.style.opacity = String(opacityForProgress(progress));
       ctx.clearRect(0, 0, width, height);
-      drawRibbon(ctx, path, norm, headCurrent, width, height, dpr, theme);
+      drawRibbon(
+        ctx,
+        path,
+        norm,
+        headCurrent,
+        width,
+        height,
+        dpr,
+        theme,
+        icons,
+      );
 
       if (!reducedMotion && Math.abs(headTarget - headCurrent) > 0.001) {
         raf = requestAnimationFrame(paintFrame);
       } else {
         lastTs = 0;
       }
+    };
+
+    const reloadIcons = () => {
+      const loadId = ++iconLoadId;
+      // Dark: near-white on copper. Light: accent violet + heavier stroke.
+      const dark = document.documentElement.classList.contains("dark");
+      const color = dark ? "rgb(255 252 255)" : "#A78BFA";
+      const strokeWidth = dark ? 2.05 : 2.55;
+      void loadRibbonIntegrationIcons(color, strokeWidth).then((loaded) => {
+        if (loadId !== iconLoadId) return;
+        icons = loaded;
+        requestPaint();
+      });
     };
 
     const requestPaint = () => {
@@ -313,6 +351,7 @@ export function HomeScrollRibbon({
 
     const onTheme = () => {
       theme = readTheme();
+      reloadIcons();
       requestPaint();
     };
 
@@ -335,9 +374,11 @@ export function HomeScrollRibbon({
     document.addEventListener("visibilitychange", requestPaint);
 
     canvas.dataset.renderer = "canvas2d";
+    reloadIcons();
     resize();
 
     return () => {
+      iconLoadId += 1;
       cancelAnimationFrame(raf);
       ro.disconnect();
       bodyRo.disconnect();
