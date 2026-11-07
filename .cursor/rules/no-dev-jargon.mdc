@@ -1,0 +1,16 @@
+---
+description: Replace sample text and internal tech words in public UI copy with clean, stable, conversion-focused language.
+alwaysApply: true
+---
+
+# No Dev/Jargon Placeholders
+
+Public UI copy is for customers. When writing or editing visible text (headings, body, buttons, labels, captions, empty states, metadata descriptions), find sample wording and internal tech words and replace them.
+
+Replace words and phrases such as: sample, preset, placeholder, dummy, mock, local session, widget, slug, module, component, reducer, seed, demo-only, display-only, no AI model call, task IDs, and developer notes.
+
+Write the replacement as clean, stable, conversion-focused English: short, specific, and useful to someone deciding to explore HelpNova. Keep the same meaning and the same UI control.
+
+Stay inside the product boundary. Do not claim a message was delivered, an account was created, an integration was connected, a payment was taken, or that a live AI model answered. Do not invent testimonials, measured savings, or customer outcomes.
+
+Leave code, type names, file names, routes, and comments unchanged. Change only text a visitor can read.

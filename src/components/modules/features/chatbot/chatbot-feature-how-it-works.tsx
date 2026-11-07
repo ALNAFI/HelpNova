@@ -23,14 +23,14 @@ export function ChatbotFeatureHowItWorks() {
               <h3 className="mt-3 font-heading text-base font-semibold">
                 {step.label}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
+              <p className="mt-2 text-sm leading-relaxed text-foreground/75 dark:text-foreground/70">
                 {step.body}
               </p>
             </li>
           ))}
         </ol>
 
-        <p className="mt-6 max-w-2xl rounded-xl border border-border bg-surface-muted/60 px-4 py-3 text-sm text-muted">
+        <p className="mt-6 w-full rounded-xl border border-border bg-surface-muted/60 px-4 py-3 text-sm text-foreground/75 dark:text-foreground/70">
           {chatbotFeatureHowItWorks.note}
         </p>
       </Container>

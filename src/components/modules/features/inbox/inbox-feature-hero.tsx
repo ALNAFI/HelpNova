@@ -19,6 +19,7 @@ import { cn } from "@/utils/cn";
 
 type InboxHeroPanelId = "message" | "stamp" | "note";
 type DragOffset = { x: number; y: number };
+type ReturnTween = { kill: () => void };
 
 const INITIAL_STACK: InboxHeroPanelId[] = ["message", "stamp", "note"];
 const INITIAL_OFFSETS: Record<InboxHeroPanelId, DragOffset> = {
@@ -74,6 +75,7 @@ export function InboxFeatureHero({
   const svgRef = useRef<SVGSVGElement>(null);
   const lineRef = useRef<SVGPathElement>(null);
   const offsetsRef = useRef(INITIAL_OFFSETS);
+  const returnTweens = useRef<Partial<Record<InboxHeroPanelId, ReturnTween>>>({});
   const reducedMotion = usePrefersReducedMotion();
 
   const [offsets, setOffsets] = useState(INITIAL_OFFSETS);
@@ -110,10 +112,6 @@ export function InboxFeatureHero({
     active: boolean;
   } | null>(null);
 
-  useEffect(() => {
-    offsetsRef.current = offsets;
-  }, [offsets]);
-
   const zIndexFor = (id: InboxHeroPanelId) => 20 + stack.indexOf(id);
 
   const bringToFront = useCallback((id: InboxHeroPanelId) => {
@@ -145,6 +143,43 @@ export function InboxFeatureHero({
     [surfaceRef],
   );
 
+  const springBack = useCallback(
+    (panelId: InboxHeroPanelId) => {
+      returnTweens.current[panelId]?.kill();
+      const from = offsetsRef.current[panelId];
+      if (Math.hypot(from.x, from.y) < 0.5) {
+        const next = { x: 0, y: 0 };
+        offsetsRef.current = { ...offsetsRef.current, [panelId]: next };
+        setOffsets((current) => ({ ...current, [panelId]: next }));
+        return;
+      }
+
+      const { gsap } = getGsap();
+      const proxy = { x: from.x, y: from.y };
+      const tween = gsap.to(proxy, {
+        x: 0,
+        y: 0,
+        duration: reducedMotion ? 0.01 : 0.95,
+        ease: reducedMotion ? "none" : "elastic.out(0.85, 0.6)",
+        onUpdate: () => {
+          const next = { x: proxy.x, y: proxy.y };
+          offsetsRef.current = { ...offsetsRef.current, [panelId]: next };
+          setOffsets((current) => ({ ...current, [panelId]: next }));
+          requestAnimationFrame(updateConnector);
+        },
+        onComplete: () => {
+          const next = { x: 0, y: 0 };
+          offsetsRef.current = { ...offsetsRef.current, [panelId]: next };
+          setOffsets((current) => ({ ...current, [panelId]: next }));
+          updateConnector();
+          delete returnTweens.current[panelId];
+        },
+      });
+      returnTweens.current[panelId] = tween;
+    },
+    [reducedMotion, updateConnector],
+  );
+
   useEffect(() => {
     const stage = stageRef.current;
     const surface = surfaceRef.current;
@@ -158,6 +193,9 @@ export function InboxFeatureHero({
       const panelEl = target?.closest<HTMLElement>("[data-inbox-hero-panel]");
       const panelId = panelEl?.dataset.inboxHeroPanel;
       if (!panelEl || !isInboxHeroPanelId(panelId)) return;
+
+      returnTweens.current[panelId]?.kill();
+      delete returnTweens.current[panelId];
 
       const origin = offsetsRef.current[panelId];
       dragRef.current = {
@@ -196,6 +234,7 @@ export function InboxFeatureHero({
         drag.originX + dx,
         drag.originY + dy,
       );
+      offsetsRef.current = { ...offsetsRef.current, [drag.panelId]: next };
       setOffsets((current) => ({ ...current, [drag.panelId]: next }));
       // Sync path after the transform style commits this frame.
       requestAnimationFrame(() => updateConnector());
@@ -210,6 +249,7 @@ export function InboxFeatureHero({
         } catch {
           /* ignore */
         }
+        springBack(drag.panelId);
       }
       dragRef.current = null;
       setDraggingId(null);
@@ -226,7 +266,14 @@ export function InboxFeatureHero({
       surface.removeEventListener("pointerup", endDrag);
       surface.removeEventListener("pointercancel", endDrag);
     };
-  }, [bringToFront, constrain, surfaceRef, updateConnector]);
+  }, [bringToFront, constrain, springBack, surfaceRef, updateConnector]);
+
+  useEffect(() => {
+    const tweens = returnTweens.current;
+    return () => {
+      Object.values(tweens).forEach((tween) => tween?.kill());
+    };
+  }, []);
 
   useLayoutEffect(() => {
     updateConnector();

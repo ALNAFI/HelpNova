@@ -10,7 +10,14 @@ export type AccordionItemData = {
   answer: string;
 };
 
-export function Accordion({ items }: { items: AccordionItemData[] }) {
+export function Accordion({
+  items,
+  answerClassName,
+}: {
+  items: AccordionItemData[];
+  /** Optional answer text class; defaults to muted body copy. */
+  answerClassName?: string;
+}) {
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
   const baseId = useId();
 
@@ -51,7 +58,10 @@ export function Accordion({ items }: { items: AccordionItemData[] }) {
             >
               <div className="faq-panel-inner">
                 <div
-                  className="faq-panel-content px-5 pb-5 text-sm leading-6 text-muted"
+                  className={cn(
+                    "faq-panel-content px-5 pb-5 text-sm leading-6",
+                    answerClassName ?? "text-muted",
+                  )}
                   aria-hidden={!isOpen}
                 >
                   {item.answer}

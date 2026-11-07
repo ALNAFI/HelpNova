@@ -259,6 +259,8 @@ Use typed, editable local content. Initial planned inventory:
 
 All public website copy should be **English**. Never expose development/process text in the UI such as “Module 1 done”, “Phase completed”, task IDs, or developer notes. Do not invent customer testimonials, measured savings, account status, or real business outcomes.
 
+**No dev/jargon placeholders:** Visitor-facing text must not use sample wording or internal tech words (`sample`, `preset`, `placeholder`, `mock`, `local session`, `widget`, `slug`, `module`, and similar). Replace that copy with clean, stable, conversion-focused English. Keep the product boundary: do not claim a message was sent, an account was created, an integration was connected, or a live AI model answered.
+
 ## 8. Implementation workflow and acceptance
 
 1. **Foundation first:** create/verify the Next.js TypeScript project, exact route groups, Tailwind setup, `globals.css`, fonts, theme tokens, navigation, and reusable UI. Confirm `/` renders `src/app/(marketing)/page.tsx` directly.

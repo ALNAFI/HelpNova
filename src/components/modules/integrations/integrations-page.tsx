@@ -1,12 +1,10 @@
 import { IntegrationsCta } from "@/components/modules/integrations/integrations-cta";
-import { IntegrationsDirectory } from "@/components/modules/integrations/integrations-directory";
-import { IntegrationsHero } from "@/components/modules/integrations/integrations-hero";
+import { IntegrationsDragSurface } from "@/components/modules/integrations/integrations-drag-surface";
 
 export function IntegrationsPage() {
   return (
     <>
-      <IntegrationsHero />
-      <IntegrationsDirectory />
+      <IntegrationsDragSurface />
       <IntegrationsCta />
     </>
   );

@@ -4,7 +4,7 @@ import { ChatbotFeaturePage } from "@/components/modules/features/chatbot/chatbo
 export const metadata: Metadata = {
   title: "AI Chatbot",
   description:
-    "Try HelpNova’s sample chatbot with six local preset questions and authored answers—no AI model call required.",
+    "Try HelpNova’s chatbot with twenty prepared questions and authored answers.",
 };
 
 export default function Page() {

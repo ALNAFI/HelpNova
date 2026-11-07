@@ -939,6 +939,72 @@ h4,
   }
 }
 
+/* Chatbot answer panel — staged switch (heading → body → CTA). */
+.answer-panel-exit {
+  animation: answer-panel-fade-out var(--answer-out-ms, 280ms)
+    var(--answer-ease, cubic-bezier(0.65, 0, 0.35, 1)) forwards;
+}
+
+.answer-panel-enter-prep [data-answer-stage] {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+}
+
+.answer-panel-enter [data-answer-stage="meta"],
+.answer-panel-enter [data-answer-stage="heading"] {
+  animation: answer-panel-rise-in var(--answer-in-ms, 520ms)
+    var(--answer-ease, cubic-bezier(0.65, 0, 0.35, 1)) both;
+}
+
+.answer-panel-enter [data-answer-stage="heading"] {
+  animation-delay: 50ms;
+}
+
+.answer-panel-enter [data-answer-stage="body"] {
+  animation: answer-panel-fade-up var(--answer-in-ms, 520ms)
+    var(--answer-ease, cubic-bezier(0.65, 0, 0.35, 1)) both;
+  animation-delay: 140ms;
+}
+
+.answer-panel-enter [data-answer-stage="cta"] {
+  animation: answer-panel-rise-in var(--answer-in-ms, 520ms)
+    var(--answer-ease, cubic-bezier(0.65, 0, 0.35, 1)) both;
+  animation-delay: 240ms;
+}
+
+@keyframes answer-panel-fade-out {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes answer-panel-rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes answer-panel-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

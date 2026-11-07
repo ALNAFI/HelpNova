@@ -34,7 +34,7 @@ export const featuresOverviewChatbot = {
   id: "start-with-a-clear-answer",
   title: "Start with a clear answer.",
   caption: "Preset Q&A",
-  note: "The floating sample offers six prepared answers and runs locally.",
+  note: "The floating chatbot offers twenty prepared answers and runs in your browser.",
   nextCaption: "Next example: routing an incoming order inquiry.",
   linkLabel: "Explore AI Chatbot",
   href: routes.chatbot.href,
@@ -102,7 +102,7 @@ export const featuresOverviewBento = {
       id: "chatbot",
       title: "AI Chatbot",
       description:
-        "Browse six sample questions and try the floating chatbot.",
+        "Browse twenty questions and try the floating chatbot.",
       href: routes.chatbot.href,
       visual: "dialogue" as const,
     },
