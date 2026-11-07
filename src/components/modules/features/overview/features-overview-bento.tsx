@@ -68,11 +68,11 @@ function BentoVisual({
   if (visual === "dialogue") {
     return (
       <div className="mt-5 space-y-2" aria-hidden>
-        <div className="rounded-lg border border-border bg-surface-muted px-2.5 py-1.5 text-[10px]">
+        <div className="max-w-[92%] rounded-lg border border-border bg-surface-muted px-3 py-2 text-[11px] leading-snug text-foreground/80 dark:text-foreground/75">
           What can workflow automation do?
         </div>
-        <div className="ml-3 rounded-lg border border-accent/25 bg-accent/10 px-2.5 py-1.5 text-[10px]">
-          Matched → Orders · Otherwise → General Triage
+        <div className="ml-4 max-w-[88%] rounded-lg border border-accent/25 bg-accent/10 px-3 py-2 text-[11px] leading-snug text-foreground/80 dark:text-foreground/75">
+          Explore 20 curated questions and helpful answers.
         </div>
       </div>
     );
@@ -80,10 +80,19 @@ function BentoVisual({
 
   if (visual === "decision") {
     return (
-      <div className="mt-5 rounded-lg border border-border bg-surface-muted/70 px-3 py-2.5" aria-hidden>
-        <p className="text-[10px] font-semibold text-accent">Order Tracking?</p>
-        <p className="mt-1 text-[10px] text-muted">Matched · Orders</p>
-        <p className="text-[10px] text-muted">Otherwise · General Triage</p>
+      <div
+        className="mt-5 rounded-lg border border-border bg-surface-muted/70 px-3 py-2.5"
+        aria-hidden
+      >
+        <p className="text-[11px] font-semibold leading-snug text-accent">
+          Order Tracking?
+        </p>
+        <p className="mt-1 text-[11px] leading-snug text-foreground/70 dark:text-foreground/65">
+          Matched · Orders
+        </p>
+        <p className="text-[11px] leading-snug text-foreground/70 dark:text-foreground/65">
+          Otherwise · General Support
+        </p>
       </div>
     );
   }
@@ -91,10 +100,10 @@ function BentoVisual({
   if (visual === "thread") {
     return (
       <div className="mt-5 flex items-center gap-2" aria-hidden>
-        <span className="rounded-md border border-border bg-surface-muted px-2 py-1 text-[10px]">
+        <span className="rounded-md border border-border bg-surface-muted px-2.5 py-1.5 text-[11px] leading-snug text-foreground/80 dark:text-foreground/75">
           Where is order #48291?
         </span>
-        <span className="rounded-md border-2 border-accent/40 bg-accent/10 px-2 py-1 font-mono text-[9px] font-bold text-accent uppercase">
+        <span className="rounded-md border-2 border-accent/40 bg-accent/10 px-2 py-1 font-mono text-[10px] font-bold tracking-wide text-accent uppercase">
           Orders
         </span>
       </div>
@@ -103,8 +112,8 @@ function BentoVisual({
 
   return (
     <div className="mt-5" aria-hidden>
-      <div className="mb-1 flex justify-between text-[10px]">
-        <span>Orders open</span>
+      <div className="mb-1.5 flex justify-between text-[11px] leading-snug text-foreground/75 dark:text-foreground/70">
+        <span>Orders Team · Open Conversations</span>
         <span className="font-mono">1 / 1</span>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-border/70">

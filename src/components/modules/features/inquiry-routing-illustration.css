@@ -1,0 +1,128 @@
+/* Inquiry routing illustration — maps to HelpNova theme tokens. */
+
+.iri {
+  --iri-card: var(--surface);
+  --iri-card-active: var(--accent-soft);
+  --iri-line: var(--border-strong);
+  --iri-text: var(--foreground);
+  --iri-muted: var(--muted);
+  --iri-accent: var(--accent);
+  font-family: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
+}
+
+.iri-node > rect:first-of-type {
+  fill: var(--iri-card);
+  stroke: var(--iri-line);
+  stroke-width: 1.2;
+  transition:
+    stroke 0.4s,
+    fill 0.4s;
+}
+
+.iri-node.iri-active > rect:first-of-type {
+  stroke: var(--iri-accent);
+  fill: var(--iri-card-active);
+}
+
+.iri-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  fill: var(--iri-muted);
+}
+
+.iri-ttl {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--iri-text);
+}
+
+.iri-sub {
+  font-size: 12px;
+  font-weight: 500;
+  fill: var(--iri-muted);
+  transition: fill 0.3s;
+}
+
+.iri-sub.iri-ok {
+  fill: var(--iri-accent);
+}
+
+.iri-link {
+  fill: none;
+  stroke: var(--iri-line);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.4s;
+}
+
+.iri-link.iri-dash {
+  stroke-dasharray: 5 6;
+}
+
+.iri-link.iri-on {
+  stroke: var(--iri-accent);
+}
+
+.iri-badge {
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.iri-badge.iri-show {
+  opacity: 1;
+}
+
+.iri-badge rect {
+  fill: var(--iri-card-active);
+  stroke: var(--iri-accent);
+  stroke-width: 1;
+}
+
+.iri-badge text {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--iri-accent);
+}
+
+.iri-icon {
+  fill: none;
+  stroke: var(--iri-accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.iri-tok {
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.iri-ring {
+  fill: none;
+  stroke: var(--iri-accent);
+  stroke-width: 2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.iri-node.iri-active .iri-pulse {
+  animation: iri-pulse 1.4s ease-out infinite;
+}
+
+@keyframes iri-pulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iri-node.iri-active .iri-pulse {
+    animation: none;
+  }
+}

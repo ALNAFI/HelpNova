@@ -18,7 +18,7 @@ export function FeaturesOverviewChatbot() {
           className="mb-8 max-w-3xl"
         />
 
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           <p className="mb-3 text-[10px] font-semibold tracking-[0.14em] text-muted uppercase">
             {featuresOverviewChatbot.caption}
           </p>
@@ -34,7 +34,7 @@ export function FeaturesOverviewChatbot() {
             </div>
             <div className="rounded-2xl rounded-tl-md border border-accent/25 bg-accent/10 p-4 sm:ml-6 sm:max-w-[94%]">
               <p className="text-[10px] font-semibold tracking-[0.14em] text-accent uppercase">
-                HelpNova · Sample answer
+                HelpNova · Chatbot response
               </p>
               <p className="mt-2 text-sm leading-relaxed text-pretty sm:text-[15px] sm:leading-7">
                 {preset.answer}
@@ -42,7 +42,9 @@ export function FeaturesOverviewChatbot() {
             </div>
           </div>
 
-          <p className="mt-5 text-sm text-muted">{featuresOverviewChatbot.note}</p>
+          <p className="mt-5 text-sm text-foreground/75 dark:text-foreground/70">
+            {featuresOverviewChatbot.note}
+          </p>
 
           <Link
             href={featuresOverviewChatbot.href}
@@ -52,7 +54,7 @@ export function FeaturesOverviewChatbot() {
             <ArrowRight className="size-3.5" />
           </Link>
 
-          <p className="mt-8 border-t border-border pt-5 text-xs tracking-wide text-muted uppercase">
+          <p className="mt-8 border-t border-border pt-5 text-xs tracking-wide text-foreground/70 dark:text-foreground/65 uppercase">
             {featuresOverviewChatbot.nextCaption}
           </p>
         </div>

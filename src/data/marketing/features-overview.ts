@@ -3,13 +3,13 @@ import { getChatbotPreset } from "@/data/chatbot/presets";
 import { inboxFeatureConversation } from "@/data/marketing/inbox-feature";
 
 export const featuresOverviewHero = {
-  eyebrow: "HelpNova features",
+  eyebrow: "Explore HelpNova",
   title: "What happens after a customer asks?",
   description:
-    "Explore a sample answer, follow an inquiry to its team, and see how one resolved conversation changes the workload.",
+    "Discover how HelpNova connects customer conversations, intelligent workflows, and team insights to create a smoother support experience.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
   secondaryCta: {
-    label: "Explore the features",
+    label: "Discover Features",
     href: "#start-with-a-clear-answer",
   },
 } as const;
@@ -33,9 +33,9 @@ export const featuresOverviewChatbotPresetId = "workflow-automation";
 export const featuresOverviewChatbot = {
   id: "start-with-a-clear-answer",
   title: "Start with a clear answer.",
-  caption: "Preset Q&A",
-  note: "The floating chatbot offers twenty prepared answers and runs in your browser.",
-  nextCaption: "Next example: routing an incoming order inquiry.",
+  caption: "AI Chatbot",
+  note: "Explore 20 helpful answers to common questions about HelpNova and discover how its features work together.",
+  nextCaption: "Up next · Smart workflow automation",
   linkLabel: "Explore AI Chatbot",
   href: routes.chatbot.href,
   preset: getChatbotPreset(featuresOverviewChatbotPresetId),
@@ -43,13 +43,14 @@ export const featuresOverviewChatbot = {
 
 export const featuresOverviewAutomation = {
   id: "see-why-an-inquiry-reaches-a-team",
-  title: "See why an inquiry reaches a team.",
+  title: "Route Every Inquiry to the Right Team.",
   trigger: "A new inquiry arrives.",
   condition: "Is its topic Order Tracking?",
   matched: "Assign it to Orders.",
-  otherwise: "Assign it to General Triage.",
+  otherwise: "Assign it to General Support.",
+  otherwiseTeam: "General Support",
   result:
-    "This inquiry is tagged Order Tracking, so the Order rule assigns it to Orders.",
+    "HelpNova identifies order-related inquiries and directs them to the Orders team, keeping every request organized and in the right hands.",
   linkLabel: "Explore Workflow Automation",
   href: routes.automation.href,
 } as const;
@@ -68,12 +69,15 @@ export type FeaturesInsightsSnapshotId = "open" | "resolved";
 export const featuresOverviewInsights = {
   id: "what-changes-when-this-conversation-is-resolved",
   title: "What changes when this conversation is resolved?",
-  sampleLabel: "Workload from this sample conversation",
+  sampleLabel: "Team workload overview",
+  workloadLabel: "Orders Team · Open Conversations",
+  openLabel: "Open conversations",
+  resolvedLabel: "Resolved conversations",
   openExplanation:
-    "Orders owns this open conversation, so it contributes one item to the team’s open workload.",
+    "This conversation is assigned to the Orders team. Once resolved, it moves out of the team's open workload and into resolved conversations.",
   resolvedExplanation:
-    "Orders still owns the conversation. Resolving it removes it from the team’s open workload.",
-  linkLabel: "Explore Insights in the demo",
+    "Orders still owns the conversation until it’s resolved, removing it from the team’s open workload while keeping the full conversation history available for future reference.",
+  linkLabel: "Explore Support Insights",
   href: routes.demo.href,
   snapshots: {
     open: {
@@ -102,7 +106,7 @@ export const featuresOverviewBento = {
       id: "chatbot",
       title: "AI Chatbot",
       description:
-        "Browse twenty questions and try the floating chatbot.",
+        "Discover helpful answers to 20 common questions and explore a guided chatbot experience.",
       href: routes.chatbot.href,
       visual: "dialogue" as const,
     },
@@ -110,7 +114,7 @@ export const featuresOverviewBento = {
       id: "automation",
       title: "Workflow Automation",
       description:
-        "Inspect the condition that sends an inquiry to Orders or General Triage.",
+        "Discover how smart workflows organize incoming requests and direct them to the right support teams.",
       href: routes.automation.href,
       visual: "decision" as const,
     },
@@ -118,15 +122,15 @@ export const featuresOverviewBento = {
       id: "inbox",
       title: "Shared Inbox",
       description:
-        "Read a customer thread alongside its owner and team-only note.",
+        "Keep customer conversations, team assignments, and internal notes together in one organized workspace.",
       href: routes.inbox.href,
       visual: "thread" as const,
     },
     {
       id: "insights",
-      title: "Insights in the demo",
+      title: "Support Insights",
       description:
-        "See how assignments and resolution affect open team workload.",
+        "Understand team workloads, track conversation statuses, and explore support performance at a glance.",
       href: routes.demo.href,
       visual: "workload" as const,
     },
@@ -136,6 +140,6 @@ export const featuresOverviewBento = {
 export const featuresOverviewCta = {
   title: "Take the next conversation.",
   description:
-    "Open the guided demo to assign a conversation, run a routing rule, and see the workload change.",
+    "Experience how HelpNova connects customer conversations, smart automation, and team insights in one seamless support workspace.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
 } as const;

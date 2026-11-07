@@ -1,0 +1,219 @@
+/* Features hero inquiry-flow illustration — theme-aware via design tokens. */
+
+.fhi {
+  --fhi-card: var(--surface);
+  --fhi-card-stroke: var(--border);
+  --fhi-card-stroke-soft: var(--border);
+  --fhi-text: var(--foreground);
+  --fhi-muted: var(--muted);
+  --fhi-muted-dim: color-mix(in oklab, var(--muted) 72%, var(--surface));
+  --fhi-accent: var(--accent);
+  --fhi-accent-soft: var(--accent-soft);
+  --fhi-accent-text: var(--accent);
+  --fhi-accent-fill: color-mix(in oklab, var(--accent) 55%, #7c5cff);
+  --fhi-accent-chip: color-mix(in oklab, var(--accent) 72%, white);
+  --fhi-success: var(--success);
+  --fhi-success-soft: color-mix(in oklab, var(--success) 14%, transparent);
+  --fhi-success-stroke: color-mix(in oklab, var(--success) 55%, transparent);
+  --fhi-info: #0e7490;
+  --fhi-info-soft: color-mix(in oklab, #0e7490 12%, transparent);
+  --fhi-info-text: #0e7490;
+  --fhi-info-line: color-mix(in oklab, #0e7490 55%, transparent);
+  --fhi-bar: color-mix(in oklab, var(--muted) 28%, var(--surface-muted));
+  --fhi-avatar-dim: color-mix(in oklab, var(--muted) 40%, var(--surface-muted));
+  --fhi-line: color-mix(in oklab, var(--muted) 35%, transparent);
+  --fhi-line-accent: var(--accent);
+  --fhi-dot-a: color-mix(in oklab, var(--accent) 70%, white);
+  --fhi-dot-b: color-mix(in oklab, #0e7490 55%, white);
+}
+
+.dark .fhi {
+  --fhi-accent-text: #cdbeff;
+  --fhi-accent-chip: #b49bff;
+  --fhi-accent-fill: #6e5bff;
+  --fhi-info: #5ee0ff;
+  --fhi-info-soft: color-mix(in oklab, #5ee0ff 12%, transparent);
+  --fhi-info-text: #9bebff;
+  --fhi-info-line: color-mix(in oklab, #5ee0ff 60%, transparent);
+  --fhi-dot-a: #c7b6ff;
+  --fhi-dot-b: #9bebff;
+}
+
+.fhi-ts { font-size: 12px; }
+.fhi-th { font-size: 14px; font-weight: 500; }
+.fhi-mono { font-size: 11px; font-family: var(--font-mono, ui-monospace, monospace); }
+.fhi-big { font-size: 26px; font-weight: 500; }
+
+.fhi-fill-card { fill: var(--fhi-card); }
+.fhi-stroke-card { stroke: var(--fhi-card-stroke); }
+.fhi-stroke-card-soft { stroke: var(--fhi-card-stroke-soft); }
+.fhi-fill-text { fill: var(--fhi-text); }
+.fhi-fill-muted { fill: var(--fhi-muted); }
+.fhi-fill-muted-dim { fill: var(--fhi-muted-dim); }
+.fhi-fill-accent { fill: var(--fhi-accent); }
+.fhi-stroke-accent { stroke: var(--fhi-accent); }
+.fhi-fill-accent-soft { fill: var(--fhi-accent-soft); }
+.fhi-stroke-accent-mid { stroke: color-mix(in oklab, var(--fhi-accent) 50%, transparent); }
+.fhi-fill-accent-text { fill: var(--fhi-accent-text); }
+.fhi-fill-accent-chip { fill: var(--fhi-accent-chip); }
+.fhi-fill-accent-avatar { fill: var(--fhi-accent-fill); }
+.fhi-fill-success { fill: var(--fhi-success); }
+.fhi-stroke-success { stroke: var(--fhi-success); }
+.fhi-fill-success-soft { fill: var(--fhi-success-soft); }
+.fhi-stroke-success-soft { stroke: var(--fhi-success-stroke); }
+.fhi-fill-info { fill: var(--fhi-info); }
+.fhi-stroke-info { stroke: var(--fhi-info); }
+.fhi-fill-info-soft { fill: var(--fhi-info-soft); }
+.fhi-fill-info-text { fill: var(--fhi-info-text); }
+.fhi-stroke-info-line { stroke: var(--fhi-info-line); }
+.fhi-fill-bar { fill: var(--fhi-bar); }
+.fhi-fill-avatar-dim { fill: var(--fhi-avatar-dim); }
+.fhi-stroke-line { stroke: var(--fhi-line); }
+.fhi-stroke-divider { stroke: var(--fhi-card-stroke-soft); }
+.fhi-fill-dot-a { fill: var(--fhi-dot-a); }
+.fhi-fill-dot-b { fill: var(--fhi-dot-b); }
+
+.fhi-s2,
+.fhi-s3,
+.fhi-n11,
+.fhi-d1,
+.fhi-d2,
+.fhi-hp {
+  opacity: 0;
+}
+.fhi-og { opacity: 0.15; }
+.fhi-rc { opacity: 0.3; }
+.fhi-b5 {
+  transform-box: fill-box;
+  transform-origin: bottom;
+}
+.fhi-hp {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.fhi-dash { stroke-dasharray: 4 5; }
+
+.fhi-d1 {
+  offset-path: path(
+    "M110 148 V230 H144 C170 230 175 212 200 212 H390 C410 212 415 248 430 248 H455"
+  );
+  offset-rotate: 0deg;
+}
+.fhi-d2 {
+  offset-path: path("M535 200 V148");
+  offset-rotate: 0deg;
+}
+
+@keyframes fhi-m1 {
+  0% { offset-distance: 0%; opacity: 0; }
+  4% { opacity: 1; }
+  46% { offset-distance: 100%; opacity: 1; }
+  50%,
+  100% { offset-distance: 100%; opacity: 0; }
+}
+@keyframes fhi-m2 {
+  0%,
+  52% { offset-distance: 0%; opacity: 0; }
+  54% { opacity: 1; }
+  72% { offset-distance: 100%; opacity: 1; }
+  76%,
+  100% { offset-distance: 100%; opacity: 0; }
+}
+@keyframes fhi-s1 {
+  0%,
+  24% { opacity: 1; }
+  28%,
+  100% { opacity: 0; }
+}
+@keyframes fhi-s2 {
+  0%,
+  24% { opacity: 0; }
+  28%,
+  46% { opacity: 1; }
+  50%,
+  100% { opacity: 0; }
+}
+@keyframes fhi-s3 {
+  0%,
+  48% { opacity: 0; }
+  52%,
+  92% { opacity: 1; }
+  96%,
+  100% { opacity: 0; }
+}
+@keyframes fhi-og {
+  0%,
+  24% { opacity: 0.15; }
+  30%,
+  48% { opacity: 1; }
+  54%,
+  100% { opacity: 0.15; }
+}
+@keyframes fhi-rc {
+  0%,
+  48% { opacity: 0.3; }
+  54%,
+  92% { opacity: 1; }
+  97%,
+  100% { opacity: 0.3; }
+}
+@keyframes fhi-b5 {
+  0%,
+  70% { transform: scaleY(1); }
+  78%,
+  92% { transform: scaleY(0.55); }
+  98%,
+  100% { transform: scaleY(1); }
+}
+@keyframes fhi-n12 {
+  0%,
+  74% { opacity: 1; }
+  78%,
+  94% { opacity: 0; }
+  98%,
+  100% { opacity: 1; }
+}
+@keyframes fhi-n11 {
+  0%,
+  74% { opacity: 0; }
+  78%,
+  94% { opacity: 1; }
+  98%,
+  100% { opacity: 0; }
+}
+@keyframes fhi-hp {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+@keyframes fhi-float {
+  to { transform: translateY(-5px); }
+}
+@keyframes fhi-dash {
+  to { stroke-dashoffset: -9; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fhi-d1 { animation: fhi-m1 8s linear infinite; }
+  .fhi-d2 { animation: fhi-m2 8s linear infinite; }
+  .fhi-s1 { animation: fhi-s1 8s infinite; }
+  .fhi-s2 { animation: fhi-s2 8s infinite; }
+  .fhi-s3 { animation: fhi-s3 8s infinite; }
+  .fhi-og { animation: fhi-og 8s infinite; }
+  .fhi-rc { animation: fhi-rc 8s infinite; }
+  .fhi-b5 { animation: fhi-b5 8s ease-in-out infinite; }
+  .fhi-n12 { animation: fhi-n12 8s infinite; }
+  .fhi-n11 { animation: fhi-n11 8s infinite; }
+  .fhi-hp { animation: fhi-hp 2.4s ease-out infinite; }
+  .fhi-float { animation: fhi-float 5s ease-in-out infinite alternate; }
+  .fhi-dash { animation: fhi-dash 1.2s linear infinite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fhi-s1 { opacity: 0; }
+  .fhi-s3 { opacity: 1; }
+  .fhi-rc { opacity: 1; }
+  .fhi-og { opacity: 1; }
+  .fhi-n12 { opacity: 0; }
+  .fhi-n11 { opacity: 1; }
+  .fhi-b5 { transform: scaleY(0.55); }
+}

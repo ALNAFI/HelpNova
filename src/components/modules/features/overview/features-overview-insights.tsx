@@ -56,7 +56,7 @@ export function FeaturesOverviewInsights() {
     setSnapshotId(id);
     const next = featuresOverviewInsights.snapshots[id];
     if (liveRef.current) {
-      liveRef.current.textContent = `${next.status}. Orders open workload ${next.openCount}. Resolved ${next.resolvedCount}.`;
+      liveRef.current.textContent = `${next.status}. Orders team open conversations ${next.openCount}. Resolved conversations ${next.resolvedCount}.`;
     }
   }
 
@@ -85,7 +85,7 @@ export function FeaturesOverviewInsights() {
                 {featuresOverviewOrder.subject}
               </p>
               <p className="mt-1 text-sm text-muted">
-                Owner · {snapshot.owner}
+                Assigned to {snapshot.owner}
               </p>
             </div>
             <StatusBadge status={snapshot.status} />
@@ -114,7 +114,7 @@ export function FeaturesOverviewInsights() {
                     "rounded-full border px-3.5 py-2 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "border-accent/40 bg-accent text-accent-foreground"
-                      : "border-border bg-surface-muted/50 text-muted hover:text-foreground",
+                      : "border-border-strong bg-surface-muted text-foreground/75 hover:border-accent/30 hover:text-foreground dark:text-foreground/70",
                   )}
                 >
                   {item.label}
@@ -130,7 +130,9 @@ export function FeaturesOverviewInsights() {
 
             <div className="mt-4">
               <div className="mb-2 flex items-end justify-between gap-3">
-                <p className="text-sm font-medium">Orders open workload</p>
+                <p className="text-sm font-medium">
+                  {featuresOverviewInsights.workloadLabel}
+                </p>
                 <p className="font-mono text-sm font-semibold">
                   {snapshot.openCount} / 1
                 </p>
@@ -139,7 +141,7 @@ export function FeaturesOverviewInsights() {
                 ref={barRef}
                 className="h-3 overflow-hidden rounded-full bg-border/70"
                 role="img"
-                aria-label={`Orders open workload ${snapshot.openCount} of 1`}
+                aria-label={`${featuresOverviewInsights.workloadLabel} ${snapshot.openCount} of 1`}
               >
                 <div
                   data-workload-fill
@@ -152,17 +154,17 @@ export function FeaturesOverviewInsights() {
             <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <div>
                 <dt className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
-                  Open items
+                  {featuresOverviewInsights.openLabel}
                 </dt>
-                <dd className="mt-1 font-heading text-lg font-semibold">
+                <dd className="mt-1 font-heading text-xl font-semibold">
                   {snapshot.openCount}
                 </dd>
               </div>
               <div>
                 <dt className="text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
-                  Resolved items
+                  {featuresOverviewInsights.resolvedLabel}
                 </dt>
-                <dd className="mt-1 font-heading text-lg font-semibold">
+                <dd className="mt-1 font-heading text-xl font-semibold">
                   {snapshot.resolvedCount}
                 </dd>
               </div>
