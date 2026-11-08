@@ -1,6 +1,9 @@
 import { Container } from "@/components/ui/container";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { automationFeatureRoutingExamples } from "@/data/marketing/automation-feature";
+import {
+  automationFeatureRoutingExamples,
+  displayAutomationTeam,
+} from "@/data/marketing/automation-feature";
 
 export function AutomationFeatureExamples() {
   return (
@@ -17,7 +20,7 @@ export function AutomationFeatureExamples() {
               <thead className="border-b border-border bg-surface-muted/60 text-[11px] font-semibold tracking-[0.14em] text-muted uppercase">
                 <tr>
                   <th className="px-4 py-3 font-semibold">Inquiry</th>
-                  <th className="px-4 py-3 font-semibold">Rule evaluated</th>
+                  <th className="px-4 py-3 font-semibold">Routing rule</th>
                   <th className="px-4 py-3 font-semibold">Result</th>
                   <th className="px-4 py-3 font-semibold">Assigned team</th>
                 </tr>
@@ -35,13 +38,15 @@ export function AutomationFeatureExamples() {
                         className={
                           row.result === "Matched"
                             ? "font-medium text-accent"
-                            : "font-medium text-foreground"
+                            : "font-medium text-muted"
                         }
                       >
                         {row.result}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-medium">{row.team}</td>
+                    <td className="px-4 py-3 font-medium">
+                      {displayAutomationTeam(row.team)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -58,12 +63,22 @@ export function AutomationFeatureExamples() {
                   {row.inquiry}
                 </p>
                 <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
-                  <dt className="text-muted">Rule evaluated</dt>
+                  <dt className="text-muted">Routing rule</dt>
                   <dd className="font-medium">{row.rule}</dd>
                   <dt className="text-muted">Result</dt>
-                  <dd className="font-medium">{row.result}</dd>
+                  <dd
+                    className={
+                      row.result === "Matched"
+                        ? "font-medium text-accent"
+                        : "font-medium text-muted"
+                    }
+                  >
+                    {row.result}
+                  </dd>
                   <dt className="text-muted">Assigned team</dt>
-                  <dd className="font-medium">{row.team}</dd>
+                  <dd className="font-medium">
+                    {displayAutomationTeam(row.team)}
+                  </dd>
                 </dl>
               </div>
             ))}

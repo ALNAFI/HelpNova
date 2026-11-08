@@ -1,5 +1,5 @@
 import { routes } from "@/config/routes";
-import { ruleLabels, topicLabels } from "@/data/demo/seed";
+import { topicLabels } from "@/data/demo/seed";
 import type { DemoTeam, DemoTopic } from "@/types/demo";
 import { evaluateAutomation } from "@/utils/demo-automation";
 
@@ -27,50 +27,50 @@ export const automationFeatureHero = {
   eyebrow: "Workflow automation",
   title: "Give every inquiry a clear next step.",
   description:
-    "Start with a customer question, check its topic, and assign it to a team. Follow both branches of a sample rule to see exactly how the decision works.",
+    "Simplify customer support with smart workflows that organize incoming requests, route conversations to the right teams, and keep every inquiry moving forward.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
   secondaryCta: {
-    label: "Explore the rule",
-    href: "#which-path-will-the-inquiry-take",
+    label: "Explore Automation",
+    href: "#inquiry-path",
   },
   sampleMessage: "Where’s my order?",
   conditionLabel: "Order Tracking?",
   matchedTeam: "Orders",
-  otherwiseTeam: "General Triage",
+  otherwiseTeam: "General Support",
 } as const;
 
 export const automationFeatureAnatomy = {
   title: "What makes up a routing rule?",
   sentence:
-    "When a new inquiry arrives, check its topic. Send order-tracking questions to Orders and everything else to General Triage.",
+    "Every customer inquiry follows a clear path. HelpNova checks its topic and routes it to the right team, keeping support organized and efficient.",
   parts: [
     {
       id: "trigger",
       label: "Trigger",
       title: "A new inquiry arrives.",
-      body: "The rule starts when a customer message enters the shared workspace. The customer’s words are the input—not a prediction.",
+      body: "A new customer request enters the shared inbox, ready to be organized and directed to the right team.",
     },
     {
       id: "condition",
       label: "Condition",
       title: "Is the topic Order Tracking?",
-      body: "The rule checks a predefined topic field on the inquiry. It does not invent a topic from the message text.",
+      body: "HelpNova checks the inquiry's assigned topic to determine which support team should handle it.",
     },
     {
       id: "action",
       label: "Action",
       title: "Assign the inquiry to a team.",
-      body: "Matched → Orders. Otherwise → General Triage. Both destinations are valid next steps.",
+      body: "Order-related inquiries go to the Orders team, while other requests are directed to General Support for review.",
     },
   ],
 } as const;
 
 export const automationFeatureWalkthrough = {
-  id: "which-path-will-the-inquiry-take",
+  id: "inquiry-path",
   title: "Which path will the inquiry take?",
   instruction:
-    "Change the inquiry to compare outcomes. Select a node to inspect it.",
-  ruleLabel: "Order rule",
+    "Explore how different customer inquiries follow the right path to the right support team.",
+  ruleLabel: "Order Routing",
   conditionQuestion: "Is the topic Order Tracking?",
   fixedRule: "order" as const,
 } as const;
@@ -128,7 +128,7 @@ export const automationFeatureNodes: {
   },
   {
     id: "triage",
-    label: "General Triage",
+    label: "General Support",
     role: "Receives inquiries that fall outside the Order rule.",
   },
 ];
@@ -136,7 +136,7 @@ export const automationFeatureNodes: {
 export const automationFeatureRoutingExamples = {
   title: "How would other inquiries be assigned?",
   observation:
-    "The billing question reaches Billing when evaluated by the Billing rule. In the Order rule example above, it goes to General Triage.",
+    "HelpNova routes each inquiry based on the selected rule. Matching requests reach their dedicated teams, while unmatched inquiries are directed to General Support.",
   rows: [
     {
       inquiry: "Order Tracking",
@@ -159,7 +159,7 @@ export const automationFeatureRoutingExamples = {
     {
       inquiry: "Billing Issue",
       rule: "Order rule",
-      result: "Otherwise",
+      result: "No Match",
       team: "General Triage" as DemoTeam,
     },
   ],
@@ -171,13 +171,15 @@ export const automationFeatureConsequence = {
   inboxLinkLabel: "Explore Shared Inbox",
   inboxHref: routes.inbox.href,
   insightsTitle: "Insights",
-  sampleLabel: "Sample contribution",
+  sampleLabel: "Team workload overview",
+  insightsNote:
+    "See how conversation assignments and resolution statuses shape team workloads and support insights.",
 } as const;
 
 export const automationFeatureCta = {
-  title: "Try a different inquiry. Run a different rule.",
+  title: "Explore Smarter Ways to Handle Every Inquiry.",
   description:
-    "Open the guided demo to choose an inquiry and a rule, run the simulation, and inspect the assignment in Inbox and Insights.",
+    "Discover how HelpNova connects intelligent routing, team assignments, and support insights to create a smoother customer support experience.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
 } as const;
 
@@ -205,12 +207,12 @@ export function evaluateOrderRule(topic: DemoTopic) {
 export function getAutomationResultSummary(
   inquiry: AutomationInquiryFixture,
   matched: boolean,
-  destination: DemoTeam,
+  _destination: DemoTeam,
 ) {
-  const branch = matched ? "Matched" : "Otherwise";
-  return `${branch} → ${destination}. The inquiry topic is ${inquiry.topicLabel}, so it takes the ${
-    matched ? "matched" : "fallback"
-  } branch of the ${ruleLabels.order}.`;
+  if (matched) {
+    return "Order tracking inquiries are directed to the Orders team, ensuring clear ownership and an organized support process.";
+  }
+  return `${inquiry.topicLabel} inquiries are directed to General Support for review, ensuring clear ownership and an organized support process.`;
 }
 
 export function getNodeExplanation(
@@ -235,33 +237,34 @@ export function getNodeExplanation(
         title: node.label,
         value: `Topic: ${inquiry.topicLabel}`,
         explanation: passesMatched
-          ? `The rule checks whether the topic equals Order Tracking. This inquiry’s topic is ${inquiry.topicLabel}, so the condition is true.`
-          : `The rule checks whether the topic equals Order Tracking. This inquiry’s topic is ${inquiry.topicLabel}, so the condition is false.`,
+          ? "This inquiry matches the Order Tracking category and follows the path to the Orders team."
+          : "This inquiry does not match the Order Tracking category and follows the path to General Support.",
       };
     case "matched":
       return {
         title: node.label,
         value: passesMatched ? "Active on this example" : "Not taken",
         explanation: passesMatched
-          ? "This inquiry matches the Order rule, so it follows the Matched branch to Orders."
-          : "This inquiry does not match the Order rule, so the Matched branch stays inactive.",
+          ? "This inquiry matches Order Routing, so it follows the Matched branch to Orders."
+          : "This inquiry does not match Order Routing, so the Matched branch stays inactive.",
       };
     case "otherwise":
       return {
         title: node.label,
         value: passesOtherwise ? "Active on this example" : "Not taken",
         explanation: passesOtherwise
-          ? "This inquiry falls outside the Order rule, so it follows the Otherwise branch to General Triage."
-          : "This inquiry matches the Order rule, so the Otherwise branch stays inactive.",
+          ? "This inquiry falls outside Order Routing, so it follows the Otherwise branch to General Support."
+          : "This inquiry matches Order Routing, so the Otherwise branch stays inactive.",
       };
     case "orders":
       return {
         title: node.label,
-        value: destination === "Orders" ? "Receives this inquiry" : "Not assigned",
+        value:
+          destination === "Orders" ? "Receives this inquiry" : "Not Selected",
         explanation:
           destination === "Orders"
-            ? "Orders receives this inquiry because its topic matches the Order rule."
-            : "Orders receives inquiries that match this rule. The current inquiry goes to General Triage.",
+            ? "Orders receives this inquiry because its topic matches Order Routing."
+            : "Orders receives inquiries that match this rule. The current inquiry goes to General Support.",
       };
     case "triage":
       return {
@@ -269,11 +272,11 @@ export function getNodeExplanation(
         value:
           destination === "General Triage"
             ? "Receives this inquiry"
-            : "Not assigned",
+            : "Not Selected",
         explanation:
           destination === "General Triage"
-            ? "This team receives the inquiry because its topic falls outside the Order rule."
-            : "General Triage is the fallback destination. This example matches the Order rule and goes to Orders instead.",
+            ? "This team receives the inquiry because its topic falls outside Order Routing."
+            : "General Support is the fallback destination. This example matches Order Routing and goes to Orders instead.",
       };
     default:
       return {
@@ -284,6 +287,11 @@ export function getNodeExplanation(
   }
 }
 
+export function displayAutomationTeam(destination: DemoTeam) {
+  return destination === "General Triage" ? "General Support" : destination;
+}
+
 export function getWorkloadContribution(destination: DemoTeam) {
-  return `This sample contributes 1 open inquiry to ${destination}.`;
+  const team = displayAutomationTeam(destination);
+  return `${team} currently has 1 open conversation awaiting resolution.`;
 }

@@ -1,0 +1,478 @@
+/* Inquiry path walkthrough — maps to HelpNova theme tokens. */
+
+.ips {
+  --ips-bg: var(--background);
+  --ips-card: var(--surface);
+  --ips-card2: var(--accent-soft);
+  --ips-line: var(--border-strong);
+  --ips-text: var(--foreground);
+  --ips-muted: var(--muted);
+  --ips-accent: var(--accent);
+  --ips-onacc: var(--accent-foreground);
+  font-family: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
+}
+
+.ips-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 14px;
+}
+
+.ips-tabs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  flex: 1;
+  padding: 2px;
+  scrollbar-width: none;
+}
+
+.ips-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.ips-tab {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font: 600 14px inherit;
+  color: var(--ips-muted);
+  background: var(--ips-card);
+  border: 1px solid var(--ips-line);
+  border-radius: 99px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
+
+.ips-tab > :not(.ips-tab-pg) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .ips-bar-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .ips-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    overflow: visible;
+    width: 100%;
+  }
+
+  .ips-tab {
+    flex: none;
+    width: 100%;
+    min-height: 42px;
+    padding: 9px 12px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .ips-auto {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.ips-tab:hover {
+  color: var(--ips-text);
+}
+
+.ips-tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: none;
+}
+
+.ips-tab-on {
+  background: var(--ips-accent);
+  border-color: var(--ips-accent);
+  color: var(--ips-onacc);
+}
+
+.ips-tab-on .ips-tab-dot {
+  display: block;
+}
+
+.ips-tab-pg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  background: color-mix(in oklab, var(--ips-onacc) 22%, transparent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  display: none;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.ips-tab-on .ips-tab-pg.ips-tab-pg-run {
+  display: block;
+  animation: ips-fill 7s linear forwards;
+}
+
+@keyframes ips-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.ips-auto {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 13px inherit;
+  color: var(--ips-muted);
+  background: var(--ips-card);
+  border: 1px solid var(--ips-line);
+  border-radius: 99px;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+
+.ips-auto i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ips-line);
+}
+
+.ips-auto[aria-pressed="true"] {
+  color: var(--ips-accent);
+  border-color: var(--ips-accent);
+}
+
+.ips-auto[aria-pressed="true"] i {
+  background: var(--ips-accent);
+  animation: ips-blink 1.4s infinite;
+}
+
+@keyframes ips-blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.ips-tab:focus-visible,
+.ips-auto:focus-visible {
+  outline: 2px solid var(--ips-accent);
+  outline-offset: 2px;
+}
+
+.ips-note {
+  background: var(--ips-card);
+  border: 1px solid var(--ips-line);
+  border-radius: var(--radius-card);
+  padding: 16px 20px;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 56px;
+  transition: opacity 0.25s;
+}
+
+.ips-note-fade {
+  opacity: 0;
+}
+
+.ips-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .ips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ips-card {
+  background: var(--ips-card);
+  border: 1px solid var(--ips-line);
+  border-radius: var(--radius-workspace);
+}
+
+.ips-viz {
+  padding: clamp(8px, 2vw, 20px);
+}
+
+.ips-viz svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ips-panel {
+  padding: clamp(18px, 3vw, 26px);
+  display: flex;
+  flex-direction: column;
+}
+
+.ips-eb {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  color: var(--ips-muted);
+}
+
+.ips-pt {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 12px 0 4px;
+  color: var(--ips-text);
+}
+
+.ips-tp {
+  color: var(--ips-accent);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.ips-ex {
+  color: var(--ips-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 12px 0 18px;
+  min-height: 48px;
+}
+
+.ips-role {
+  border: 1px solid var(--ips-line);
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: var(--ips-bg);
+}
+
+.ips-role p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ips-text);
+}
+
+.ips-steps {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ips-st {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ips-muted);
+  transition: color 0.3s;
+}
+
+.ips-st b {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ips-line);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  transition: all 0.3s;
+}
+
+.ips-st-act {
+  color: var(--ips-text);
+}
+
+.ips-st-act b {
+  border-color: var(--ips-accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--ips-accent) 18%, transparent);
+}
+
+.ips-st-done {
+  color: var(--ips-text);
+}
+
+.ips-st-done b {
+  background: var(--ips-accent);
+  border-color: var(--ips-accent);
+  color: var(--ips-onacc);
+}
+
+.ips-node > rect.ips-b {
+  fill: var(--ips-card);
+  stroke: var(--ips-line);
+  stroke-width: 1.2;
+  transition:
+    stroke 0.4s,
+    fill 0.4s,
+    opacity 0.4s;
+}
+
+.ips-node.ips-active > rect.ips-b {
+  stroke: var(--ips-accent);
+  fill: var(--ips-card2);
+}
+
+.ips-node.ips-dim {
+  opacity: 0.55;
+}
+
+.ips-lbl {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  fill: var(--ips-muted);
+}
+
+.ips-ttl {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--ips-text);
+}
+
+.ips-sub {
+  font-size: 12.5px;
+  font-weight: 500;
+  fill: var(--ips-muted);
+  transition: fill 0.3s;
+}
+
+.ips-sub.ips-ok {
+  fill: var(--ips-accent);
+}
+
+.ips-link {
+  fill: none;
+  stroke: var(--ips-line);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.4s;
+}
+
+.ips-link.ips-dash {
+  stroke-dasharray: 5 6;
+}
+
+.ips-link.ips-on {
+  stroke: var(--ips-accent);
+}
+
+.ips-icon {
+  fill: none;
+  stroke: var(--ips-accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.ips-bp rect {
+  fill: var(--ips-card);
+  stroke: var(--ips-line);
+  transition: all 0.4s;
+}
+
+.ips-bp text {
+  font-size: 11.5px;
+  font-weight: 700;
+  fill: var(--ips-muted);
+  transition: fill 0.4s;
+}
+
+.ips-bp.ips-sel rect {
+  fill: var(--ips-card2);
+  stroke: var(--ips-accent);
+}
+
+.ips-bp.ips-sel text {
+  fill: var(--ips-accent);
+}
+
+.ips-bp.ips-off {
+  opacity: 0.45;
+}
+
+.ips-tok {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ips-sweep {
+  opacity: 0;
+}
+
+.ips-sweep.ips-on {
+  animation: ips-sweep 0.8s ease-in-out;
+}
+
+@keyframes ips-sweep {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(250px);
+  }
+}
+
+.ips-ring {
+  fill: none;
+  stroke: var(--ips-accent);
+  stroke-width: 2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.ips-node.ips-active .ips-pulse {
+  animation: ips-pulse 1.4s ease-out infinite;
+}
+
+@keyframes ips-pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ips-node.ips-active .ips-pulse,
+  .ips-sweep.ips-on,
+  .ips-auto[aria-pressed="true"] i,
+  .ips-tab-pg {
+    animation: none !important;
+  }
+}

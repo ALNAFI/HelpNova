@@ -76,8 +76,11 @@ function clearSignal(signal: RunSignal) {
 
 export function InquiryRoutingIllustration({
   className,
+  onAssign,
 }: {
   className?: string;
+  /** Fires when a destination node shows "Inquiry assigned". */
+  onAssign?: (topic: string, matched: boolean) => void;
 }) {
   const reactId = useId();
   const haloId = `iri-halo-${reactId.replace(/:/g, "")}`;
@@ -96,6 +99,8 @@ export function InquiryRoutingIllustration({
   const path2Ref = useRef<SVGPathElement>(null);
   const path3Ref = useRef<SVGPathElement>(null);
   const tokenRef = useRef<SVGGElement>(null);
+  const onAssignRef = useRef(onAssign);
+  onAssignRef.current = onAssign;
 
   useEffect(() => {
     const root = rootRef.current;
@@ -205,6 +210,7 @@ export function InquiryRoutingIllustration({
         destSub.textContent = "Inquiry assigned";
         destSub.classList.add("iri-ok");
         token.style.opacity = "0";
+        onAssignRef.current?.(topicLabel, yes);
         await sleep(2200, signal);
         if (signal.cancelled) break;
 
