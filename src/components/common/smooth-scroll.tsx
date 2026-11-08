@@ -1,12 +1,16 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { FloatingActions } from "@/components/common/floating-actions";
 import { TextCursor } from "@/components/ui/text-cursor";
 import { LenisProvider } from "@/context/lenis-context";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+
+/** Formal pages where the cursor stamp reads as noise. */
+const TEXT_CURSOR_DISABLED = new Set(["/terms", "/privacy", "/security"]);
 
 function nativeScrollLimit() {
   return Math.max(
@@ -22,8 +26,10 @@ function nativeProgress() {
 }
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const reducedMotion = usePrefersReducedMotion();
   const lenisRef = useRef<Lenis | null>(null);
+  const enableTextCursor = !TEXT_CURSOR_DISABLED.has(pathname);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -147,29 +153,35 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     [reducedMotion],
   );
 
+  const content = enableTextCursor ? (
+    <TextCursor
+      text="!!"
+      mode="stamp"
+      fontSize={28}
+      spacing={72}
+      maxPoints={7}
+      shrink={0.5}
+      fade={0.55}
+      smoothing={0.3}
+      exitDuration={0.5}
+      removalInterval={30}
+      followMouseDirection
+      keepUpright
+      randomFloat
+      popIn
+      color="var(--accent)"
+      fontFamily="var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif"
+      className="flex h-auto min-h-full w-full flex-1 flex-col"
+    >
+      {children}
+    </TextCursor>
+  ) : (
+    <div className="flex h-auto min-h-full w-full flex-1 flex-col">{children}</div>
+  );
+
   return (
     <LenisProvider value={value}>
-      <TextCursor
-        text="!!"
-        mode="stamp"
-        fontSize={28}
-        spacing={72}
-        maxPoints={7}
-        shrink={0.5}
-        fade={0.55}
-        smoothing={0.3}
-        exitDuration={0.5}
-        removalInterval={30}
-        followMouseDirection
-        keepUpright
-        randomFloat
-        popIn
-        color="var(--accent)"
-        fontFamily="var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif"
-        className="flex h-auto min-h-full w-full flex-1 flex-col"
-      >
-        {children}
-      </TextCursor>
+      {content}
       <FloatingActions />
     </LenisProvider>
   );

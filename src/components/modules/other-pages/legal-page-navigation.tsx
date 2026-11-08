@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowUpRight } from "lucide-react";
 import {
   LegalInformationCard,
   type LegalInformationIcon,
@@ -59,15 +58,13 @@ export function LegalPageNavigation({
       aria-labelledby="legal-related-heading"
     >
       <Container>
-        <div data-legal-nav className="flex items-end justify-between gap-4">
-          <h2
-            id="legal-related-heading"
-            className="font-heading text-[1.65rem] font-semibold tracking-tight sm:text-[1.9rem]"
-          >
-            {title}
-          </h2>
-          <ArrowUpRight className="hidden size-5 text-muted sm:block" aria-hidden />
-        </div>
+        <h2
+          data-legal-nav
+          id="legal-related-heading"
+          className="font-heading text-[1.65rem] font-semibold tracking-tight sm:text-[1.9rem]"
+        >
+          {title}
+        </h2>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {links.map((link) => (
             <div key={link.id} data-legal-nav>
@@ -76,6 +73,7 @@ export function LegalPageNavigation({
                 description={link.description}
                 icon={link.icon}
                 href={link.href}
+                iconPosition="start"
               />
             </div>
           ))}

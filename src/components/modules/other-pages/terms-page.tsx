@@ -7,7 +7,11 @@ import { LegalInformationCard } from "@/components/modules/other-pages/legal-inf
 import { LegalPageNavigation } from "@/components/modules/other-pages/legal-page-navigation";
 import { LegalReadingProgress } from "@/components/modules/other-pages/legal-reading-progress";
 import { LegalSection } from "@/components/modules/other-pages/legal-section";
-import { LegalTableOfContents } from "@/components/modules/other-pages/legal-table-of-contents";
+import { TermsHeroIllustration } from "@/components/modules/other-pages/terms-hero-illustration";
+import {
+  LegalTableOfContents,
+  LegalTocProvider,
+} from "@/components/modules/other-pages/legal-table-of-contents";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import {
@@ -98,9 +102,8 @@ export function TermsPage() {
         eyebrow={termsPageCopy.eyebrow}
         title={termsPageCopy.title}
         description={termsPageCopy.description}
-        sampleLabel={termsPageCopy.sampleLabel}
-        sampleNotice={termsPageCopy.sampleNotice}
         headingId="terms-hero-heading"
+        illustration={<TermsHeroIllustration />}
       />
 
       <section
@@ -127,6 +130,7 @@ export function TermsPage() {
                   title={card.title}
                   description={card.description}
                   icon={card.icon}
+                  iconPosition="start"
                 />
               </div>
             ))}
@@ -135,47 +139,59 @@ export function TermsPage() {
       </section>
 
       <Container className="py-8 sm:py-10">
-        <div className="grid gap-10 lg:grid-cols-[15rem_minmax(0,46rem)] lg:justify-between">
-          <aside className="lg:sticky lg:top-[calc(var(--header-height)+1.25rem)] lg:self-start">
-            <LegalTableOfContents
-              sections={tocSections}
-              heading={termsPageCopy.onThisPage}
-              mobileLabel={termsPageCopy.jumpToSection}
-            />
-          </aside>
-
-          <article
-            id="terms-document"
-            className="min-w-0 rounded-[1.5rem] border border-border bg-surface/90 p-5 shadow-[var(--shadow-soft)] sm:p-8"
-          >
-            <div className="space-y-10">
-              {termsSections.map((section, index) => (
-                <LegalSection
-                  key={section.id}
-                  section={section}
-                  index={index}
-                />
-              ))}
+        <LegalTocProvider sections={tocSections}>
+          <div className="relative">
+            <div className="sticky top-[var(--header-height)] z-40 -mx-1 mb-4 overflow-visible bg-background/95 px-1 py-2 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 lg:hidden">
+              <LegalTableOfContents
+                surface="mobile"
+                heading={termsPageCopy.onThisPage}
+                mobileLabel={termsPageCopy.jumpToSection}
+              />
             </div>
 
-            <aside
-              data-terms-callout
-              className="mt-10 flex gap-4 rounded-[1.35rem] border border-accent/25 bg-accent-soft/40 p-5"
-            >
-              <span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-foreground">
-                <Info className="size-4" aria-hidden />
-              </span>
-              <div>
-                <h2 className="font-heading text-lg font-semibold tracking-tight">
-                  {termsPageCopy.calloutTitle}
-                </h2>
-                <p className="mt-2 text-sm leading-6 text-muted">
-                  {termsPageCopy.calloutDescription}
-                </p>
-              </div>
-            </aside>
-          </article>
-        </div>
+            <div className="grid gap-10 lg:grid-cols-[15rem_minmax(0,46rem)] lg:justify-between">
+              <aside className="hidden lg:sticky lg:top-[calc(var(--header-height)+1.25rem)] lg:block lg:self-start">
+                <LegalTableOfContents
+                  surface="desktop"
+                  heading={termsPageCopy.onThisPage}
+                  mobileLabel={termsPageCopy.jumpToSection}
+                />
+              </aside>
+
+              <article
+                id="terms-document"
+                className="min-w-0 rounded-[1.5rem] border border-border bg-surface/90 p-5 shadow-[var(--shadow-soft)] sm:p-8"
+              >
+                <div className="space-y-10">
+                  {termsSections.map((section, index) => (
+                    <LegalSection
+                      key={section.id}
+                      section={section}
+                      index={index}
+                    />
+                  ))}
+                </div>
+
+                <aside
+                  data-terms-callout
+                  className="mt-10 flex gap-4 rounded-[1.35rem] border border-accent/25 bg-accent-soft/40 p-5"
+                >
+                  <span className="mt-0.5 inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent text-accent-foreground">
+                    <Info className="size-4" aria-hidden />
+                  </span>
+                  <div>
+                    <h2 className="font-heading text-lg font-semibold tracking-tight">
+                      {termsPageCopy.calloutTitle}
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-muted">
+                      {termsPageCopy.calloutDescription}
+                    </p>
+                  </div>
+                </aside>
+              </article>
+            </div>
+          </div>
+        </LegalTocProvider>
       </Container>
 
       <LegalPageNavigation

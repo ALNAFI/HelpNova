@@ -1,0 +1,376 @@
+/* Scoped Terms hero illustration — uses HelpNova theme tokens. */
+
+.thi {
+  --thi-card: var(--surface);
+  --thi-card2: var(--accent-soft);
+  --thi-line: var(--border-strong);
+  --thi-text: var(--foreground);
+  --thi-muted: var(--muted);
+  --thi-accent: var(--accent);
+  --thi-onacc: var(--accent-foreground);
+  --thi-glow: var(--glow);
+
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  min-width: 0;
+  aspect-ratio: 400 / 240;
+}
+
+.thi__stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 400px;
+  height: 240px;
+  transform-origin: 0 0;
+}
+
+.thi__glow {
+  position: absolute;
+  left: 50px;
+  top: 30px;
+  width: 270px;
+  height: 170px;
+  border-radius: 50%;
+  background: var(--thi-glow);
+  filter: blur(42px);
+  animation: thi-breathe 5s ease-in-out infinite;
+}
+
+@keyframes thi-breathe {
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+}
+
+.thi__back {
+  position: absolute;
+  left: 44px;
+  top: 24px;
+  width: 310px;
+  height: 212px;
+  border-radius: 20px;
+  border: 1px solid var(--thi-line);
+  background: var(--thi-card);
+  opacity: 0.55;
+  transform: rotate(3.5deg);
+}
+
+.thi__card {
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  width: 310px;
+  height: 212px;
+  background: var(--thi-card);
+  border: 1px solid var(--thi-line);
+  border-radius: 20px;
+  padding: 14px 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.thi__hd {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 44px;
+}
+
+.thi__hl {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: var(--thi-muted);
+  text-transform: uppercase;
+}
+
+.thi__hl svg {
+  width: 14px;
+  height: 14px;
+  color: var(--thi-accent);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.thi__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.thi__rw {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 12px 0 10px;
+  border: 1px solid var(--thi-line);
+  border-radius: 12px;
+  transition:
+    border-color 0.4s,
+    background 0.4s;
+}
+
+.thi__n {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--thi-card2);
+  color: var(--thi-muted);
+  transition: all 0.4s;
+}
+
+.thi__tx {
+  min-width: 0;
+  flex: 1;
+}
+
+.thi__t {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--thi-muted);
+  transition: color 0.4s;
+  white-space: nowrap;
+}
+
+.thi__s {
+  height: 5px;
+  width: 62%;
+  border-radius: 4px;
+  background: var(--thi-line);
+  margin-top: 6px;
+  transition: all 0.5s;
+}
+
+.thi__ck {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--thi-line);
+  display: grid;
+  place-items: center;
+  transition: all 0.4s;
+}
+
+.thi__ck svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: var(--thi-onacc);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.thi__rw--on {
+  border-color: color-mix(in srgb, var(--thi-accent) 55%, var(--thi-line));
+  background: color-mix(in srgb, var(--thi-accent) 7%, transparent);
+}
+
+.thi__rw--on .thi__n {
+  background: var(--thi-accent);
+  color: var(--thi-onacc);
+}
+
+.thi__rw--on .thi__t {
+  color: var(--thi-text);
+}
+
+.thi__rw--on .thi__s {
+  width: 82%;
+  background: color-mix(in srgb, var(--thi-accent) 45%, transparent);
+}
+
+.thi__rw--on .thi__ck {
+  background: var(--thi-accent);
+  border-color: var(--thi-accent);
+}
+
+.thi__rw--on .thi__ck svg {
+  opacity: 1;
+}
+
+.thi__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 46px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--thi-accent) 22%, transparent)
+  );
+  border-bottom: 1.5px solid var(--thi-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.thi__scan--go {
+  animation: thi-scan 3s linear forwards;
+}
+
+@keyframes thi-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  6% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(166px);
+  }
+}
+
+.thi__tag {
+  position: absolute;
+  left: 288px;
+  top: 0;
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: var(--thi-accent);
+  color: var(--thi-onacc);
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(
+    0 10px 22px color-mix(in srgb, var(--thi-accent) 55%, transparent)
+  );
+  animation: thi-float 5s ease-in-out infinite;
+}
+
+@keyframes thi-float {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.thi__tag-glyph,
+.thi__tag svg {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+}
+
+.thi__tag-glyph {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
+}
+
+.thi__tag svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.thi--ok .thi__tag-glyph {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.thi--ok .thi__tag svg {
+  opacity: 1;
+  transform: none;
+}
+
+.thi__chip {
+  position: absolute;
+  left: 206px;
+  top: 200px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--thi-card);
+  border: 1px solid var(--thi-line);
+  border-radius: 99px;
+  padding: 7px 14px 7px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--thi-text);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s;
+}
+
+.thi__chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--thi-muted);
+  animation: thi-blink 1.2s infinite;
+}
+
+@keyframes thi-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.thi--ok .thi__chip {
+  border-color: var(--thi-accent);
+  color: var(--thi-accent);
+}
+
+.thi--ok .thi__chip-dot {
+  background: var(--thi-accent);
+  animation: none;
+}
+
+.thi__cr,
+.thi__cd {
+  display: inline;
+}
+
+.thi__cd {
+  display: none;
+}
+
+.thi--ok .thi__cr {
+  display: none;
+}
+
+.thi--ok .thi__cd {
+  display: inline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thi *,
+  .thi *::before,
+  .thi *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

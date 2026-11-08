@@ -1,7 +1,7 @@
-import type { DemoTeam, DemoTopic } from "@/types/demo";
+import type { DemoTopic } from "@/types/demo";
 import { routes } from "@/config/routes";
 
-export type EcommerceInquiryId = "order-tracking" | "billing-issue";
+export type EcommerceInquiryId = "order-tracking";
 
 export type EcommerceInquiryFixture = {
   id: EcommerceInquiryId;
@@ -25,7 +25,7 @@ export const ecommerceHero = {
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
   secondaryCta: {
     label: "Follow an order inquiry",
-    href: "#where-should-this-inquiry-go",
+    href: "#smart-routing",
   },
   orderReference: "ORD-48291",
   trackingCode: "HN-48291-CA",
@@ -40,23 +40,6 @@ export const ecommerceInquirySection = {
   detailsTitle: "Order details",
   explanation:
     "This delivery question belongs with the Orders team. The order and tracking references provide the context they need.",
-} as const;
-
-export const ecommerceWalkthroughCopy = {
-  eyebrow: "SMART ROUTING",
-  title: "Where should this inquiry go?",
-  description:
-    "Switch between inquiries to see which team takes ownership—and why.",
-  activeRuleLabel: "Active rule: Order Tracking",
-  conditionQuestion: "Is the topic Order Tracking?",
-  liveRegionPrefix: "Routing result",
-  conversationTitle: "Conversation details",
-  internalNoteLabel: "Internal note",
-  internalNoteHelper: "Visible only to your team.",
-  matchedResult:
-    "The topic matches Order Tracking. This inquiry is assigned to Orders.",
-  otherwiseResult:
-    "This inquiry doesn’t match Order Tracking. It goes to General Triage for review.",
 } as const;
 
 export const ecommerceInquiries: EcommerceInquiryFixture[] = [
@@ -75,22 +58,6 @@ export const ecommerceInquiries: EcommerceInquiryFixture[] = [
       "Check the carrier’s latest scan before giving the customer a delivery estimate.",
     outcome:
       "The topic matches Order Tracking. This inquiry is assigned to Orders.",
-  },
-  {
-    id: "billing-issue",
-    topic: "billing-issue",
-    label: "Billing Issue",
-    customerName: "Sam Rivera",
-    customerEmail: "sam.r@example.com",
-    subject: "Charged twice for my order",
-    message:
-      "I can see two charges for the same order. Could you check this?",
-    orderReference: null,
-    topicLabel: "Billing Issue",
-    internalNote:
-      "Review the order’s payment history and confirm whether the second charge is a duplicate or a pending authorization.",
-    outcome:
-      "This inquiry doesn’t match Order Tracking. It goes to General Triage for review.",
   },
 ];
 
@@ -133,22 +100,3 @@ export const ecommerceCta = {
     "Open a conversation, try a routing rule, and see how team assignments shape the workload.",
   primaryCta: { label: "Explore Demo", href: routes.demo.href },
 } as const;
-
-export function getEcommerceInquiry(
-  id: EcommerceInquiryId,
-): EcommerceInquiryFixture {
-  return (
-    ecommerceInquiries.find((item) => item.id === id) ?? ecommerceInquiries[0]
-  );
-}
-
-export function getOrderRuleDestination(topic: DemoTopic): {
-  matched: boolean;
-  destination: DemoTeam;
-} {
-  const matched = topic === "order-tracking";
-  return {
-    matched,
-    destination: matched ? "Orders" : "General Triage",
-  };
-}

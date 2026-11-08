@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Info, ShieldCheck } from "lucide-react";
+import { Info } from "lucide-react";
 import { LegalHero } from "@/components/modules/other-pages/legal-hero";
 import { LegalPageNavigation } from "@/components/modules/other-pages/legal-page-navigation";
 import { SecurityAnimatedIcon } from "@/components/modules/other-pages/security-animated-icon";
+import { SecurityHeroIllustration } from "@/components/modules/other-pages/security-hero-illustration";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import {
@@ -109,21 +110,6 @@ export function SecurityPage() {
           },
         },
       );
-
-      gsap.to("[data-security-hero-shield]", {
-        y: -6,
-        duration: 3.2,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
-
-      gsap.to("[data-security-hero-ring]", {
-        rotate: 360,
-        duration: 28,
-        ease: "none",
-        repeat: -1,
-      });
     }, el);
 
     return () => ctx.revert();
@@ -140,34 +126,12 @@ export function SecurityPage() {
       </div>
 
       <div className="relative">
-        <div
-          className="pointer-events-none absolute top-16 right-[6%] hidden lg:block"
-          aria-hidden
-        >
-          <div className="relative size-40">
-            <div
-              data-security-hero-ring
-              className="absolute inset-0 rounded-full border border-dashed border-accent/30"
-            />
-            <div className="absolute inset-5 rounded-full border border-accent/20" />
-            <div
-              data-security-hero-shield
-              className="absolute inset-0 flex items-center justify-center"
-            >
-              <span className="inline-flex size-16 items-center justify-center rounded-2xl border border-accent/30 bg-accent text-accent-foreground shadow-[0_18px_40px_color-mix(in_oklab,var(--accent)_28%,transparent)]">
-                <ShieldCheck className="size-7" />
-              </span>
-            </div>
-          </div>
-        </div>
-
         <LegalHero
           eyebrow={securityPageCopy.eyebrow}
           title={securityPageCopy.title}
           description={securityPageCopy.description}
-          sampleLabel={securityPageCopy.sampleLabel}
-          sampleNotice={securityPageCopy.sampleNotice}
           headingId="security-hero-heading"
+          illustration={<SecurityHeroIllustration />}
         />
       </div>
 
@@ -199,11 +163,16 @@ export function SecurityPage() {
                 data-security-card
                 className="rounded-[1.35rem] border border-border bg-surface p-5 shadow-[var(--shadow-soft)] sm:p-6"
               >
-                <SecurityAnimatedIcon icon={pillar.icon} />
-                <h3 className="mt-5 font-heading text-lg font-semibold tracking-tight">
-                  {pillar.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-muted">
+                <div className="flex items-center gap-3">
+                  <SecurityAnimatedIcon
+                    icon={pillar.icon}
+                    className="shrink-0"
+                  />
+                  <h3 className="min-w-0 font-heading text-lg font-semibold tracking-tight">
+                    {pillar.title}
+                  </h3>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-muted">
                   {pillar.description}
                 </p>
               </article>
@@ -233,18 +202,24 @@ export function SecurityPage() {
             </p>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {securityPractices.map((practice) => (
               <article
                 key={practice.id}
                 data-security-practice
-                className="group rounded-[1.35rem] border border-border bg-surface/90 p-5 shadow-[var(--shadow-soft)] transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/35 sm:p-6"
+                className="group flex h-full flex-col rounded-[1.35rem] border border-border bg-surface/90 p-5 shadow-[var(--shadow-soft)] transition-[border-color,transform] duration-300 hover:-translate-y-0.5 hover:border-accent/35 sm:p-6"
               >
-                <SecurityAnimatedIcon icon={practice.icon} tone="soft" />
-                <h3 className="mt-5 font-heading text-lg font-semibold tracking-tight">
-                  {practice.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-muted">
+                <div className="flex items-center gap-3">
+                  <SecurityAnimatedIcon
+                    icon={practice.icon}
+                    tone="soft"
+                    className="shrink-0"
+                  />
+                  <h3 className="min-w-0 font-heading text-lg font-semibold tracking-tight text-balance">
+                    {practice.title}
+                  </h3>
+                </div>
+                <p className="mt-3 text-sm leading-6 text-muted">
                   {practice.description}
                 </p>
               </article>
@@ -260,8 +235,8 @@ export function SecurityPage() {
       >
         <Container>
           <div className="overflow-hidden rounded-[1.75rem] border border-border bg-surface shadow-[var(--shadow-soft)]">
-            <div className="grid gap-0 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
-              <div className="border-b border-border bg-gradient-to-br from-accent-soft/80 via-surface to-surface p-6 sm:p-8 lg:border-r lg:border-b-0">
+            <div className="grid gap-0 lg:grid-cols-[2fr_3fr]">
+              <div className="flex flex-col justify-center border-b border-border bg-gradient-to-br from-accent-soft/80 via-surface to-surface p-6 sm:p-8 lg:border-r lg:border-b-0">
                 <p className="text-xs font-semibold tracking-[0.16em] text-accent uppercase">
                   {securityPageCopy.boundariesEyebrow}
                 </p>
@@ -274,20 +249,21 @@ export function SecurityPage() {
                 <p className="mt-3 text-sm leading-7 text-muted sm:text-base">
                   {securityPageCopy.boundariesDescription}
                 </p>
-                <div className="mt-6">
-                  <SecurityAnimatedIcon icon="badge" size="lg" tone="solid" />
-                </div>
               </div>
 
-              <ul className="space-y-3 p-6 sm:p-8">
+              <ul className="space-y-2 p-4 sm:space-y-2.5 sm:p-5 lg:p-6">
                 {securityBoundaries.map((item) => (
                   <li
-                    key={item}
+                    key={item.id}
                     data-security-boundary
-                    className="flex gap-3 rounded-2xl border border-border/80 bg-surface-muted/40 px-4 py-3 text-sm leading-6 text-muted"
+                    className="rounded-2xl border border-border/80 bg-surface-muted/40 px-3.5 py-2.5 sm:px-4 sm:py-3"
                   >
-                    <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-accent" />
-                    <span>{item}</span>
+                    <p className="font-heading text-sm font-semibold tracking-tight text-foreground sm:text-base">
+                      {item.title}
+                    </p>
+                    <p className="mt-1 text-sm leading-6 text-muted">
+                      {item.description}
+                    </p>
                   </li>
                 ))}
               </ul>

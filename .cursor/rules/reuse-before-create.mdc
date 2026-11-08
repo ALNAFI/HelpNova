@@ -1,0 +1,18 @@
+---
+description: Inspect existing code first; reuse and update before creating; remove obsolete unused code cleanly.
+alwaysApply: true
+---
+
+# Reuse Before Create
+
+1. **Inspect first.** Before implementing anything, search the codebase and verify whether the requested feature or behavior already exists. Never create duplicates.
+
+2. **Prefer reuse.** Update or reuse existing components, hooks, data, and styles instead of adding new ones unless nothing suitable exists.
+
+3. **Replace cleanly.** If a component is replaced, remove the obsolete component and all unused related files, styles, imports, and references.
+
+4. **No leftover junk.** Do not leave unused, duplicated, deprecated, or abandoned code behind.
+
+5. **Check before delete.** Confirm a symbol or file is unused elsewhere before removing it. Never delete shared components or dependencies that are still required.
+
+6. **Keep the tree lean.** Keep the codebase clean, organized, reusable, and free of unnecessary files.

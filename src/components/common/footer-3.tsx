@@ -188,8 +188,7 @@ export function Footer3() {
         <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <Logo href={routes.homeInbox.href} />
           <p className="text-sm text-muted">
-            © 2026 HelpNova. A personal product concept — not a live
-            customer-support platform.
+            © 2026 HelpNova. All rights reserved.
           </p>
         </div>
       </div>

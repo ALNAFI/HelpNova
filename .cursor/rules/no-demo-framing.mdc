@@ -1,0 +1,32 @@
+---
+description: Do not present HelpNova as a demo, sample, or concept site in visitor-facing copy. Remove that framing when found.
+alwaysApply: true
+---
+
+# No Demo / Sample Framing
+
+HelpNova is **not** presented as a demo website, sample project, or unfinished concept in anything a visitor can read.
+
+When writing or editing public UI copy (headings, body, badges, notices, empty states, metadata, legal heroes, CTAs), if you see framing like **demo**, **sample**, **concept website**, **draft policy**, **illustrative only**, **local simulation**, **not a live service**, or similar, **remove or rewrite it**. Do not leave empty badges, empty notice cards, or orphaned disclaimer boxes.
+
+## Prefer
+
+- Confident product language: how HelpNova handles privacy, support, automation, and inbox workflows.
+- Clear, useful explanations without apologizing for “not being real.”
+
+## Avoid in visitor-facing text
+
+- demo, sample, preset, mock, placeholder, dummy
+- concept website, draft notice, editable sample, demonstration-only
+- “not a finalized policy,” “not an operational service,” “interactive demonstrations” as product identity
+
+## Keep
+
+- Code, types, file names, routes (e.g. `/demo`), and internal comments may still use technical names.
+- Do not invent fake claims (sent messages, created accounts, connected integrations, live AI answers, testimonials, measured outcomes).
+
+## Example
+
+❌ `HelpNova is currently a concept website with interactive demonstrations. This privacy notice is a draft…`
+
+✅ Remove the disclaimer card entirely, or replace nearby copy with direct product privacy language only.

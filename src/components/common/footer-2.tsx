@@ -155,8 +155,7 @@ export function Footer2() {
         <div className="mt-14 flex flex-col gap-4 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
           <Logo href={routes.homeAutomation.href} />
           <p className="text-xs text-muted">
-            © 2026 HelpNova. A personal product concept — not a live
-            customer-support platform.
+            © 2026 HelpNova. All rights reserved.
           </p>
         </div>
       </div>

@@ -1,0 +1,372 @@
+/* Scoped Security hero illustration — uses HelpNova theme tokens. */
+
+.shi {
+  --shi-card: var(--surface);
+  --shi-card2: var(--accent-soft);
+  --shi-line: var(--border-strong);
+  --shi-text: var(--foreground);
+  --shi-muted: var(--muted);
+  --shi-accent: var(--accent);
+  --shi-onacc: var(--accent-foreground);
+
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  min-width: 0;
+  aspect-ratio: 400 / 240;
+}
+
+.shi__stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 400px;
+  height: 240px;
+  transform-origin: 0 0;
+}
+
+.shi__rg {
+  position: absolute;
+  left: 330px;
+  top: 120px;
+  border-radius: 50%;
+  border: 1px solid var(--shi-line);
+  transform: translate(-50%, -50%);
+}
+
+.shi__rg--dash {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--shi-muted) 45%, transparent);
+  animation: shi-rot 40s linear infinite;
+}
+
+@keyframes shi-rot {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.shi__rg--pulse {
+  border-color: var(--shi-accent);
+  width: 64px;
+  height: 64px;
+  opacity: 0;
+  animation: shi-pulse 3.4s ease-out infinite;
+}
+
+.shi__rg--pulse-b {
+  animation-delay: 1.7s;
+}
+
+@keyframes shi-pulse {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4);
+  }
+}
+
+.shi__card {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 270px;
+  height: 220px;
+  background: var(--shi-card);
+  border: 1px solid var(--shi-line);
+  border-radius: 20px;
+  padding: 14px 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.shi__hd {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shi__hl {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: var(--shi-muted);
+  text-transform: uppercase;
+}
+
+.shi__hl svg {
+  width: 14px;
+  height: 14px;
+  color: var(--shi-accent);
+}
+
+.shi__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  border-radius: 99px;
+  padding: 4px 10px;
+  background: var(--shi-card2);
+  color: var(--shi-muted);
+  transition: all 0.4s;
+}
+
+.shi__pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: shi-blink 1.2s infinite;
+}
+
+@keyframes shi-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.shi--ok .shi__pill {
+  background: var(--shi-accent);
+  color: var(--shi-onacc);
+}
+
+.shi--ok .shi__pill-dot {
+  animation: none;
+}
+
+.shi__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.shi__rw {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--shi-line);
+  border-radius: 12px;
+  transition:
+    border-color 0.4s,
+    background 0.4s;
+}
+
+.shi__ic {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--shi-card2);
+  color: var(--shi-muted);
+  transition: all 0.4s;
+}
+
+.shi__ic svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.shi__lb {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--shi-muted);
+  transition: color 0.4s;
+  white-space: nowrap;
+}
+
+.shi__tg {
+  margin-left: auto;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  border-radius: 99px;
+  background: var(--shi-line);
+  position: relative;
+  transition: background 0.4s;
+}
+
+.shi__tg::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--shi-muted);
+  transition:
+    transform 0.4s,
+    background 0.4s;
+}
+
+.shi__rw--on {
+  border-color: color-mix(in srgb, var(--shi-accent) 55%, var(--shi-line));
+  background: color-mix(in srgb, var(--shi-accent) 7%, transparent);
+}
+
+.shi__rw--on .shi__ic {
+  background: var(--shi-accent);
+  color: var(--shi-onacc);
+}
+
+.shi__rw--on .shi__lb {
+  color: var(--shi-text);
+}
+
+.shi__rw--on .shi__tg {
+  background: var(--shi-accent);
+}
+
+.shi__rw--on .shi__tg::after {
+  transform: translateX(14px);
+  background: var(--shi-onacc);
+}
+
+.shi__scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 46px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--shi-accent) 24%, transparent)
+  );
+  border-bottom: 1.5px solid var(--shi-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shi__scan--go {
+  animation: shi-scan 3.4s linear forwards;
+}
+
+@keyframes shi-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  6% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(174px);
+  }
+}
+
+.shi__link {
+  position: absolute;
+  left: 270px;
+  top: 120px;
+  width: 28px;
+  border-top: 1.5px dashed var(--shi-line);
+  transition: border-color 0.4s;
+}
+
+.shi--ok .shi__link {
+  border-top-style: solid;
+  border-color: var(--shi-accent);
+}
+
+.shi__dot {
+  position: absolute;
+  left: 270px;
+  top: 117.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--shi-accent);
+  animation: shi-run 1.6s linear infinite;
+}
+
+@keyframes shi-run {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(26px);
+    opacity: 0;
+  }
+}
+
+.shi__tile {
+  position: absolute;
+  left: 298px;
+  top: 88px;
+  width: 64px;
+  height: 64px;
+  border-radius: 19px;
+  background: var(--shi-accent);
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(
+    0 10px 24px color-mix(in srgb, var(--shi-accent) 55%, transparent)
+  );
+  animation: shi-float 5s ease-in-out infinite;
+}
+
+@keyframes shi-float {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.shi__tile svg {
+  width: 36px;
+  height: 36px;
+  fill: none;
+  stroke: var(--shi-onacc);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.shi__chk {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.7s ease 0.1s;
+}
+
+.shi--ok .shi__chk {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shi *,
+  .shi *::before,
+  .shi *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
