@@ -17,7 +17,7 @@ export const integrationsPageCopy = {
     sampleMessage: "Can you check the status of my order?",
     tiles: [
       { id: "shopify", name: "Shopify", caption: "Order reference" },
-      { id: "gmail", name: "Gmail", caption: "Customer question" },
+      { id: "gmail", name: "Gmail", caption: "Customer question?" },
       { id: "notion", name: "Notion", caption: "Shipping guide" },
     ],
   },

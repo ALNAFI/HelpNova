@@ -506,7 +506,10 @@ export function IntegrationsHero({
               <div
                 data-int-card="gmail"
                 data-int-tile
-                className={cardClass("gmail", "absolute top-2 right-0 w-[10rem]")}
+                className={cardClass(
+                  "gmail",
+                  "absolute top-2 right-0 w-[11.5rem]",
+                )}
                 style={cardStyle("gmail", "none")}
               >
                 <ReferenceTile {...copy.tiles[1]} />
@@ -588,7 +591,7 @@ function ReferenceTile({
         </span>
         <div className="min-w-0">
           <p className="text-sm font-semibold">{name}</p>
-          <p className="text-[11px] text-muted">{caption}</p>
+          <p className="whitespace-nowrap text-[11px] text-muted">{caption}</p>
         </div>
       </div>
     </div>
