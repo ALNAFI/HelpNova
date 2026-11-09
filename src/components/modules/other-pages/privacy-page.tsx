@@ -7,6 +7,7 @@ import { LegalInformationCard } from "@/components/modules/other-pages/legal-inf
 import { LegalPageNavigation } from "@/components/modules/other-pages/legal-page-navigation";
 import { LegalReadingProgress } from "@/components/modules/other-pages/legal-reading-progress";
 import { LegalSection } from "@/components/modules/other-pages/legal-section";
+import { PrivacyHeroIllustration } from "@/components/modules/other-pages/privacy-hero-illustration";
 import {
   LegalTableOfContents,
   LegalTocProvider,
@@ -102,6 +103,7 @@ export function PrivacyPage() {
         title={privacyPageCopy.title}
         description={privacyPageCopy.description}
         headingId="privacy-hero-heading"
+        illustration={<PrivacyHeroIllustration />}
       />
 
       <section

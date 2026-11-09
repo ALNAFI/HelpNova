@@ -48,43 +48,15 @@ export function LegalHero({
           immediateRender: false,
         },
       );
-      if (!hasIllustration) {
-        gsap.fromTo(
-          "[data-legal-orbit]",
-          { rotate: -8, autoAlpha: 0.35 },
-          {
-            rotate: 8,
-            autoAlpha: 0.7,
-            duration: 12,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-          },
-        );
-      }
     }, el);
     return () => ctx.revert();
-  }, [reducedMotion, hasIllustration]);
+  }, [reducedMotion]);
 
   return (
     <header
       ref={ref}
       className="relative overflow-hidden pt-10 pb-8 sm:pt-14 sm:pb-10"
     >
-      {!hasIllustration ? (
-        <div
-          className="pointer-events-none absolute top-10 right-[8%] hidden size-44 lg:block"
-          aria-hidden
-        >
-          <div
-            data-legal-orbit
-            className="absolute inset-0 rounded-full border border-accent/25"
-          />
-          <div className="absolute inset-7 rounded-full border border-dashed border-accent/20" />
-          <div className="absolute top-1/2 left-1/2 size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" />
-        </div>
-      ) : null}
-
       <Container>
         <div
           className={cn(

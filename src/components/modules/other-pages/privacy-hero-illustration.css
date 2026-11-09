@@ -1,0 +1,342 @@
+/* Scoped Privacy hero illustration — uses HelpNova theme tokens. */
+
+.phi {
+  --phi-card: var(--surface);
+  --phi-card2: var(--accent-soft);
+  --phi-line: var(--border-strong);
+  --phi-text: var(--foreground);
+  --phi-muted: var(--muted);
+  --phi-accent: var(--accent);
+  --phi-onacc: var(--accent-foreground);
+  --phi-glow: var(--glow);
+
+  position: relative;
+  width: 400px;
+  max-width: 100%;
+  min-width: 0;
+  aspect-ratio: 400 / 252;
+}
+
+.phi__stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 400px;
+  height: 252px;
+  transform-origin: 0 0;
+}
+
+.phi__glow {
+  position: absolute;
+  left: 50px;
+  top: 30px;
+  width: 270px;
+  height: 170px;
+  border-radius: 50%;
+  background: var(--phi-glow);
+  filter: blur(42px);
+  animation: phi-breathe 5s ease-in-out infinite;
+}
+
+@keyframes phi-breathe {
+  50% {
+    opacity: 0.55;
+    transform: scale(1.08);
+  }
+}
+
+.phi__card {
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  width: 310px;
+  height: 222px;
+  background: var(--phi-card);
+  border: 1px solid var(--phi-line);
+  border-radius: 20px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.phi__hd {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding-right: 44px;
+}
+
+.phi__hl {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  color: var(--phi-muted);
+  text-transform: uppercase;
+}
+
+.phi__hl svg {
+  width: 14px;
+  height: 14px;
+  color: var(--phi-accent);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.phi__rows {
+  --y: 0;
+  position: relative;
+  margin-top: 12px;
+  height: 148px;
+}
+
+.phi__lay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phi__rw {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 44px;
+  padding: 0 12px 0 10px;
+  border: 1px solid var(--phi-line);
+  border-radius: 12px;
+  background: var(--phi-card);
+}
+
+.phi__ic {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--phi-card2);
+  color: var(--phi-muted);
+}
+
+.phi__ic svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.phi__lb {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  color: var(--phi-muted);
+  text-transform: uppercase;
+}
+
+.phi__vl {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.phi__mk {
+  letter-spacing: 2.5px;
+  color: var(--phi-muted);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.phi__rev {
+  opacity: 0;
+  clip-path: inset(
+    calc(var(--y) * 1px) 0 calc(104px - var(--y) * 1px) 0 round 12px
+  );
+  transition:
+    opacity 0.45s,
+    clip-path 0.75s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.phi__rev .phi__rw {
+  background: var(--phi-card2);
+  border-color: color-mix(in srgb, var(--phi-accent) 55%, var(--phi-line));
+}
+
+.phi__rev .phi__ic {
+  background: var(--phi-accent);
+  color: var(--phi-onacc);
+}
+
+.phi__rev .phi__vl {
+  color: var(--phi-text);
+}
+
+.phi--on .phi__rev {
+  opacity: 1;
+}
+
+.phi--ok .phi__rev {
+  clip-path: inset(0 0 0 0 round 12px);
+}
+
+.phi__lens {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: calc(100% + 8px);
+  height: 52px;
+  border-radius: 15px;
+  border: 1.5px solid var(--phi-accent);
+  background: color-mix(in srgb, var(--phi-accent) 6%, transparent);
+  box-shadow: 0 8px 24px -10px var(--phi-accent);
+  opacity: 0;
+  transform: translateY(calc(var(--y) * 1px));
+  transition:
+    opacity 0.45s,
+    transform 0.75s cubic-bezier(0.65, 0, 0.35, 1);
+  pointer-events: none;
+}
+
+.phi--on .phi__lens {
+  opacity: 1;
+}
+
+.phi--ok .phi__lens {
+  opacity: 0;
+}
+
+.phi__tag {
+  position: absolute;
+  left: 288px;
+  top: 0;
+  width: 54px;
+  height: 54px;
+  border-radius: 17px;
+  background: var(--phi-accent);
+  color: var(--phi-onacc);
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(
+    0 10px 22px color-mix(in srgb, var(--phi-accent) 55%, transparent)
+  );
+  animation: phi-float 5s ease-in-out infinite;
+}
+
+@keyframes phi-float {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.phi__tag svg {
+  grid-area: 1 / 1;
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+}
+
+.phi__tag-off {
+  opacity: 1;
+}
+
+.phi__tag-on {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.phi--ok .phi__tag-off {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.phi--ok .phi__tag-on {
+  opacity: 1;
+  transform: none;
+}
+
+.phi__chip {
+  position: absolute;
+  left: 196px;
+  top: 218px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--phi-card);
+  border: 1px solid var(--phi-line);
+  border-radius: 99px;
+  padding: 7px 14px 7px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--phi-text);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s;
+}
+
+.phi__chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--phi-muted);
+  animation: phi-blink 1.2s infinite;
+}
+
+@keyframes phi-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.phi--ok .phi__chip {
+  border-color: var(--phi-accent);
+  color: var(--phi-accent);
+}
+
+.phi--ok .phi__chip-dot {
+  background: var(--phi-accent);
+  animation: none;
+}
+
+.phi__cr,
+.phi__cd {
+  display: inline;
+}
+
+.phi__cd {
+  display: none;
+}
+
+.phi--ok .phi__cr {
+  display: none;
+}
+
+.phi--ok .phi__cd {
+  display: inline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phi *,
+  .phi *::before,
+  .phi *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
