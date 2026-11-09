@@ -83,35 +83,35 @@ function Panel({
 
 function HandoffsArt() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8">
-      <div className="relative w-full max-w-[22rem]">
-        <Panel className="p-4">
+    <div className="absolute inset-0 flex items-center justify-center p-5 sm:p-6">
+      <div className="relative w-full max-w-[27rem]">
+        <Panel className="p-5 sm:p-6">
           <div className="mb-3 flex items-center gap-2">
-            <span className="size-2 rounded-full bg-emerald-300" />
-            <span className="text-[11px] font-medium tracking-wide text-white/80 uppercase">
+            <span className="size-2.5 rounded-full bg-emerald-300" />
+            <span className="text-xs font-medium tracking-wide text-white/80 uppercase">
               Handoff ready
             </span>
           </div>
-          <div className="space-y-2">
-            <div className="h-2.5 w-4/5 rounded-full bg-white/25" />
-            <div className="h-2.5 w-3/5 rounded-full bg-white/15" />
+          <div className="space-y-2.5">
+            <div className="h-3 w-4/5 rounded-full bg-white/25" />
+            <div className="h-3 w-3/5 rounded-full bg-white/15" />
           </div>
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <div className="rounded-full bg-white/15 px-3 py-1 text-[11px] text-white/85">
+          <div className="mt-5 flex items-center justify-between gap-3">
+            <div className="rounded-full bg-white/15 px-3.5 py-1.5 text-xs text-white/85">
               Automation
             </div>
             <div className="h-px flex-1 bg-gradient-to-r from-white/40 to-transparent" />
-            <div className="rounded-full bg-accent px-3 py-1 text-[11px] text-accent-foreground">
+            <div className="rounded-full bg-accent px-3.5 py-1.5 text-xs text-accent-foreground">
               Specialist
             </div>
           </div>
         </Panel>
-        <Panel className="absolute -right-2 -bottom-3 w-[58%] p-3 sm:-right-4">
-          <div className="text-[10px] tracking-wide text-white/65 uppercase">
+        <Panel className="absolute -right-2 -bottom-3 w-[58%] p-3.5 sm:-right-4 sm:p-4">
+          <div className="text-[11px] tracking-wide text-white/65 uppercase">
             Context kept
           </div>
-          <div className="mt-2 h-2 w-full rounded-full bg-white/20" />
-          <div className="mt-1.5 h-2 w-2/3 rounded-full bg-white/12" />
+          <div className="mt-2.5 h-2.5 w-full rounded-full bg-white/20" />
+          <div className="mt-2 h-2.5 w-2/3 rounded-full bg-white/12" />
         </Panel>
       </div>
     </div>
@@ -246,7 +246,7 @@ function IntegrationsArt() {
         <Panel className="p-4">
           <div className="mb-3 flex items-center justify-between">
             <span className="text-[11px] font-medium text-white/85">
-              Guided demo
+              Product workspace
             </span>
             <span className="rounded-full bg-cyan-300/90 px-2 py-0.5 text-[10px] font-semibold text-slate-900">
               Local

@@ -120,11 +120,11 @@ export function ArticleHero({ post }: ArticleHeroProps) {
           </div>
         </div>
 
-        <div data-article-cover className="mt-8 sm:mt-10">
+        <div data-article-cover className="mt-6 sm:mt-8">
           <ArticleVisual
             visual={post.visual}
             tone="spotlight"
-            className="min-h-[16rem] rounded-[1.6rem] shadow-[var(--shadow-soft)] sm:min-h-[20rem] lg:min-h-[24rem]"
+            className="min-h-[14rem] rounded-[1.6rem] shadow-[var(--shadow-soft)] sm:min-h-[17rem] lg:min-h-[21rem]"
           />
         </div>
       </Container>

@@ -65,7 +65,7 @@ export function ArticleCta() {
               className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center"
             >
               <Button href="/demo" size="lg">
-                {blogPageCopy.demoLabel}
+                Explore Demo
                 <ArrowUpRight className="size-4" aria-hidden />
               </Button>
               <Button href="/blog" variant="secondary" size="lg">

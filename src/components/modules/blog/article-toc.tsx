@@ -9,7 +9,16 @@ type ArticleTocProps = {
   sections: Array<{ id: string; title: string }>;
 };
 
+/** Matches sticky site header clearance. */
 const HEADER_OFFSET = 96;
+/** Mobile "On this page" control height while sticky. */
+const MOBILE_TOC_OFFSET = 64;
+
+function getScrollOffset() {
+  if (typeof window === "undefined") return HEADER_OFFSET;
+  const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+  return isMobile ? HEADER_OFFSET + MOBILE_TOC_OFFSET : HEADER_OFFSET;
+}
 
 export function ArticleToc({ sections }: ArticleTocProps) {
   const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
@@ -17,39 +26,40 @@ export function ArticleToc({ sections }: ArticleTocProps) {
   const panelId = useId();
 
   useEffect(() => {
-    const elements = sections
-      .map((section) => document.getElementById(section.id))
-      .filter((el): el is HTMLElement => Boolean(el));
-    if (elements.length === 0) return;
+    if (sections.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) =>
-              a.boundingClientRect.top - b.boundingClientRect.top,
-          );
-        if (visible[0]?.target.id) {
-          setActiveId(visible[0].target.id);
+    const resolveActive = () => {
+      const offset = getScrollOffset() + 8;
+      let current = sections[0]?.id ?? "";
+
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top - offset <= 0) {
+          current = section.id;
+        } else {
+          break;
         }
-      },
-      {
-        rootMargin: `-${HEADER_OFFSET}px 0px -55% 0px`,
-        threshold: [0, 0.25, 0.6],
-      },
-    );
+      }
 
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      setActiveId((prev) => (prev === current ? prev : current));
+    };
+
+    resolveActive();
+    window.addEventListener("scroll", resolveActive, { passive: true });
+    window.addEventListener("resize", resolveActive);
+    return () => {
+      window.removeEventListener("scroll", resolveActive);
+      window.removeEventListener("resize", resolveActive);
+    };
   }, [sections]);
 
   const onNavigate = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
     const top =
-      window.scrollY + el.getBoundingClientRect().top - HEADER_OFFSET;
-    window.scrollTo({ top, behavior: "smooth" });
+      window.scrollY + el.getBoundingClientRect().top - getScrollOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     setActiveId(id);
     setOpen(false);
   };
@@ -63,14 +73,14 @@ export function ArticleToc({ sections }: ArticleTocProps) {
         <p className="text-[11px] font-semibold tracking-[0.16em] text-muted uppercase">
           {blogPageCopy.onThisPage}
         </p>
-        <ol className="relative mt-4 space-y-1 border-l border-border pl-4">
+        <ol className="relative mt-3 space-y-2.5 border-l border-border pl-3.5">
           {sections.map((section) => {
             const active = section.id === activeId;
             return (
               <li key={section.id} className="relative">
                 <span
                   className={cn(
-                    "absolute top-2 -left-[1.28rem] size-2 rounded-full transition-colors",
+                    "absolute top-2.5 -left-[1.19rem] size-1.5 rounded-full transition-colors",
                     active ? "bg-accent" : "bg-border-strong",
                   )}
                   aria-hidden
@@ -80,7 +90,7 @@ export function ArticleToc({ sections }: ArticleTocProps) {
                   onClick={() => onNavigate(section.id)}
                   aria-current={active ? "location" : undefined}
                   className={cn(
-                    "w-full rounded-lg px-2 py-1.5 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    "w-full rounded-md px-1.5 py-1.5 text-left text-[13px] leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     active
                       ? "font-medium text-accent"
                       : "text-muted hover:text-foreground",
@@ -116,7 +126,7 @@ export function ArticleToc({ sections }: ArticleTocProps) {
           hidden={!open}
           className="mt-2 overflow-hidden rounded-2xl border border-border bg-surface p-2 shadow-[var(--shadow-soft)]"
         >
-          <ol className="space-y-1">
+          <ol className="space-y-2">
             {sections.map((section) => {
               const active = section.id === activeId;
               return (
@@ -126,7 +136,7 @@ export function ArticleToc({ sections }: ArticleTocProps) {
                     onClick={() => onNavigate(section.id)}
                     aria-current={active ? "location" : undefined}
                     className={cn(
-                      "w-full rounded-xl px-3 py-2.5 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                      "w-full rounded-xl px-3 py-3 text-left text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                       active
                         ? "bg-accent-soft font-medium text-accent"
                         : "text-muted hover:bg-surface-muted hover:text-foreground",

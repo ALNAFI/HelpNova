@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { blogPageCopy } from "@/data/editorial/blog";
 import type { BlogPost } from "@/types/editorial";
 import { cn } from "@/utils/cn";
 
@@ -9,6 +7,12 @@ type ArticleNavigationProps = {
   previous: BlogPost | null;
   next: BlogPost | null;
 };
+
+const linkClassName = cn(
+  "group inline-flex max-w-full items-center gap-2 border-b-[0.5px] border-[#3a3649] py-1 text-sm text-[#f2f0fa] no-underline transition-[border-color] duration-150",
+  "hover:border-[#8b7cf6]",
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8b7cf6]",
+);
 
 export function ArticleNavigation({
   previous,
@@ -22,25 +26,24 @@ export function ArticleNavigation({
       className="border-y border-border/80 py-8 sm:py-10"
     >
       <Container>
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4 md:grid-cols-2 md:items-center">
           {previous ? (
-            <NavCard
-              href={`/blog/${previous.slug}`}
-              eyebrow={blogPageCopy.previousArticle}
-              title={previous.title}
-              direction="previous"
-            />
+            <div className="flex md:justify-start">
+              <PreviousArticleLink
+                href={`/blog/${previous.slug}`}
+                title={previous.title}
+              />
+            </div>
           ) : (
             <div className="hidden md:block" />
           )}
           {next ? (
-            <NavCard
-              href={`/blog/${next.slug}`}
-              eyebrow={blogPageCopy.nextArticle}
-              title={next.title}
-              direction="next"
-              className="md:text-right"
-            />
+            <div className="flex md:justify-end">
+              <NextArticleLink
+                href={`/blog/${next.slug}`}
+                title={next.title}
+              />
+            </div>
           ) : null}
         </div>
       </Container>
@@ -48,50 +51,58 @@ export function ArticleNavigation({
   );
 }
 
-function NavCard({
+function PreviousArticleLink({
   href,
-  eyebrow,
   title,
-  direction,
-  className,
 }: {
   href: string;
-  eyebrow: string;
   title: string;
-  direction: "previous" | "next";
-  className?: string;
 }) {
   return (
-    <Link
-      href={href}
-      className={cn(
-        "group rounded-[1.35rem] border border-border bg-surface p-5 shadow-[var(--shadow-soft)] transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-[0_18px_40px_color-mix(in_oklab,var(--accent)_12%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:p-6",
-        className,
-      )}
-    >
-      <div
-        className={cn(
-          "flex items-center gap-2 text-xs font-semibold tracking-[0.14em] text-muted uppercase",
-          direction === "next" && "md:justify-end",
-        )}
+    <Link href={href} className={linkClassName}>
+      <svg
+        className="size-3.5 shrink-0 text-[#8b7cf6] transition-transform duration-150 group-hover:-translate-x-0.5"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
       >
-        {direction === "previous" ? (
-          <ArrowLeft
-            className="size-3.5 transition-transform group-hover:-translate-x-0.5"
-            aria-hidden
-          />
-        ) : null}
-        {eyebrow}
-        {direction === "next" ? (
-          <ArrowRight
-            className="size-3.5 transition-transform group-hover:translate-x-0.5"
-            aria-hidden
-          />
-        ) : null}
-      </div>
-      <p className="mt-3 font-heading text-lg font-semibold tracking-tight text-balance transition-colors group-hover:text-accent sm:text-xl">
+        <path d="M19 12H5M11 6l-6 6 6 6" />
+      </svg>
+      <span className="shrink-0 text-[#8d89a0]">Previous:</span>
+      <span className="min-w-0 max-w-[60vw] truncate sm:max-w-none sm:overflow-visible sm:whitespace-normal">
         {title}
-      </p>
+      </span>
+    </Link>
+  );
+}
+
+function NextArticleLink({ href, title }: { href: string; title: string }) {
+  return (
+    <Link href={href} className={linkClassName}>
+      <span className="shrink-0 text-[#8d89a0]">Next:</span>
+      <span className="min-w-0 max-w-[60vw] truncate sm:max-w-none sm:overflow-visible sm:whitespace-normal">
+        {title}
+      </span>
+      <svg
+        className="size-3.5 shrink-0 text-[#8b7cf6] transition-transform duration-150 group-hover:translate-x-0.5"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
     </Link>
   );
 }

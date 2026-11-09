@@ -89,12 +89,12 @@ export function BlogHero() {
           >
             <span className="inline-flex items-center gap-2">
               <span className="size-1.5 rounded-full bg-accent" aria-hidden />
-              {blogPosts.length} stories
+              {blogPosts.length} Articles
             </span>
             <span className="hidden text-border-strong sm:inline" aria-hidden>
               |
             </span>
-            <span>Editorial guides for modern support teams</span>
+            <span>Insights and strategies for modern support teams</span>
           </div>
         </div>
       </Container>

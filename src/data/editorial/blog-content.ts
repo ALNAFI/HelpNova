@@ -4,8 +4,8 @@ export const blogArticleBodies: BlogArticleBody[] = [
   {
     slug: "better-support-handoffs",
     introduction: [
-      "A handoff is one of the most delicate moments in customer support. The conversation already has history, emotion, and unfinished work. When ownership changes, customers should feel continuity—not a restart.",
-      "This guide explores how teams can design calmer handoffs using shared context, clear ownership, and a visible next step. The ideas are illustrative and meant for product exploration, not operational claims.",
+      "A handoff is one of the most delicate moments in customer support. The conversation already has history, emotion, and unfinished work. When ownership changes, customers should feel continuity, not a restart.",
+      "Explore practical ways to create smoother support handoffs through shared context, clear ownership, and well-defined next steps, helping teams deliver more consistent customer experiences.",
     ],
     sections: [
       {
@@ -38,13 +38,13 @@ export const blogArticleBodies: BlogArticleBody[] = [
           {
             type: "callout",
             title: "Design cue",
-            text: "Treat context as part of the handoff itself—not something the next person has to hunt for after they accept the conversation.",
+            text: "Treat context as part of the handoff itself, not something the next person has to hunt for after they accept the conversation.",
           },
           {
             type: "diagram",
             kind: "handoff",
             caption:
-              "An illustrative path from automation to specialist with context carried forward.",
+              "A seamless transition from automation to a support specialist, with conversation context preserved throughout.",
           },
         ],
       },
@@ -94,7 +94,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     ],
     conclusion: [
       "Calmer handoffs are less about speed and more about continuity. Shared context, explicit ownership, and a protected customer thread create a quieter path from first inquiry to thoughtful resolution.",
-      "In HelpNova's guided demo, you can explore how assignment, notes, and activity come together as an illustrative workflow—without claiming a live support system.",
+      "In HelpNova, assignment, notes, and activity work together so transfers stay clear, and customers keep the continuity they expect.",
     ],
     relatedSlugs: [
       "internal-notes-collaboration",
@@ -106,7 +106,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     slug: "organizing-shared-inbox",
     introduction: [
       "A shared inbox works when every message has a place, an owner, and a next action. Without that structure, channels blur together and attention scatters across unfinished threads.",
-      "This article looks at practical ways to organize conversations status, ownership, and filters—so teams can stay oriented. The examples are conceptual and intended for product exploration.",
+      "This article looks at practical ways to organize conversation status, ownership, and filters so teams can stay oriented and move with confidence.",
     ],
     sections: [
       {
@@ -121,7 +121,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
             type: "diagram",
             kind: "inbox",
             caption:
-              "An illustrative shared inbox with filters for All, Open, and Resolved conversations.",
+              "A shared inbox with filters for All, Open, and Resolved conversations.",
           },
         ],
       },
@@ -154,7 +154,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
           {
             type: "callout",
             title: "Keep tags readable",
-            text: "Tags and priority can support scanning, but they work best as display cues—clear, restrained, and never a substitute for ownership.",
+            text: "Tags and priority can support scanning, but they work best as clear display cues, restrained and never a substitute for ownership.",
           },
         ],
       },
@@ -185,7 +185,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     ],
     conclusion: [
       "Organizing a shared inbox is less about collecting every channel and more about making ownership and status unmistakable. When teammates can scan, filter, and open the right thread, conversations stay calmer.",
-      "HelpNova's local demo illustrates how inbox filters, assignment, and thread context can sit together in one connected workspace.",
+      "HelpNova brings inbox filters, assignment, and thread context together in one connected workspace so teams can stay aligned.",
     ],
     relatedSlugs: [
       "better-support-handoffs",
@@ -197,7 +197,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     slug: "topic-based-routing",
     introduction: [
       "Topic-based routing helps inquiries land with the team best prepared to continue. The strongest designs stay readable: a trigger, a condition, a matched path, and a graceful Otherwise.",
-      "This article walks through that pattern as an illustrative workflow concept—useful for exploring automation ideas without claiming live production behavior.",
+      "This article walks through that pattern as a clear workflow teams can use to shape automation with confidence.",
     ],
     sections: [
       {
@@ -212,7 +212,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
             type: "diagram",
             kind: "routing",
             caption:
-              "An illustrative Match · Otherwise branch for order, billing, or technical topics.",
+              "A Match · Otherwise branch for order, billing, or technical topics.",
           },
         ],
       },
@@ -222,7 +222,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "Order tracking, billing, and technical support are common starting points because they map to distinct ownership. The goal is not infinite branching—it is enough clarity to route with confidence.",
+            text: "Order tracking, billing, and technical support are common starting points because they map to distinct ownership. The goal is not infinite branching. It is enough clarity to route with confidence.",
           },
           {
             type: "list",
@@ -255,7 +255,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "Routing only matters if the resulting assignment appears in the shared inbox. The simulation should update the same conversation state teammates already use—assignment, activity, and next steps.",
+            text: "Routing only matters if the resulting assignment appears in the shared inbox. The workflow should update the same conversation state teammates already use: assignment, activity, and next steps.",
           },
           {
             type: "quote",
@@ -265,18 +265,18 @@ export const blogArticleBodies: BlogArticleBody[] = [
       },
       {
         id: "simulate-before-you-scale",
-        title: "Simulate before you scale",
+        title: "Review before you scale",
         blocks: [
           {
             type: "paragraph",
-            text: "Running a local simulation helps teams inspect the path, outcome, and trace without pretending the rule is already live. Replay should show the same decision path clearly—not invent duplicate events.",
+            text: "Reviewing a workflow path helps teams inspect the outcome and decision trace before wider rollout. Replay should show the same decision path clearly, not invent duplicate events.",
           },
         ],
       },
     ],
     conclusion: [
       "Thoughtful topic routing is a clarity exercise. Readable conditions, a reliable Otherwise path, and a connection back to inbox ownership keep automation grounded.",
-      "In the HelpNova demo, Run Simulation and Replay are designed to visualize an illustrative outcome so teams can explore the idea before any real integration work.",
+      "In HelpNova, workflow runs and replay help teams visualize the outcome so they can refine routing before connecting more of their stack.",
     ],
     relatedSlugs: [
       "better-support-handoffs",
@@ -288,7 +288,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     slug: "meaningful-support-metrics",
     introduction: [
       "Support metrics are most useful when they help a team notice what needs attention. Volume alone is not a story. Open work, resolution patterns, and assignment balance together create a clearer picture.",
-      "This guide focuses on meaningful, illustrative signals—without inventing benchmarks, ROI claims, or measured customer outcomes.",
+      "This guide focuses on meaningful signals teams can use day to day, without inventing benchmarks, ROI claims, or measured customer outcomes.",
     ],
     sections: [
       {
@@ -303,7 +303,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
             type: "diagram",
             kind: "metrics",
             caption:
-              "An illustrative snapshot of open work, resolution, and team workload signals.",
+              "A snapshot of open work, resolution, and team workload signals.",
           },
         ],
       },
@@ -313,7 +313,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "Open workload by team—including unassigned—helps spot imbalance. The point is not to create pressure; it is to notice where conversations are waiting without an owner.",
+            text: "Open workload by team, including unassigned, helps spot imbalance. The point is not to create pressure; it is to notice where conversations are waiting without an owner.",
           },
           {
             type: "list",
@@ -346,7 +346,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "Live state answers what needs attention now. Historical sample volume answers how patterns move over a selected window. Keeping those views distinct prevents one chart from pretending to be the whole story.",
+            text: "Live state answers what needs attention now. Historical volume answers how patterns move over a selected window. Keeping those views distinct prevents one chart from pretending to be the whole story.",
           },
           {
             type: "quote",
@@ -357,7 +357,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     ],
     conclusion: [
       "Meaningful support metrics are calm, connected, and actionable. They describe open work, ownership, and resolution in language a team can use immediately.",
-      "HelpNova's Insights view in the guided demo derives illustrative KPIs from the same local conversation state as Inbox and Automation—so the story stays coherent.",
+      "HelpNova's Insights view derives KPIs from the same conversation state as Inbox and Automation, so the story stays coherent.",
     ],
     relatedSlugs: [
       "organizing-shared-inbox",
@@ -369,7 +369,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     slug: "internal-notes-collaboration",
     introduction: [
       "Internal notes give teams a place to think together without rewriting the customer's conversation. They keep collaboration close to the thread while protecting what the customer sees.",
-      "This article explores how private notes support quieter handoffs, clearer ownership, and more careful replies—as an illustrative product pattern.",
+      "This article explores how private notes support quieter handoffs, clearer ownership, and more careful replies across the support workflow.",
     ],
     sections: [
       {
@@ -384,7 +384,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
             type: "diagram",
             kind: "notes",
             caption:
-              "An illustrative thread with a visually distinct internal note beside customer messages.",
+              "A thread with a visually distinct internal note beside customer messages.",
           },
         ],
       },
@@ -394,7 +394,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "Customers should never confuse a private note with a reply. Visual distinction—tone, label, and placement—protects trust and keeps the customer-facing timeline readable.",
+            text: "Customers should never confuse a private note with a reply. Visual distinction in tone, label, and placement protects trust and keeps the customer-facing timeline readable.",
           },
           {
             type: "list",
@@ -438,7 +438,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     ],
     conclusion: [
       "Internal notes are a quiet collaboration layer. Used well, they reduce repetition, protect the customer view, and make handoffs feel intentional.",
-      "In HelpNova's local inbox demo, replies and internal notes are deliberately distinct so teams can explore that separation without sending anything to a real customer.",
+      "In HelpNova, replies and internal notes stay deliberately distinct so teams can collaborate without mixing private context into the customer thread.",
     ],
     relatedSlugs: [
       "better-support-handoffs",
@@ -450,7 +450,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     slug: "explore-before-integrations",
     introduction: [
       "Integrations are tempting to connect early. A more useful first step is understanding the workflow you want: how conversations move, how routing decides ownership, and which insights matter.",
-      "This guide makes the case for exploring a local demo before wiring external tools—so integration choices stay intentional and grounded.",
+      "This guide makes the case for exploring the product workflow before wiring external tools, so integration choices stay intentional and grounded.",
     ],
     sections: [
       {
@@ -459,13 +459,13 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "Inbox, automation, and insights are easier to evaluate when they share one local state. Exploring that journey reveals which moments need integrations and which moments need clearer product design.",
+            text: "Inbox, automation, and insights are easier to evaluate when they share one connected state. Exploring that journey reveals which moments need integrations and which moments need clearer product design.",
           },
           {
             type: "diagram",
             kind: "explore",
             caption:
-              "An illustrative local journey across Inbox, Automation, and Insights before external connections.",
+              "A connected journey across Inbox, Automation, and Insights before external connections.",
           },
         ],
       },
@@ -483,7 +483,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
             items: [
               "Map the inquiry path you care about most.",
               "Note where external context would reduce repetition.",
-              "Only then shortlist illustrative integrations to explore later.",
+              "Only then shortlist integrations that support those moments.",
             ],
           },
         ],
@@ -494,12 +494,12 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "HelpNova's concept experience uses local simulations. Forms, demos, and integration cards are illustrative. That honesty helps teams evaluate ideas without mistaking a UI concept for a live platform.",
+            text: "HelpNova helps teams evaluate inbox, automation, and insights together. Clear product boundaries make it easier to judge fit before committing to a broader stack.",
           },
           {
             type: "callout",
             title: "Product boundary",
-            text: "Nothing in the guided demo transmits tickets, creates accounts, or completes OAuth. Exploration stays local by design.",
+            text: "Start by understanding the workflow experience, then decide which connections belong in your stack.",
           },
         ],
       },
@@ -509,7 +509,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
         blocks: [
           {
             type: "paragraph",
-            text: "After a team has tried assignment, notes, routing simulation, and insights, integration discussions become more precise. You are no longer guessing which surfaces matter—you have already walked them.",
+            text: "After a team has tried assignment, notes, routing, and insights, integration discussions become more precise. You are no longer guessing which surfaces matter; you have already walked them.",
           },
           {
             type: "quote",
@@ -520,7 +520,7 @@ export const blogArticleBodies: BlogArticleBody[] = [
     ],
     conclusion: [
       "Exploring workflows before integrations protects clarity. It keeps the conversation about outcomes and ownership ahead of connectors and credentials.",
-      "When you are ready, HelpNova's Integrations page and guided demo remain available as illustrative places to continue that exploration.",
+      "When you are ready, HelpNova's Integrations page and product workspace remain available as places to continue that exploration.",
     ],
     relatedSlugs: [
       "topic-based-routing",

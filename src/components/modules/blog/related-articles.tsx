@@ -58,19 +58,10 @@ export function RelatedArticles({ posts }: RelatedArticlesProps) {
             {blogPageCopy.relatedDescription}
           </p>
         </div>
-        <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {posts.map((post, index) => (
-            <div key={post.id} data-related>
-              <ArticleCard
-                post={post}
-                variant={
-                  index === 0
-                    ? "image-first"
-                    : index === 1
-                      ? "text-led"
-                      : "compact"
-                }
-              />
+        <div className="mt-8 grid items-stretch gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {posts.map((post) => (
+            <div key={post.id} data-related className="h-full min-w-0">
+              <ArticleCard post={post} density="related" />
             </div>
           ))}
         </div>

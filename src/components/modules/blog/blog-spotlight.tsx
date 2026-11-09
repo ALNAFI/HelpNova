@@ -48,7 +48,7 @@ export function BlogSpotlight({ post }: BlogSpotlightProps) {
   return (
     <section
       ref={ref}
-      className="relative py-10 sm:py-14"
+      className="relative pt-10 pb-8 sm:pt-14 sm:pb-11"
       aria-labelledby="blog-spotlight-heading"
     >
       <Container>
@@ -99,7 +99,7 @@ export function BlogSpotlight({ post }: BlogSpotlightProps) {
                   href={href}
                   className="inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-border-strong bg-foreground px-5 py-3 text-sm font-medium text-background transition-[transform,opacity] hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
                 >
-                  {blogPageCopy.readStory}
+                  {blogPageCopy.readArticle}
                   <ArrowUpRight className="size-4" aria-hidden />
                 </Link>
               </div>

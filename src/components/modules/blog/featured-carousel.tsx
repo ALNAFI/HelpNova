@@ -17,7 +17,6 @@ import { blogPageCopy } from "@/data/editorial/blog";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 import type { BlogPost } from "@/types/editorial";
-import { cn } from "@/utils/cn";
 
 type FeaturedCarouselProps = {
   posts: BlogPost[];
@@ -153,7 +152,7 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
               id={labelId}
               className="mt-2 font-heading text-2xl font-semibold tracking-tight sm:text-3xl"
             >
-              Stories worth opening first.
+              Featured Insights & Ideas.
             </h2>
           </div>
           <div className="flex items-center gap-3">
@@ -214,34 +213,15 @@ export function FeaturedCarousel({ posts }: FeaturedCarouselProps) {
             </div>
           </div>
 
-          <div className="mt-5 flex items-center gap-2" aria-hidden={false}>
+          <div
+            className="mt-5 h-1 overflow-hidden rounded-full bg-border"
+            role="presentation"
+            aria-hidden
+          >
             <div
-              className="h-1 flex-1 overflow-hidden rounded-full bg-border"
-              role="presentation"
-            >
-              <div
-                className="h-full rounded-full bg-accent transition-[width] duration-500 ease-out"
-                style={{ width: `${((index + 1) / count) * 100}%` }}
-              />
-            </div>
-            <div className="flex gap-1.5" role="tablist" aria-label="Featured slides">
-              {posts.map((post, slideIndex) => (
-                <button
-                  key={post.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={slideIndex === index}
-                  aria-label={`Go to featured story ${slideIndex + 1}`}
-                  onClick={() => goTo(slideIndex)}
-                  className={cn(
-                    "size-2.5 rounded-full transition-[transform,background-color] duration-300",
-                    slideIndex === index
-                      ? "scale-110 bg-accent"
-                      : "bg-border-strong hover:bg-muted",
-                  )}
-                />
-              ))}
-            </div>
+              className="h-full rounded-full bg-accent transition-[width] duration-500 ease-out"
+              style={{ width: `${((index + 1) / count) * 100}%` }}
+            />
           </div>
         </div>
       </Container>

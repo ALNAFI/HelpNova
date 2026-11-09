@@ -2,7 +2,6 @@ import { ArticleContent } from "@/components/modules/blog/article-content";
 import { ArticleCta } from "@/components/modules/blog/article-cta";
 import { ArticleHero } from "@/components/modules/blog/article-hero";
 import { ArticleNavigation } from "@/components/modules/blog/article-navigation";
-import { ArticleShare } from "@/components/modules/blog/article-share";
 import { ArticleToc } from "@/components/modules/blog/article-toc";
 import { ReadingProgress } from "@/components/modules/blog/reading-progress";
 import { RelatedArticles } from "@/components/modules/blog/related-articles";
@@ -27,7 +26,7 @@ export function ArticlePage({ post, body }: ArticlePageProps) {
   ];
 
   return (
-    <div className="relative isolate overflow-hidden">
+    <div className="relative isolate overflow-x-clip">
       <ReadingProgress targetId="article-body" />
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_45%_at_50%_-6%,var(--glow),transparent_58%)]"
@@ -41,23 +40,14 @@ export function ArticlePage({ post, body }: ArticlePageProps) {
       <ArticleHero post={post} />
 
       <Container className="pb-4">
-        <div className="grid gap-10 lg:grid-cols-[14rem_minmax(0,46rem)_11rem] lg:justify-between xl:grid-cols-[15rem_minmax(0,46rem)_12rem]">
-          <aside className="lg:sticky lg:top-[calc(var(--header-height)+1.25rem)] lg:self-start">
+        <div className="grid gap-8 lg:grid-cols-[13.5rem_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[14rem_minmax(0,1fr)]">
+          <aside className="sticky top-[calc(var(--header-height)+0.75rem)] z-30 self-start bg-background/95 py-2 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 lg:top-[calc(var(--header-height)+1.25rem)] lg:bg-transparent lg:py-0 lg:backdrop-blur-none">
             <ArticleToc sections={tocSections} />
           </aside>
 
           <article id="article-body" className="min-w-0">
             <ArticleContent body={body} />
           </article>
-
-          <aside className="hidden xl:block">
-            <div className="sticky top-[calc(var(--header-height)+1.25rem)] space-y-4">
-              <p className="text-[11px] font-semibold tracking-[0.16em] text-muted uppercase">
-                Share
-              </p>
-              <ArticleShare title={post.title} />
-            </div>
-          </aside>
         </div>
       </Container>
 

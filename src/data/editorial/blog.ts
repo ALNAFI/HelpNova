@@ -5,7 +5,7 @@ export const blogPageCopy = {
   eyebrow: "The HelpNova Journal",
   title: "Fresh perspectives. Better conversations.",
   description:
-    "Explore ideas, practical guides, and thoughtful perspectives on customer support, automation, and building better experiences.",
+    "Discover expert insights, actionable guides, and fresh ideas on customer support, AI automation, and creating exceptional customer experiences.",
   exploreEyebrow: "Library",
   exploreTitle: "Explore the latest thinking.",
   exploreDescription:
@@ -17,8 +17,8 @@ export const blogPageCopy = {
   spotlightEyebrow: "Editorial Spotlight",
   ctaTitle: "Ready to see the ideas in action?",
   ctaDescription:
-    "Explore how conversations, automation, and insights come together in HelpNova's interactive demo.",
-  demoLabel: "Explore Demo",
+    "Discover how HelpNova brings customer conversations, intelligent automation, and actionable insights together in one seamless experience.",
+  demoLabel: "Explore HelpNova",
   featuresLabel: "Explore Features",
   featuredLabel: "Featured Stories",
   readArticle: "Read Article",
@@ -28,14 +28,13 @@ export const blogPageCopy = {
     "More ideas and perspectives from the HelpNova Journal.",
   articleCtaTitle: "Turn ideas into experiences.",
   articleCtaDescription:
-    "Explore how conversations, automation, and insights come together in HelpNova's guided demo.",
+    "See how conversations, automation, and insights come together in one connected support experience.",
   backToJournal: "Back to Journal",
   onThisPage: "On this page",
+  jumpToSection: "Jump to section",
   copyLink: "Copy link",
   linkCopied: "Link copied",
   shareArticle: "Share",
-  previousArticle: "Previous article",
-  nextArticle: "Next article",
 } as const;
 
 export const blogCategories: BlogCategory[] = [
@@ -53,7 +52,7 @@ export const blogPosts: BlogPost[] = [
     slug: "better-support-handoffs",
     title: "Designing calmer customer-support handoffs",
     excerpt:
-      "How teams keep context intact when a conversation moves from automation to a specialist—without forcing customers to repeat themselves.",
+      "Discover how seamless handoffs preserve conversation context, empower support teams, and create smoother customer experiences without unnecessary repetition.",
     category: "customer-support",
     readingTime: "6 min read",
     publishedAt: "2026-02-12",
@@ -70,7 +69,7 @@ export const blogPosts: BlogPost[] = [
     slug: "organizing-shared-inbox",
     title: "Organizing conversations with a shared inbox",
     excerpt:
-      "A practical look at channels, status, and ownership—so every message has a clear place and a clear next action.",
+      "A practical look at channels, status, and ownership so every message has a clear place and a clear next action.",
     category: "shared-inbox",
     readingTime: "7 min read",
     publishedAt: "2026-01-28",
@@ -87,7 +86,7 @@ export const blogPosts: BlogPost[] = [
     slug: "topic-based-routing",
     title: "Topic-based routing and thoughtful workflow automation",
     excerpt:
-      "Match · Otherwise branching that routes order, billing, and technical inquiries with room for graceful fallbacks.",
+      "Learn how intelligent routing directs customer inquiries to the right teams, simplifies workflows, and keeps every conversation moving.",
     category: "automation",
     readingTime: "8 min read",
     publishedAt: "2026-01-14",
@@ -104,7 +103,7 @@ export const blogPosts: BlogPost[] = [
     slug: "meaningful-support-metrics",
     title: "Understanding meaningful support metrics",
     excerpt:
-      "Which signals help teams notice workload, resolution patterns, and conversation health—without chasing vanity numbers.",
+      "Which signals help teams notice workload, resolution patterns, and conversation health without chasing vanity numbers.",
     category: "analytics",
     readingTime: "5 min read",
     publishedAt: "2025-12-18",
@@ -138,7 +137,7 @@ export const blogPosts: BlogPost[] = [
     slug: "explore-before-integrations",
     title: "Explore support workflows before connecting integrations",
     excerpt:
-      "Why trying the local demo first helps teams understand inbox, automation, and insights before wiring external tools.",
+      "Discover how HelpNova's connected workflows bring conversations, automation, and support insights together before exploring integrations.",
     category: "product-guides",
     readingTime: "6 min read",
     publishedAt: "2025-11-20",

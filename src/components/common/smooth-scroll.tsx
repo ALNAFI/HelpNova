@@ -9,8 +9,6 @@ import { LenisProvider } from "@/context/lenis-context";
 import { getGsap } from "@/lib/gsap";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
-/** Formal pages where the cursor stamp reads as noise. */
-const TEXT_CURSOR_DISABLED = new Set(["/terms", "/privacy", "/security"]);
 
 function nativeScrollLimit() {
   return Math.max(
@@ -26,10 +24,9 @@ function nativeProgress() {
 }
 
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
   const reducedMotion = usePrefersReducedMotion();
   const lenisRef = useRef<Lenis | null>(null);
-  const enableTextCursor = !TEXT_CURSOR_DISABLED.has(pathname);
+  const enableTextCursor = true;
 
   useEffect(() => {
     if (reducedMotion) {

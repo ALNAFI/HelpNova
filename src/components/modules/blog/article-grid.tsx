@@ -25,7 +25,9 @@ export function ArticleGrid({ posts, onClear, hasFilters }: ArticleGridProps) {
     if (!el || reducedMotion) return;
     const { gsap } = getGsap();
     const ctx = gsap.context(() => {
-      const cards = el.querySelectorAll<HTMLElement>("[data-blog-card], [data-blog-empty]");
+      const cards = el.querySelectorAll<HTMLElement>(
+        "[data-blog-card], [data-blog-empty]",
+      );
       gsap.fromTo(
         cards,
         { y: 18, autoAlpha: 0 },
@@ -63,7 +65,10 @@ export function ArticleGrid({ posts, onClear, hasFilters }: ArticleGridProps) {
         >
           {blogPageCopy.emptyTitle}
         </h3>
-        <p data-blog-empty className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted">
+        <p
+          data-blog-empty
+          className="mx-auto mt-2 max-w-md text-sm leading-6 text-muted"
+        >
           {blogPageCopy.emptyDescription}
         </p>
         {hasFilters ? (
@@ -77,52 +82,35 @@ export function ArticleGrid({ posts, onClear, hasFilters }: ArticleGridProps) {
     );
   }
 
-  const [first, second, third, ...rest] = posts;
+  const [featured, ...rest] = posts;
+  const sideCard = rest[0];
+  const remaining = rest.slice(1);
 
   return (
     <div ref={ref} className="space-y-5">
-      <div className="grid gap-5 lg:grid-cols-12">
-        {first ? (
-          <ArticleCard
-            post={first}
-            variant="large"
-            className="lg:col-span-7"
-          />
-        ) : null}
-        {second ? (
-          <ArticleCard
-            post={second}
-            variant="text-led"
-            className="lg:col-span-5"
-          />
+      <div className="grid grid-cols-1 items-start gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <ArticleCard
+          post={featured}
+          variant="large"
+          className={cn(sideCard && "md:col-span-2 lg:col-span-2")}
+        />
+        {sideCard ? (
+          <ArticleCard post={sideCard} variant="standard" />
         ) : null}
       </div>
 
-      {(third || rest.length > 0) && (
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {third ? (
-            <ArticleCard
-              post={third}
-              variant="image-first"
-              className={cn(rest.length === 0 && "md:col-span-2 xl:col-span-1")}
-            />
-          ) : null}
-          {rest.map((post, index) => (
+      {remaining.length > 0 ? (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {remaining.map((post) => (
             <ArticleCard
               key={post.id}
               post={post}
-              variant={
-                index % 3 === 0
-                  ? "compact"
-                  : index % 3 === 1
-                    ? "image-first"
-                    : "text-led"
-              }
-              className={index === 0 && rest.length === 1 ? "md:col-span-1" : undefined}
+              variant="standard"
+              className="h-full"
             />
           ))}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

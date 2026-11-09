@@ -13,7 +13,7 @@ export function ArticleDiagram({
   className,
 }: ArticleDiagramProps) {
   return (
-    <figure className={cn("my-8", className)}>
+    <figure className={cn("my-5", className)}>
       <div
         className="overflow-hidden rounded-[1.35rem] border border-border bg-surface-muted/40 p-5 shadow-[var(--shadow-soft)] sm:p-6"
         role="img"
@@ -56,13 +56,25 @@ function Node({
 
 function HandoffDiagram() {
   return (
-    <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="flex flex-col items-stretch sm:flex-row sm:items-center sm:justify-between">
       <Node label="Automation" />
-      <div className="hidden h-px flex-1 bg-gradient-to-r from-border to-accent/50 sm:block" />
-      <div className="mx-auto h-8 w-px bg-gradient-to-b from-border to-accent/50 sm:hidden" />
+      <div
+        className="mx-auto h-5 w-px shrink-0 bg-gradient-to-b from-border to-accent/55 sm:mx-0 sm:hidden"
+        aria-hidden
+      />
+      <div
+        className="mx-3 hidden h-px min-w-6 flex-1 bg-gradient-to-r from-border to-accent/55 sm:block"
+        aria-hidden
+      />
       <Node label="Shared context" accent />
-      <div className="hidden h-px flex-1 bg-gradient-to-r from-accent/50 to-border sm:block" />
-      <div className="mx-auto h-8 w-px bg-gradient-to-b from-accent/50 to-border sm:hidden" />
+      <div
+        className="mx-auto h-5 w-px shrink-0 bg-gradient-to-b from-accent/55 to-border sm:mx-0 sm:hidden"
+        aria-hidden
+      />
+      <div
+        className="mx-3 hidden h-px min-w-6 flex-1 bg-gradient-to-r from-accent/55 to-border sm:block"
+        aria-hidden
+      />
       <Node label="Specialist" />
     </div>
   );
@@ -183,7 +195,7 @@ function ExploreDiagram() {
           )}
         >
           <div className="text-sm font-semibold text-foreground">{label}</div>
-          <div className="mt-2 text-xs text-muted">Local demo</div>
+          <div className="mt-2 text-xs text-muted">Connected view</div>
         </div>
       ))}
     </div>
