@@ -1,0 +1,373 @@
+/* Scoped to the Automation section. Tokens follow HelpNova theme vars
+   so light/dark switch with the site `.dark` class — no local dark override. */
+.root {
+  --an-bg: var(--background);
+  --an-surface: var(--surface);
+  --an-raised: var(--surface-muted);
+  --an-border: var(--border);
+  --an-line: var(--border-strong);
+  --an-text: var(--foreground);
+  --an-muted: var(--muted);
+  --an-accent: var(--accent);
+  --an-accent-soft: var(--accent-soft);
+  --an-on-accent: var(--accent-foreground);
+  --an-ok: var(--success);
+  --an-ok-soft: color-mix(in srgb, var(--success) 16%, transparent);
+  --an-warn: var(--warning);
+  --an-warn-soft: color-mix(in srgb, var(--warning) 16%, transparent);
+  color: var(--an-text);
+}
+
+.card {
+  background: var(--an-surface);
+  border: 1px solid var(--an-border);
+  border-radius: 16px;
+}
+
+.muted {
+  color: var(--an-muted);
+}
+
+.divider {
+  border-bottom: 1px solid var(--an-border);
+}
+
+.dots {
+  background-color: var(--an-bg);
+  background-image: radial-gradient(var(--an-line) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* ---------- Buttons and choices ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.25rem;
+  padding: 0 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--an-border);
+  background: var(--an-surface);
+  color: var(--an-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn:hover {
+  background: var(--an-raised);
+}
+
+.btnPrimary {
+  background: var(--an-accent);
+  border-color: var(--an-accent);
+  color: var(--an-on-accent);
+}
+.btnPrimary:hover {
+  background: color-mix(in srgb, var(--an-accent) 88%, #000);
+}
+
+.choice {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--an-border);
+  background: var(--an-surface);
+  color: var(--an-text);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.choice:hover {
+  background: var(--an-raised);
+}
+.choice[aria-pressed="true"] {
+  border-color: var(--an-accent);
+  background: var(--an-accent-soft);
+  box-shadow: 0 0 0 3px var(--an-accent-soft);
+}
+
+.btn:focus-visible,
+.choice:focus-visible,
+.stepDot:focus-visible {
+  outline: 2px solid var(--an-accent);
+  outline-offset: 2px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--an-muted);
+}
+.statusDot[data-tone="playing"] {
+  background: var(--an-accent);
+}
+.statusDot[data-tone="complete"] {
+  background: var(--an-ok);
+}
+
+/* ---------- Flow nodes ---------- */
+
+.node {
+  --tone: var(--an-accent);
+  --tone-soft: var(--an-accent-soft);
+  position: relative;
+  border: 1px solid var(--an-border);
+  background: var(--an-surface);
+  border-radius: 14px;
+  opacity: 0.5;
+  transition: opacity 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.node[data-tone="ok"] {
+  --tone: var(--an-ok);
+  --tone-soft: var(--an-ok-soft);
+}
+.node[data-tone="warn"] {
+  --tone: var(--an-warn);
+  --tone-soft: var(--an-warn-soft);
+}
+.node[data-state="done"] {
+  opacity: 1;
+  border-color: color-mix(in srgb, var(--tone) 45%, var(--an-border));
+}
+.node[data-state="active"] {
+  opacity: 1;
+  border-color: var(--tone);
+  box-shadow: 0 0 0 4px var(--tone-soft);
+  /* wait for the connector to finish filling before lighting up */
+  transition-delay: 0.35s;
+  animation: arrive 0.5s ease-out 0.35s both;
+}
+.node[data-state="skipped"] {
+  opacity: 0.35;
+  border-style: dashed;
+}
+
+.nodeIcon {
+  background: var(--an-raised);
+  color: var(--an-muted);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+.node[data-state="active"] .nodeIcon,
+.node[data-state="done"] .nodeIcon {
+  background: var(--tone-soft);
+  color: var(--tone);
+  transition-delay: 0.35s;
+}
+
+.bubble {
+  display: inline-block;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 12px 12px 12px 4px;
+  background: var(--an-raised);
+  color: var(--an-text);
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--an-accent-soft);
+  color: var(--an-accent);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.tag[data-tone="ok"] {
+  background: var(--an-ok-soft);
+  color: var(--an-ok);
+}
+.tag[data-tone="warn"] {
+  background: var(--an-warn-soft);
+  color: var(--an-warn);
+}
+
+.pop {
+  animation: pop 0.4s ease-out 0.5s both;
+}
+
+/* ---------- Connectors ---------- */
+
+.track {
+  position: absolute;
+  inset: 0;
+  background: var(--an-line);
+  border-radius: 2px;
+}
+.fill {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: var(--an-accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.45s ease-out;
+}
+.fill[data-state="travel"],
+.fill[data-state="done"] {
+  transform: scaleY(1);
+}
+.packet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 999px;
+  background: var(--an-accent);
+  box-shadow: 0 0 0 4px var(--an-accent-soft);
+  animation: travel 0.45s ease-out forwards;
+}
+
+.seg {
+  position: absolute;
+  background: var(--an-line);
+  border-radius: 2px;
+  transition: background-color 0.35s ease;
+}
+.seg[data-lit="true"] {
+  background: var(--an-accent);
+  transition-delay: 0.1s;
+}
+.seg[data-lit="true"][data-tone="ok"] {
+  background: var(--an-ok);
+}
+.seg[data-lit="true"][data-tone="warn"] {
+  background: var(--an-warn);
+}
+
+/* ---------- Narration ---------- */
+
+.stepDot {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  border-radius: 999px;
+  border: 1px solid var(--an-border);
+  background: var(--an-surface);
+  color: var(--an-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+.stepDot[data-state="done"] {
+  background: var(--an-accent-soft);
+  border-color: var(--an-accent);
+  color: var(--an-accent);
+}
+.stepDot[data-state="active"] {
+  background: var(--an-accent);
+  border-color: var(--an-accent);
+  color: var(--an-on-accent);
+}
+
+.stepRail {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  margin: 0 4px;
+  border-radius: 2px;
+  background: var(--an-line);
+  overflow: hidden;
+}
+.stepRail::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--an-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease-out;
+}
+.stepRail[data-filled="true"]::after {
+  transform: scaleX(1);
+}
+
+.narrStack {
+  display: grid;
+}
+.narrStack > div {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.narrStack > div[data-on="true"] {
+  visibility: visible;
+  animation: fadeUp 0.35s ease-out both;
+}
+
+/* Keeps a tag's space in the layout until its step is reached. */
+.reserve {
+  visibility: hidden;
+}
+
+.summaryValue {
+  animation: pop 0.35s ease-out both;
+}
+
+/* ---------- Keyframes ---------- */
+
+@keyframes arrive {
+  from {
+    transform: translateY(6px) scale(0.985);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes travel {
+  from {
+    top: 0;
+    opacity: 1;
+  }
+  to {
+    top: calc(100% - 8px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root *,
+  .root *::before,
+  .root *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .packet {
+    display: none;
+  }
+}

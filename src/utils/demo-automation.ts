@@ -39,38 +39,3 @@ export function evaluateAutomation(
     ranAt,
   };
 }
-
-export const workflowNodes = [
-  {
-    id: "inquiry",
-    label: "New Inquiry",
-    type: "trigger",
-    purpose: "A customer conversation arrives in the workspace.",
-  },
-  {
-    id: "condition",
-    label: "Check inquiry topic",
-    type: "condition",
-    purpose: "Compare the inquiry topic against the selected routing rule.",
-  },
-  {
-    id: "matched",
-    label: "Matched",
-    type: "branch",
-    purpose: "When the topic matches the rule, route to the specialist team.",
-  },
-  {
-    id: "otherwise",
-    label: "No match",
-    type: "branch",
-    purpose: "When the topic does not match, route to General Triage.",
-  },
-  {
-    id: "destination",
-    label: "Destination Team",
-    type: "action",
-    purpose: "Assign the conversation to the selected team.",
-  },
-] as const;
-
-export type WorkflowNodeId = (typeof workflowNodes)[number]["id"];

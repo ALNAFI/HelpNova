@@ -13,13 +13,11 @@ import {
   ArrowLeft,
   BarChart3,
   Inbox,
-  Info,
   Moon,
   MoreHorizontal,
   PanelLeftClose,
   PanelLeftOpen,
   RotateCcw,
-  Sparkles,
   Sun,
   Workflow,
 } from "lucide-react";
@@ -74,9 +72,6 @@ const viewCopy: Record<DemoView, { title: string; subtitle: string }> = {
   },
 };
 
-const DEMO_DISCLOSURE =
-  "Demo workspace · Changes reset on refresh. Messages aren't delivered.";
-
 const sidebarListeners = new Set<() => void>();
 
 function readSidebarCollapsed(): boolean {
@@ -121,9 +116,9 @@ export function DemoShell() {
   const { state, dispatch } = useDemo();
   const { resolvedTheme, setTheme } = useTheme();
   const [resetOpen, setResetOpen] = useState(false);
+  const [automationResetSignal, setAutomationResetSignal] = useState(0);
   const [toast, setToast] = useState<string | null>(null);
   const [headerMenuOpen, setHeaderMenuOpen] = useState(false);
-  const [disclosureOpen, setDisclosureOpen] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
 
@@ -332,18 +327,6 @@ export function DemoShell() {
 
           <div className="space-y-2 border-t border-[var(--demo-border)] p-2.5">
             <div className="demo-sidebar-expanded-only flex-col gap-2">
-              <div className="rounded-xl border border-[var(--demo-border)] bg-[var(--demo-panel)]/80 px-3 py-2.5">
-                <p className="text-[12px] leading-relaxed text-[var(--demo-muted)]">
-                  <span className="inline-flex items-center gap-1.5 font-medium text-accent">
-                    <Sparkles className="size-3.5 shrink-0" aria-hidden />
-                    Demo workspace
-                  </span>
-                  <span>
-                    {" "}
-                    · Changes reset on refresh. Messages aren&apos;t delivered.
-                  </span>
-                </p>
-              </div>
               <Link
                 href="/"
                 data-sidebar-interactive
@@ -354,10 +337,6 @@ export function DemoShell() {
             </div>
 
             <div className="demo-sidebar-collapsed-only flex-col items-center gap-2">
-              <DisclosureControl
-                open={disclosureOpen}
-                onOpenChange={setDisclosureOpen}
-              />
               <Link
                 href="/"
                 data-sidebar-interactive
@@ -427,7 +406,9 @@ export function DemoShell() {
 
           <main className="relative min-h-0 flex-1 overflow-hidden pb-[var(--demo-mobile-nav-space)] lg:pb-0">
             {state.view === "inbox" ? <InboxView /> : null}
-            {state.view === "automation" ? <AutomationView /> : null}
+            {state.view === "automation" ? (
+              <AutomationView resetSignal={automationResetSignal} />
+            ) : null}
             {state.view === "insights" ? <InsightsView /> : null}
           </main>
         </div>
@@ -473,8 +454,9 @@ export function DemoShell() {
         onClose={() => setResetOpen(false)}
         onConfirm={() => {
           dispatch({ type: "RESET_DEMO" });
+          setAutomationResetSignal((n) => n + 1);
           setResetOpen(false);
-          setToast("Demo restored to the original sample state.");
+          setToast("Workspace restored to the starting conversations.");
         }}
       />
 
@@ -484,71 +466,6 @@ export function DemoShell() {
           className="pointer-events-none fixed bottom-[calc(var(--demo-mobile-nav-space)+0.75rem)] left-1/2 z-[90] -translate-x-1/2 rounded-full border border-[var(--demo-border)] bg-[var(--demo-panel)] px-4 py-2 text-xs font-medium shadow-lg lg:bottom-6"
         >
           {toast}
-        </div>
-      ) : null}
-    </div>
-  );
-}
-
-function DisclosureControl({
-  open,
-  onOpenChange,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}) {
-  const tipId = useId();
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") onOpenChange(false);
-    }
-    function onPointer(event: MouseEvent | TouchEvent) {
-      const target = event.target as Node | null;
-      if (target && !rootRef.current?.contains(target)) onOpenChange(false);
-    }
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("mousedown", onPointer);
-    document.addEventListener("touchstart", onPointer);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("mousedown", onPointer);
-      document.removeEventListener("touchstart", onPointer);
-    };
-  }, [open, onOpenChange]);
-
-  return (
-    <div ref={rootRef} className="relative" data-sidebar-interactive>
-      <button
-        type="button"
-        data-sidebar-interactive
-        aria-expanded={open}
-        aria-controls={tipId}
-        onClick={(event) => {
-          event.stopPropagation();
-          onOpenChange(!open);
-        }}
-        className="inline-flex size-10 items-center justify-center rounded-lg border border-[var(--demo-border)] text-[var(--demo-muted)] transition hover:bg-[var(--demo-hover)] hover:text-[var(--demo-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-        aria-label="Demo workspace information"
-      >
-        <Info className="size-4" />
-      </button>
-      {open ? (
-        <div
-          id={tipId}
-          role="dialog"
-          aria-label="Demo workspace information"
-          className="absolute bottom-0 left-[calc(100%+10px)] z-40 w-56 rounded-xl border border-[var(--demo-border)] bg-[var(--demo-panel)] p-3 text-[12px] leading-relaxed text-[var(--demo-muted)] shadow-xl"
-        >
-          <p className="inline-flex items-center gap-1.5 font-medium text-accent">
-            <Sparkles className="size-3.5 shrink-0" aria-hidden />
-            Demo workspace
-          </p>
-          <p className="mt-1.5">
-            Changes reset on refresh. Messages aren&apos;t delivered.
-          </p>
         </div>
       ) : null}
     </div>
@@ -612,13 +529,6 @@ function MobileOverflowMenu({
             <ArrowLeft className="size-4 text-[var(--demo-muted)]" />
             Back to HelpNova
           </Link>
-          <div className="border-t border-[var(--demo-border)] px-3 py-2.5 text-[12px] leading-relaxed text-[var(--demo-muted)]">
-            <p className="inline-flex items-center gap-1.5 font-medium text-accent">
-              <Info className="size-3.5" aria-hidden />
-              Demo information
-            </p>
-            <p className="mt-1">{DEMO_DISCLOSURE}</p>
-          </div>
         </div>
       ) : null}
     </div>
